@@ -1,5 +1,7 @@
 import QtQuick 2.7
+//import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
+
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.3
 import QtQuick.Controls.Styles 1.4
@@ -13,6 +15,9 @@ ApplicationWindow{
     visible: true
     width: Screen.width
     height: Screen.height
+
+    //width: Screen.width / 4
+    //height: Screen.height / 2 + 400
 
 
 
@@ -61,6 +66,10 @@ ApplicationWindow{
                 TextField{
                     id: nameInput
                     maximumLength: 20
+                    inputMethodHints: Qt.ImhPreferLowercase |
+                                      Qt.ImhNoAutoUppercase |
+                                      Qt.ImhNoPredictiveText
+
                     background: Rectangle {
                         radius: 7
                         implicitWidth: flick.width / 2
@@ -84,6 +93,9 @@ ApplicationWindow{
                 TextField {
                     id: passwordInput
                     maximumLength: 20
+                    inputMethodHints: Qt.ImhPreferLowercase |
+                                      Qt.ImhNoAutoUppercase |
+                                      Qt.ImhNoPredictiveText
                     background: Rectangle {
                         radius: 7
                         implicitWidth: flick.width / 2
@@ -174,12 +186,12 @@ ApplicationWindow{
         //visible: false
         opacity: 0
         visible: (myClient.isAuth()) ? true : false
-        width:  Screen.width
-        height: Screen.height - header.height
+        width:  mainwnd.width
+        height: mainwnd.height - header.height
         //contentHeight: Screen.height * 5
         //quitbutton
         contentHeight: quitbutton.y + quitbutton.height + 300
-        contentWidth: Screen.width
+        contentWidth: mainwnd.width
         anchors.top: header.bottom
         smooth: true
         boundsBehavior: Flickable.StopAtBounds
@@ -231,7 +243,7 @@ ApplicationWindow{
             anchors.top: parent.top
             anchors.topMargin: 50
             width: parent.width - 100
-            height: Screen.height / 6 + 20
+            height: mainwnd.height / 6 + 20
             radius: 9
 
 
@@ -271,6 +283,8 @@ ApplicationWindow{
                         flick.visible = true
 
                         flickappear.running = true
+
+
 
                         bigPaneltext.text = myClient.showBill() + "₽"
 
@@ -550,14 +564,32 @@ ApplicationWindow{
 
         Timer {
             id: paytimer
-            interval: 2000;
+            interval: 3000;
 
             running: false
 
 
             onTriggered:{
-                paypagetext.text = myClient.showPayments()
-                //paymessage.visible = true
+
+                payModel.clear()
+
+                myClient.showPayments();
+                // payflick.contentHeight = mainwnd.height * (myClient.payTableLenght() / 4);
+                //console.log(myClient.payTableLenght())
+
+
+                //payModel.count = myClient.payTableLenght()
+
+
+                for(var i = 0; i < myClient.payTableLenght(); ++i)
+                {
+
+                    payModel.append({"date": myClient.givePayTime(i),
+                                        "cash": myClient.givePayCash(i),
+                                        "comment": myClient.givePayComm(i)})
+
+                }
+
                 bigbusy.running = false
 
             }
@@ -597,12 +629,14 @@ ApplicationWindow{
             }
 
             onClicked: {
+                bigbusy.running = true
                 paymentspageanim.running = true
                 paymentspage.focus = true
+                paymentspage.visible = true
                 myClient.askForPayments()
                 paytimer.running = true
-                if(!paypagetext.text.length > 0)
-                    bigbusy.running = true
+                //if(!paypagetext.text.length > 0)
+                //    bigbusy.running = true
             }
 
         }
@@ -647,10 +681,9 @@ ApplicationWindow{
 
             onClicked:{
 
-
-
                 paypointspageanim.running = true
                 paypointspage.focus = true
+                paypointspage.visible = true
                 paypointspagetext.text = "<b>Ближайшие точки оплаты:</b><br><br>"
                         + BackEnd.showATM() +
                         "<br> <br> Для более точного определения <br>
@@ -658,8 +691,6 @@ ApplicationWindow{
                           включить GPS модуль в настройках <br>
                           вашего устройства."
                 bigbusy.running = false;
-
-
             }
 
 
@@ -701,6 +732,7 @@ ApplicationWindow{
             onClicked: {
                 trustedpageanim.running = true
                 trustedpage.focus = true
+                //trustedpage.visible = true
                 //BackEnd.trustedPay();
             }
 
@@ -1066,7 +1098,7 @@ ApplicationWindow{
 
             onClicked: {
 
-                BackEnd.payPoints();
+
             }
 
         }
@@ -1429,7 +1461,7 @@ ApplicationWindow{
             duration: 3500
             //running: false
             running: true
-            loops: Animation.alwaysRunToEnd
+            loops: 1
         }
 
         Image {
@@ -1447,7 +1479,7 @@ ApplicationWindow{
                 running: true
                 NumberAnimation{
                     target: logo
-                    from: Screen.width
+                    from: mainwnd.width
                     to: 70
                     properties: "x"
                     easing.type: Easing.OutExpo
@@ -1477,11 +1509,11 @@ ApplicationWindow{
 
     Rectangle{
         id: trustedpage
-        width: Screen.width
-        height: Screen.height
+        width: mainwnd.width
+        height: mainwnd.height
         color: "white"
-        x: Screen.width
-
+        x: mainwnd.width * 2
+        visible: false
 
         Keys.onPressed: {
             if(event.key === Qt.Key_Back)
@@ -1489,7 +1521,7 @@ ApplicationWindow{
                 event.accepted = true;
 
 
-                if(trustedpage.x < Screen.width)
+                if(trustedpage.x < mainwnd.width)
                 {
                     trustedpageanim.running = false
                     trustedpageanimquit.running = true
@@ -1506,7 +1538,7 @@ ApplicationWindow{
         Flickable{
             id: trustedpageflick
             width:  trustedpage.width
-            height: Screen.height - trustedpageheader.height
+            height: mainwnd.height - trustedpageheader.height
             //contentHeight: Screen.height * 2
             contentHeight: trustButton.y + trustButton.height + 200
             contentWidth: trustedpage.width
@@ -1520,7 +1552,7 @@ ApplicationWindow{
             Rectangle{
                 id: rectworkspace
                 //anchors.top: trustedpageflick.top
-                width: Screen.width
+                width: mainwnd.width
                 height: trustButton.y + trustButton.height + 200
                 anchors.margins: 50
 
@@ -1531,7 +1563,7 @@ ApplicationWindow{
                 {
                     id: trustedpagetext
                     visible: true
-                    color: "#9c27b0"
+                    color: "#194b77"
                     font.family: "Noto Sans CJK KR Thint"
                     font.pointSize: 13
                     anchors.horizontalCenter: rectworkspace.horizontalCenter
@@ -1539,7 +1571,10 @@ ApplicationWindow{
                     anchors.topMargin: 50
                     // anchors.leftMargin: 70
                     // anchors.margins: 100
-                    text: "<br>Условия использования Услуги:<br><br>
+                    text: "- Обещанный платеж это бесплатная услуга.<br>
+- Подключив обещанный платеж,<br>
+вы обязуетесь внести плату за текущий месяц.<br><br>
+<br>Условия использования Услуги:<br><br><br>
 1. Услуга «Обещанный платеж» предоставляется<br>
 Абонентам, у которых на начало нового расчетного<br>
 периода не хватает денежных средств для списания<br>
@@ -1631,7 +1666,7 @@ ApplicationWindow{
                     background: Rectangle{
                         id: trustButtonStyle
                         anchors.fill: parent
-                        color: "#fbc02d"
+                        color: "steelblue"
                         radius: 9
 
                     }
@@ -1640,9 +1675,14 @@ ApplicationWindow{
                         anchors.centerIn: parent
                         font.family: "Noto Sans CJK KR Thint"
                         font.pointSize: 20
+                        color: "white"
                         text: "Подключить"
                     }
 
+
+                    onClicked: {
+                        myClient.askForTrustedPay();
+                    }
 
                     OpacityAnimator {
                         id: trustButtonappear
@@ -1703,7 +1743,6 @@ ApplicationWindow{
 
                 onClicked: {
                     trustedpageanimquit.running = true
-
                 }
 
             }
@@ -1733,12 +1772,16 @@ ApplicationWindow{
             NumberAnimation{
                 target: trustedpage
                 easing.amplitude: 0.5
-                from: Screen.width
+                from: mainwnd.width
                 to: 0
                 properties: "x"
                 easing.type: Easing.OutExpo
                 duration: 1100
-
+            }
+            onStarted: trustedpage.visible = true
+            onStopped: {
+                flick.visible = false
+                flick.enabled = false
             }
 
         }
@@ -1751,12 +1794,16 @@ ApplicationWindow{
                 target: trustedpage
                 easing.amplitude: 0.5
                 from: 0
-                to: Screen.width
+                to: mainwnd.width
                 properties: "x"
                 easing.type: Easing.OutCirc
                 duration: 500
-
             }
+            onStarted: {
+                flick.enabled = true
+                flick.visible = true
+            }
+            onStopped: trustedpage.visible = false
 
         }
 
@@ -1769,17 +1816,17 @@ ApplicationWindow{
 
     Rectangle{
         id: paypointspage
-        width: Screen.width
-        height: Screen.height
+        width: mainwnd.width
+        height: mainwnd.height
         color: "white"
-        x: Screen.width
-
+        x: mainwnd.width * 2
+        visible: false
         Keys.onPressed: {
             if(event.key === Qt.Key_Back)
             {
                 event.accepted = true;
 
-                if(paypointspage.x < Screen.width)
+                if(paypointspage.x < mainwnd.width)
                 {
                     paypointspageanim.running = false
                     paypointspageanimquit.running = true
@@ -1791,25 +1838,22 @@ ApplicationWindow{
             }
         }
 
-        Flickable{
+        Rectangle{
             id: paypointsflick
             width:  paypointspage.width
-            height: Screen.height - paysheader.height
-            contentHeight: Screen.height * 5
-            contentWidth: paypointsspage.width
+            height: mainwnd.height - paysheader.height
             anchors.top: paypointsheader.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
-            boundsBehavior: Flickable.StopAtBounds
-            interactive: true
-            maximumFlickVelocity: 1000000
 
             Text {
                 id: paypointspagetext
-                color: "black"
+                color: "#194b77"
                 font.family: "Noto Sans CJK KR Thint"
                 font.pointSize: 15
-                anchors.fill: parent
-                anchors.margins: 150
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: paypointsheader.y + 50
+
 
             }
         }
@@ -1824,7 +1868,6 @@ ApplicationWindow{
                 id: backfrompoints
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                //anchors.leftMargin: 25
                 width: paysheader.height
                 height: paysheader.height
                 background: Rectangle{
@@ -1846,7 +1889,6 @@ ApplicationWindow{
 
                 onClicked: {
                     paypointspageanimquit.running = true
-
                 }
 
             }
@@ -1877,13 +1919,18 @@ ApplicationWindow{
             NumberAnimation{
                 target: paypointspage
                 easing.amplitude: 0.5
-                from: Screen.width
+                from: mainwnd.width
                 to: 0
                 properties: "x"
                 easing.type: Easing.OutExpo
                 duration: 1100
-
             }
+             onStarted: paypointspage.visible = true
+             onStopped: {
+                 flick.visible = false
+                 flick.enabled = false
+             }
+
 
         }
 
@@ -1895,12 +1942,16 @@ ApplicationWindow{
                 target: paypointspage
                 easing.amplitude: 0.5
                 from: 0
-                to: Screen.width
+                to: mainwnd.width
                 properties: "x"
                 easing.type: Easing.OutCirc
                 duration: 500
-
             }
+            onStarted: {
+                flick.enabled = true
+                flick.visible = true
+            }
+            onStopped: paypointspage.visible = false
 
         }
 
@@ -1923,17 +1974,18 @@ ApplicationWindow{
 
     Rectangle{
         id: paymentspage
-        width: Screen.width
-        height: Screen.height
+        width: mainwnd.width
+        height: mainwnd.height
         color: "white"
-        x: Screen.width
+        x: mainwnd.width
+        visible: false
 
         Keys.onPressed: {
             if(event.key === Qt.Key_Back)
             {
                 event.accepted = true;
 
-                if(paymentspage.x < Screen.width)
+                if(paymentspage.x < mainwnd.width)
                 {
                     paymentspageanim.running = false
                     paymentspageanimquit.running = true
@@ -1945,28 +1997,135 @@ ApplicationWindow{
             }
         }
 
-        Flickable{
-            id: payflick
-            width:  paymentspage.width
-            height: Screen.height - paysheader.height
-            contentHeight: Screen.height * 5
-            contentWidth: paymentspage.width
-            anchors.top: paysheader.bottom
-            smooth: true
-            boundsBehavior: Flickable.StopAtBounds
-            interactive: true
-            maximumFlickVelocity: 1000000
 
-            Text {
-                id: paypagetext
-                color: "black"
-                font.family: "Noto Sans CJK KR Thint"
-                font.pointSize: 15
-                anchors.fill: parent
-                anchors.margins: 150
+        ListModel {
+            id: payModel
 
+            ListElement {
+                date: ""
+                cash: ""
+                comment: ""
             }
         }
+
+
+        Rectangle{
+            id: payflick
+            width: paymentspage.width
+            height: mainwnd.height - paysheader.height
+            Component{
+                id: paydelegate
+                Item {
+                    anchors.centerIn: parent
+                    width: payflick.width - 8
+                    height: payflick.height / 6
+                    Row{
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 3
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.3 -4;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: dates
+                                color: "steelblue"
+                                font.pointSize: 12
+                                text: date
+                            }
+                        }
+
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.2;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: cashes
+                                color: "steelblue"
+                                font.pointSize: 12
+                                text: cash
+                            }
+                        }
+
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.5 -4;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: comments
+                                color: "black"
+                                font.pointSize: 7
+                                text: comment
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        ListView{
+            id: payflickView
+            width: paymentspage.width
+            height: mainwnd.height - paysheader.height
+            anchors.top: paysheader.bottom
+            anchors.horizontalCenter: mainwnd.horizontalCenter
+            smooth: true
+            focus: true
+            maximumFlickVelocity: 1000000
+            headerPositioning: ListView.OverlayHeader
+            spacing: 3
+
+            header: Rectangle{
+                width: parent.width
+                height: paysheader.height / 2
+                z: 2
+
+                Row{
+                    anchors.centerIn: parent
+                    spacing: 3
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.3 -4;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Время: " }
+                    }
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.2;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Сумма: " }
+                    }
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.5 -4;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Комментарий: " }
+                    }
+
+
+
+                }
+            }
+
+
+            model: payModel
+            delegate: paydelegate
+
+
+        }
+
+
+
+        //        }
 
         Rectangle{
             x: 0
@@ -2000,7 +2159,6 @@ ApplicationWindow{
 
                 onClicked: {
                     paymentspageanimquit.running = true
-
                 }
 
             }
@@ -2031,12 +2189,16 @@ ApplicationWindow{
             NumberAnimation{
                 target: paymentspage
                 easing.amplitude: 0.5
-                from: Screen.width
+                from: mainwnd.width
                 to: 0
                 properties: "x"
                 easing.type: Easing.OutExpo
                 duration: 1100
-
+            }
+            onStarted: paymentspage.visible = true
+            onStopped: {
+                flick.visible = false
+                flick.enabled = false
             }
 
         }
@@ -2049,13 +2211,16 @@ ApplicationWindow{
                 target: paymentspage
                 easing.amplitude: 0.5
                 from: 0
-                to: Screen.width
+                to: mainwnd.width
                 properties: "x"
                 easing.type: Easing.OutCirc
                 duration: 500
-
             }
-
+            onStarted: {
+                flick.enabled = true
+                flick.visible = true
+            }
+            onStopped: paymentspage.visible = false
         }
 
     }

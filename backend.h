@@ -73,7 +73,6 @@ public:
 
 public slots:
     void payList();
-    void payPoints();
     void trustedPay();
  QString showATM();
     void callUs();

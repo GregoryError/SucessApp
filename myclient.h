@@ -17,6 +17,9 @@
 #include <QSettings>
 
 
+#include <QDataStream>
+#include <QByteArray>
+
 
 
 class QTextEdit;
@@ -24,11 +27,11 @@ class QLineEdit;
 
 // ======================================================================
 class MyClient : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 public:
-   // Q_PROPERTY(QString input WRITE setInputValue
-   //                          READ inputValue
-   //                          NOTIFY inputValueChanged)
+    // Q_PROPERTY(QString input WRITE setInputValue
+    //                          READ inputValue
+    //                          NOTIFY inputValueChanged)
 
     QSslSocket* m_pTcpSocket;
     QString m_ptxtInfo;
@@ -37,6 +40,7 @@ public:
     QString idNumber, balance, state, pay_day, paket;
     QString payments;
     int Port;
+    QVector<QString> times_vct, cashes_vct, comments_vct;
 
     QSettings dataSet;
     QString enteredName;
@@ -62,9 +66,16 @@ public slots:
     QString authResult();
     bool isAuthRight();
     void quitAndClear();
-    QString showPayments();
+    void showPayments();
     void askForPayments();
+    void askForTrustedPay();
     bool showDemo();
+    int payTableLenght();
+
+
+    QString givePayTime(int strN);
+    QString givePayCash(int strN);
+    QString givePayComm(int strN);
 
 
 

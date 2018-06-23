@@ -35,10 +35,6 @@ void BackEnd::payList()
 
 }
 
-void BackEnd::payPoints()
-{
-    QMessageBox::information(0, "Message", "Вот ближайшие точки оплат: ");
-}
 
 void BackEnd::trustedPay()
 {
