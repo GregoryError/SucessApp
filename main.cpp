@@ -5,8 +5,12 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     //app.setApplicationName("Успех");
-    //app.setApplicationDisplayName("Успех");
+    app.setApplicationDisplayName("Успех");
 
+
+    app.setOrganizationName("Success");
+    app.setOrganizationDomain("www.comfort-tv.ru/");
+    app.setApplicationName("Success");
 
 
     QPixmap lg(":/logo.png");
@@ -20,15 +24,15 @@ int main(int argc, char *argv[])
 
     app.processEvents();
 
-  //  QTime time;
-  //  time.start();
-  //  for(int i(0); i < 50;)
-  //  {
-  //      if(time.elapsed() > 15){
-  //          time.start();
-  //          ++i;
-  //      }
-  //  }
+    QTime time;
+    time.start();
+    for(int i(0); i < 50;)
+    {
+        if(time.elapsed() > 15){
+            time.start();
+            ++i;
+        }
+    }
 
 
 

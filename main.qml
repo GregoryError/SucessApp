@@ -13,11 +13,11 @@ import QtGraphicalEffects 1.0
 ApplicationWindow{
     id: mainwnd
     visible: true
-    width: Screen.width
-    height: Screen.height
+    // width: Screen.width
+    // height: Screen.height
 
-    //width: Screen.width / 4
-    //height: Screen.height / 2 + 400
+    width: Screen.width / 4
+    height: Screen.height / 2 + 400
 
 
 
@@ -25,7 +25,7 @@ ApplicationWindow{
         id: startform
         opacity: 0
         //visible: true
-        visible: (myClient.isAuth()) ? false : true
+        visible: myClient.isAuth() ? false : true
 
         width: mainwnd.width
         height: mainwnd.height
@@ -85,7 +85,6 @@ ApplicationWindow{
 
                 }
 
-
             }
 
             Column {
@@ -115,13 +114,12 @@ ApplicationWindow{
                 spacing: 20
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                Button {
+                Rectangle {
                     id: loginButton
-                    background: Rectangle{
-                        anchors.fill: parent
-                        color: "#51b6dd"
-                        radius: 7
-                    }
+                    color: "#51b6dd"
+                    radius: 7
+                    clip: true
+
                     implicitWidth: flick.width / 2
                     implicitHeight: flick.height / 9
                     Text{
@@ -132,38 +130,116 @@ ApplicationWindow{
                         text: "Войти";
                     }
 
-                    onClicked: {
 
-                        myClient.setAuthData(nameInput.text, passwordInput.text);
+                    Rectangle {
+                        id: loginButtoncolorRect
+                        height: 0
+                        width: 0
+                        color: "#1A6F90"
 
-                        bigbusy.running = true
-                        firsttimer.running = true
-
+                        transform: Translate {
+                            x: -loginButtoncolorRect.width / 2
+                            y: -loginButtoncolorRect.height / 2
+                        }
                     }
 
-                }
-                Button {
-                    id: order
-                    background: Rectangle{
+                    MouseArea {
                         anchors.fill: parent
-                        color: "#51b6dd"
-                        radius: 7
+                        onClicked: {
+
+                            loginButtoncolorRect.x = mouseX
+                            loginButtoncolorRect.y = mouseY
+                            loginButtoncircleAnimation.start()
+
+                            myClient.setAuthData(nameInput.text, passwordInput.text);
+
+                            bigbusy.running = true
+                            firsttimer.running = true
+
+                        }
                     }
+
+                    PropertyAnimation {
+                        id: loginButtoncircleAnimation
+                        target: loginButtoncolorRect
+                        properties: "width,height,radius"
+                        from: 0
+                        to: order.width*3
+                        duration: 450
+
+                        onStopped: {
+                            loginButtoncolorRect.width = 0
+                            loginButtoncolorRect.height = 0
+                        }
+                    }
+                }
+
+                Rectangle{
+                    id: order
+                    color: "#51b6dd"
+                    radius: 7
+                    clip: true
+
                     implicitWidth: flick.width / 2
                     implicitHeight: flick.height / 9
+
                     Text{
+
                         anchors.centerIn: parent
                         color: "white"
                         font.pointSize: order.width / 25
                         font.family: "Sawasdee"
                         text: "Оставить заявку";
                     }
-                    onClicked: console.log("guest")
 
+                    Rectangle {
+                        id: ordercolorRect
+                        height: 0
+                        width: 0
+                        color: "#1A6F90"
+
+                        transform: Translate {
+                            x: -ordercolorRect.width / 2
+                            y: -ordercolorRect.height / 2
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: {
+
+                            ordercolorRect.x = mouseX
+                            ordercolorRect.y = mouseY
+                            circleAnimation.start()
+                        }
+                        //onReleased: circleAnimation.stop()
+                        //onPositionChanged: circleAnimation.stop()
+
+                        onClicked:{
+                            //circleAnimation.stop()
+                            console.log("guest")
+                        }
+
+                    }
+                }
+
+
+
+                PropertyAnimation {
+                    id: circleAnimation
+                    target: ordercolorRect
+                    properties: "width,height,radius"
+                    from: 0
+                    to: order.width*3
+                    duration: 450
+
+                    onStopped: {
+                        ordercolorRect.width = 0
+                        ordercolorRect.height = 0
+                    }
                 }
             }
         }
-
     }
 
 
@@ -468,16 +544,7 @@ ApplicationWindow{
 
             }
 
-
-
-
-
-
-
-
         }
-
-
 
 
 
@@ -587,7 +654,6 @@ ApplicationWindow{
                     payModel.append({"date": myClient.givePayTime(i),
                                         "cash": myClient.givePayCash(i),
                                         "comment": myClient.givePayComm(i)})
-
                 }
 
                 bigbusy.running = false
@@ -595,8 +661,7 @@ ApplicationWindow{
             }
         }
 
-
-        Button{
+        Rectangle{
             id: paylist
             anchors.top: namelbl.bottom
             anchors.topMargin: 40
@@ -604,20 +669,20 @@ ApplicationWindow{
             anchors.margins: 0
             width: parent.width
             height: bigPanel.height / 2
-            background: Rectangle{
-                anchors.fill: parent
-                color: "white"
-                Image {
-                    id: paystoryIMG
-                    width: 70
-                    height: 70
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 70
-                    source: "qrc:/Menu/payhistory.png"
-                }
+            color: "white"
+            clip: true
 
+            Image {
+                id: paylistIMG
+                width: 70
+                height: 70
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 70
+                source: "qrc:/Menu/payhistory.png"
             }
+
+
             Text{
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -628,44 +693,81 @@ ApplicationWindow{
                 font.pointSize: 15
             }
 
-            onClicked: {
-                bigbusy.running = true
-                paymentspageanim.running = true
-                paymentspage.focus = true
-                paymentspage.visible = true
-                myClient.askForPayments()
-                paytimer.running = true
-                //if(!paypagetext.text.length > 0)
-                //    bigbusy.running = true
+
+            Rectangle {
+                id: paylistcolorRect
+                height: 0
+                width: 0
+                color: "lightblue"
+
+                transform: Translate {
+                    x: -paylistcolorRect.width / 2
+                    y: -paylistcolorRect.height / 2
+                }
+            }
+
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+
+                    paylistcolorRect.x = mouseX
+                    paylistcolorRect.y = mouseY
+                    paylistcircleAnimation.start()
+
+                    myClient.askForPayments()
+                    paytimer.running = true
+                    bigbusy.running = true
+                    //if(!paypagetext.text.length > 0)
+                    //    bigbusy.running = true
+                }
+
             }
 
         }
 
+        PropertyAnimation {
+            id: paylistcircleAnimation
+            target: paylistcolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: order.width*3
+            duration: 300
+
+            onStopped: {
+                paylistcolorRect.width = 0
+                paylistcolorRect.height = 0
+
+                paymentspageanim.running = true
+                paymentspage.focus = true
+                paymentspage.visible = true
+            }
+        }
 
 
-        Button{
+
+        Rectangle{
             id: paypoints
             anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.top: paylist.bottom
             y: paylist.y + paylist.height
             anchors.margins: 0
             width: parent.width
             height: bigPanel.height / 2
-            background: Rectangle{
-                anchors.fill: parent
-                color: "white"
+            color: "white"
+            clip: true
 
-                Image {
-                    id: paypointsIMG
-                    width: 70
-                    height: 70
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 70
-                    source: "qrc:/Menu/gps.png"
-                }
-
+            Image {
+                id: paypointsIMG
+                width: 70
+                height: 70
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 70
+                source: "qrc:/Menu/gps.png"
             }
+
+
             Text{
                 id: paypoints_txt
                 anchors.verticalCenter: parent.verticalCenter
@@ -678,48 +780,82 @@ ApplicationWindow{
             }
 
 
+            Rectangle {
+                id: paypointscolorRect
+                height: 0
+                width: 0
+                color: "lightblue"
 
-            onClicked:{
+                transform: Translate {
+                    x: -paypointscolorRect.width / 2
+                    y: -paypointscolorRect.height / 2
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked:{
+
+                    paypointscolorRect.x = mouseX
+                    paypointscolorRect.y = mouseY
+                    paypointscircleAnimation.start()
+
+                    paypointspagetext.text = "<b>Ближайшие точки оплаты:</b><br><br>"
+                            + BackEnd.showATM() +
+                            "<br> <br> Для более точного определения <br>
+                          местоположения, рекомендуется <br>
+                          включить GPS модуль в настройках <br>
+                          вашего устройства."
+                    // bigbusy.running = false;
+                }
+            }
+        }
+
+
+        PropertyAnimation {
+            id: paypointscircleAnimation
+            target: paypointscolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: order.width*3
+            duration: 300
+
+            onStopped: {
+                paypointscolorRect.width = 0
+                paypointscolorRect.height = 0
 
                 paypointspageanim.running = true
                 paypointspage.focus = true
                 paypointspage.visible = true
-                paypointspagetext.text = "<b>Ближайшие точки оплаты:</b><br><br>"
-                        + BackEnd.showATM() +
-                        "<br> <br> Для более точного определения <br>
-                          местоположения, рекомендуется <br>
-                          включить GPS модуль в настройках <br>
-                          вашего устройства."
-                bigbusy.running = false;
+
+
             }
-
-
         }
 
-        Button{
+
+
+        Rectangle{
             id: trustedpay
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: paypoints.bottom
             anchors.margins: 0
             width: parent.width
             height: bigPanel.height / 2
-            background: Rectangle{
-                anchors.fill: parent
-                color: "white"
 
-                Image {
-                    id: trustedpayIMG
-                    width: 70
-                    height: 70
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 70
-                    source: "qrc:/Menu/trusted.png"
-                }
+            color: "white"
+            clip: true
 
-
-
+            Image {
+                id: trustedpayIMG
+                width: 70
+                height: 70
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: 70
+                source: "qrc:/Menu/trusted.png"
             }
+
             Text{
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -729,16 +865,56 @@ ApplicationWindow{
                 font.family: "Noto Sans CJK KR Thint"
                 font.pointSize: 15
             }
-            onClicked: {
-                trustedpageanim.running = true
-                trustedpage.focus = true
-                //trustedpage.visible = true
-                //BackEnd.trustedPay();
+
+            Rectangle {
+                id: trustedpaycolorRect
+                height: 0
+                width: 0
+                color: "lightblue"
+
+                transform: Translate {
+                    x: -trustedpaycolorRect.width / 2
+                    y: -trustedpaycolorRect.height / 2
+                }
+            }
+
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+
+                    trustedpaycolorRect.x = mouseX
+                    trustedpaycolorRect.y = mouseY
+                    trustedpaycircleAnimation.start()
+
+                    //trustedpage.visible = true
+                    //BackEnd.trustedPay();
+                }
+
             }
 
         }
 
-        ///////////////////////////////////////////////////////////////////////////// SERVICE_BUTTONS
+        PropertyAnimation {
+            id: trustedpaycircleAnimation
+            target: trustedpaycolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: order.width*3
+            duration: 300
+
+            onStopped: {
+                trustedpaycolorRect.width = 0
+                trustedpaycolorRect.height = 0
+
+                trustedpageanim.running = true
+                trustedpage.focus = true
+            }
+        }
+
+
+        /////////////////////////////////////////////////////////////// SERVICE_BUTTONS
 
 
 
@@ -854,110 +1030,6 @@ ApplicationWindow{
 
 
 
-        Text{
-            id: textblockbefore
-            anchors.top: closeback_access.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.left: parent.left
-            //anchors.leftMargin: 220
-            anchors.topMargin: 45
-            visible: false
-            text: "<b>Контроль доступа:</b><br>"
-            font.family: "Segoe UI"
-            font.pointSize: 15
-        }
-
-
-        Row{
-            id: rowaccessswitcher
-            visible: false
-            anchors.top: textblockbefore.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.left: parent.left
-            //anchors.leftMargin: 220
-            anchors.topMargin: 45
-            spacing: 12
-
-
-
-            Text{
-                font.family: "Segoe UI"
-                font.pointSize: 15
-                text:("Выкл  ")
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Switch {
-                id: accessswitcher
-
-                SwitchStyle {
-                    groove: Rectangle {
-                        implicitWidth: 150
-                        implicitHeight: 20
-                        radius: 2
-                        border.color: accessswitcher.activeFocus ? "darkblue" : "gray"
-                        border.width: 2
-                    }
-                }
-
-                indicator: Rectangle {
-                    implicitWidth: 150
-                    implicitHeight: 70
-                    //  x: accessswitcher.width - width - accessswitcher.rightPadding
-                    //  y: accessswitcher.height / 2 - height / 2
-                    radius: 10
-                    color: accessswitcher.checked ? "steelblue" : "transparent"
-                    border.color: accessswitcher.checked ? "steelblue" : "#cccccc"
-
-                    Rectangle {
-                        x: accessswitcher.checked ? parent.width - width : 0
-                        width: 70
-                        height: 70
-                        radius: 10
-                        //color: accessswitcher.down ? "#cccccc" : "#ffffff"
-                        //border.color: accessswitcher.checked ? (accessswitcher.down ? "#17a81a" : "#21be2b") : "#999999"
-                    }
-                }
-
-                onClicked:{
-
-                    if(accessswitcher.position === 1.0)
-                        myClient.setAuthNo();
-                    if(accessswitcher.position === 0.0)
-                        myClient.setAuthOn();
-                }
-
-            }
-
-            Text{
-                font.family: "Segoe UI"
-                font.pointSize: 15
-                text:("Вкл")
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-
-
-        }
-
-
-        Text{
-            id: accessTextBlock
-            //anchors.top: closeback_access.bottom
-            anchors.top: rowaccessswitcher.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.left: parent.left
-            //anchors.leftMargin: 100
-            anchors.topMargin: 45
-            color: "#555353"
-            text: " "
-            font.family: "Noto Sans CJK KR Thint"
-            font.pointSize: 15
-            visible: false
-        }
-
-
-
-
 
         Button{
             id: access
@@ -995,63 +1067,11 @@ ApplicationWindow{
             }
 
 
-
-            NumberAnimation{
-                id: access_anim
-                target: access
-
-                from: traffic.y + traffic.height
-
-                //to: paylist.y + paylist.height + atmTextBlock.height + 500
-                to: traffic.y + traffic.height + 1100
-
-                properties: "y"
-                easing.type: Easing.OutExpo
-                duration: 1300
-
-
-            }
-
-
-            NumberAnimation{
-                id: access_anim_up
-                target: access
-
-                from: traffic.y + traffic.height + 1100
-                to: traffic.y + traffic.height
-
-
-                properties: "y"
-                easing.type: Easing.OutExpo
-                duration: 1300
-                //running: true
-
-            }
-
-
             onClicked: {
 
                 //myClient.setAuthOn()
 
-
-                textblockbefore.visible = true
-                access_anim.running = true
-                closeback_access.visible = true
-                closebackAccessAppear.running = true
-
-                accessTextBlock.text = "<br> Включение и выключение доступа.<br>
-                         Обратите внимание: Данная опция<br>
-                         предоставляется для удобства, <br>
-                         как дополнительная бесплатная услуга,<br>
-                         и не влияет на размер ежемесячной <br>
-                         абонентской платы."
-
-                rowaccessswitcher.visible = true
-                accessTextBlock.visible = true
-
-
-                accessswitcher.visible = true
-
+                accesspageanim.running = true
             }
 
         }
@@ -1444,16 +1464,6 @@ ApplicationWindow{
         height: parent.parent.height / 7 - 10
 
 
-
-        //  OpacityAnimator on opacity{
-        //          from: 0;
-        //          to: 1;
-        //          duration: 4000
-        //          running: true
-        //          easing.type: Easing.OutExpo
-        //      }
-        //
-
         ColorAnimation on color{
             id: headeroncolor
             from: "white"
@@ -1505,6 +1515,425 @@ ApplicationWindow{
         }
 
     }
+
+
+    Rectangle{
+        id: paymentspage
+        width: mainwnd.width
+        height: mainwnd.height
+        color: "white"
+        x: mainwnd.width
+        visible: false
+
+        Keys.onPressed: {
+            if(event.key === Qt.Key_Back)
+            {
+                event.accepted = true;
+
+                if(paymentspage.x < mainwnd.width)
+                {
+                    paymentspageanim.running = false
+                    paymentspageanimquit.running = true
+                }
+                else
+                {
+                    Qt.quit();
+                }
+            }
+        }
+
+
+        ListModel {
+            id: payModel
+
+            ListElement {
+                date: ""
+                cash: ""
+                comment: ""
+            }
+        }
+
+
+        Rectangle{
+            id: payflick
+            width: paymentspage.width
+            height: mainwnd.height - paysheader.height
+            Component{
+                id: paydelegate
+                Item {
+                    width: payflick.width
+                    height: payflick.height / 6
+                    Row{
+                        anchors.centerIn: parent
+                        spacing: 3
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.3 -4;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: dates
+                                color: "steelblue"
+                                font.pointSize: 12
+                                text: date
+                            }
+                        }
+
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.2;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: cashes
+                                color: "steelblue"
+                                font.pointSize: 12
+                                text: cash
+                            }
+                        }
+
+                        Rectangle{
+                            height: payflick.height / 6
+                            width: payflickView.width * 0.5 -4;
+                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
+                            Text {
+                                anchors.centerIn: parent;
+                                id: comments
+                                color: "black"
+                                font.pointSize: 7
+                                text: comment
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        ListView{
+            id: payflickView
+            width: paymentspage.width
+            height: mainwnd.height - paysheader.height
+            anchors.top: paysheader.bottom
+            anchors.horizontalCenter: mainwnd.horizontalCenter
+            smooth: true
+            focus: true
+            maximumFlickVelocity: 1000000
+            headerPositioning: ListView.OverlayHeader
+            spacing: 3
+
+            header: Rectangle{
+                width: parent.width
+                height: paysheader.height / 2
+                z: 2
+
+                Row{
+                    anchors.centerIn: parent
+                    spacing: 3
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.3 -4;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Время: " }
+                    }
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.2;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Сумма: " }
+                    }
+                    Rectangle{
+                        border.color: "lightblue"
+                        radius: 2
+                        border.width: 1
+                        height: paysheader.height / 2 -2
+                        width: payflickView.width * 0.5 -4;
+                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Комментарий: " }
+                    }
+
+
+
+                }
+            }
+
+
+            model: payModel
+            delegate: paydelegate
+
+
+        }
+
+
+
+        //        }
+
+        Rectangle{
+            x: 0
+            y: 0
+            id: paysheader
+            color: "#4B94FF"
+
+            Button{
+                id: backfrompays
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                //anchors.leftMargin: 25
+                width: paysheader.height
+                height: paysheader.height
+                background: Rectangle{
+                    anchors.fill: parent
+                    //color: "#4B94FF"
+                    opacity: 0
+                }
+
+                enabled: (paymentspage.x == 0)? true : false
+
+                Image {
+                    id: arrowpoints
+                    source: "qrc:/arrow-left.png"
+                    width: paysheader.height / 2 -10
+                    height: paysheader.height / 2 -10
+                    //anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    //anchors.leftMargin: 25
+                    anchors.centerIn: parent
+                }
+
+                onClicked: {
+                    paymentspageanimquit.running = true
+
+                }
+
+            }
+
+            width: parent.width
+            height: parent.parent.height / 7 - 10
+
+            layer.enabled: true
+            layer.effect: DropShadow {
+                id: paysheadershadow
+                transparentBorder: true
+                //horizontalOffset: 8
+                verticalOffset: 10
+                samples: 30
+                //spread: 0.6
+                radius: 25
+
+                color: "gray"
+
+            }
+
+        }
+
+
+        SequentialAnimation{
+            id: paymentspageanim
+            running: false
+            NumberAnimation{
+                target: paymentspage
+                easing.amplitude: 0.5
+                from: mainwnd.width
+                to: 0
+                properties: "x"
+                easing.type: Easing.OutExpo
+                duration: 1100
+            }
+            onStarted: paymentspage.visible = true
+            onStopped: {
+                // flick.visible = false
+                // flick.enabled = false
+            }
+
+        }
+
+
+        SequentialAnimation{
+            id: paymentspageanimquit
+            running: false
+            NumberAnimation{
+                target: paymentspage
+                easing.amplitude: 0.5
+                from: 0
+                to: mainwnd.width
+                properties: "x"
+                easing.type: Easing.OutCirc
+                duration: 500
+            }
+            onStarted: {
+                flick.enabled = true
+                flick.visible = true
+            }
+            onStopped: paymentspage.visible = false
+        }
+
+    }
+
+
+
+    Rectangle{
+        id: paypointspage
+        width: mainwnd.width
+        height: mainwnd.height
+        color: "white"
+        x: mainwnd.width * 2
+        visible: false
+        Keys.onPressed: {
+            if(event.key === Qt.Key_Back)
+            {
+                event.accepted = true;
+
+                if(paypointspage.x < mainwnd.width)
+                {
+                    paypointspageanim.running = false
+                    paypointspageanimquit.running = true
+                }
+                else
+                {
+                    Qt.quit();
+                }
+            }
+        }
+
+        Rectangle{
+            id: paypointsflick
+            width:  paypointspage.width
+            height: mainwnd.height - paysheader.height
+            anchors.top: paypointsheader.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            smooth: true
+
+            Text {
+                id: paypointspagetext
+                color: "#194b77"
+                font.family: "Noto Sans CJK KR Thint"
+                font.pointSize: 15
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: paypointsheader.y + 50
+
+
+            }
+        }
+
+        Rectangle{
+            x: 0
+            y: 0
+            id: paypointsheader
+            color: "#4B94FF"
+
+            Button{
+                id: backfrompoints
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                width: paysheader.height
+                height: paysheader.height
+                background: Rectangle{
+                    anchors.fill: parent
+                    //color: "#4B94FF"
+                    opacity: 0
+                }
+
+                enabled: (paypointspage.x == 0)? true : false
+
+                Image {
+                    id: arrow
+                    source: "qrc:/arrow-left.png"
+                    width: paysheader.height / 2 -10
+                    height: paysheader.height / 2 -10
+                    //anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    //anchors.leftMargin: 25
+                    anchors.centerIn: parent
+                }
+
+                onClicked: {
+                    paypointspageanimquit.running = true
+                }
+
+            }
+
+            width: parent.width
+            height: parent.parent.height / 7 - 10
+
+            layer.enabled: true
+            layer.effect: DropShadow {
+                id: paypointspageheadershadow
+                transparentBorder: true
+                //horizontalOffset: 8
+                verticalOffset: 10
+                samples: 30
+                //spread: 0.6
+                radius: 25
+
+                color: "gray"
+
+            }
+
+        }
+
+
+        SequentialAnimation{
+            id: paypointspageanim
+            running: false
+
+            NumberAnimation{
+                target: paypointspage
+                easing.amplitude: 0.5
+                from: mainwnd.width
+                to: 0
+                properties: "x"
+                easing.type: Easing.OutExpo
+                duration: 1100
+            }
+            onStarted: paypointspage.visible = true
+
+
+            onStopped: {
+                if(paypointspage.x == 0)
+                {
+                    flick.enabled = false
+                    flick.visible = false
+                }
+
+            }
+
+
+        }
+
+
+        SequentialAnimation{
+            id: paypointspageanimquit
+            running: false
+            NumberAnimation{
+                target: paypointspage
+                easing.amplitude: 0.5
+                from: 0
+                to: mainwnd.width
+                properties: "x"
+                easing.type: Easing.OutCirc
+                duration: 500
+            }
+            onStarted: {
+                flick.enabled = true
+                flick.visible = true
+            }
+            onStopped: paypointspage.visible = false
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
 
     Rectangle{
@@ -1730,6 +2159,8 @@ ApplicationWindow{
                     opacity: 0
                 }
 
+                enabled: (trustedpage.x == 0)? true : false
+
                 Image {
                     id: trustarrow
                     source: "qrc:/arrow-left.png"
@@ -1814,8 +2245,11 @@ ApplicationWindow{
 
 
 
+
+
+
     Rectangle{
-        id: paypointspage
+        id: accesspage
         width: mainwnd.width
         height: mainwnd.height
         color: "white"
@@ -1826,10 +2260,10 @@ ApplicationWindow{
             {
                 event.accepted = true;
 
-                if(paypointspage.x < mainwnd.width)
+                if(accesspage.x < mainwnd.width)
                 {
-                    paypointspageanim.running = false
-                    paypointspageanimquit.running = true
+                    accesspageageanim.running = false
+                    accesspageageanimquit.running = true
                 }
                 else
                 {
@@ -1839,48 +2273,147 @@ ApplicationWindow{
         }
 
         Rectangle{
-            id: paypointsflick
-            width:  paypointspage.width
-            height: mainwnd.height - paysheader.height
-            anchors.top: paypointsheader.bottom
+            id: accesspageflick
+            width:  accesspage.width
+            height: mainwnd.height - accesspageheader.height
+            anchors.top: accesspageheader.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
 
+
+            Text{
+                id: textblockbefore
+                anchors.top: accesspageheader.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                //anchors.left: parent.left
+                //anchors.leftMargin: 220
+                y: accesspageheader.y + 50
+                color: "#194b77"
+                text: "<b>Контроль доступа:</b><br>"
+                font.family: "Segoe UI"
+                font.pointSize: 15
+            }
+
+
+            Row{
+                id: rowaccessswitcher
+                visible: true
+                anchors.top: textblockbefore.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: 45
+                spacing: 12
+
+                Text{
+                    font.family: "Segoe UI"
+                    font.pointSize: 15
+                    text:("Выкл  ")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Switch {
+                    id: accessswitcher
+
+
+                    SwitchStyle {
+                        groove: Rectangle {
+                            implicitWidth: 150
+                            implicitHeight: 20
+                            radius: 2
+                            border.color: accessswitcher.activeFocus ? "darkblue" : "gray"
+                            border.width: 3
+                        }
+                    }
+
+                    indicator: Rectangle {
+                        implicitWidth: 150
+                        implicitHeight: 70
+                        //  x: accessswitcher.width - width - accessswitcher.rightPadding
+                        //  y: accessswitcher.height / 2 - height / 2
+                        radius: 10
+                        color: accessswitcher.checked ? "steelblue" : "transparent"
+                        border.color: accessswitcher.checked ? "steelblue" : "#cccccc"
+
+                        Rectangle {
+                            x: accessswitcher.checked ? parent.width - width : 0
+                            width: 70
+                            height: 70
+                            radius: 10
+                            //color: accessswitcher.down ? "#cccccc" : "#ffffff"
+                            //border.color: accessswitcher.checked ? (accessswitcher.down ? "#17a81a" : "#21be2b") : "#999999"
+                        }
+                    }
+
+                    onClicked:{
+
+                        if(accessswitcher.position === 1.0)
+                            myClient.setAuthNo();
+                        if(accessswitcher.position === 0.0)
+                            myClient.setAuthOn();
+                    }
+
+                }
+
+                Text{
+                    font.family: "Segoe UI"
+                    font.pointSize: 15
+                    text:("Вкл")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+
+
+            }
+
+
             Text {
-                id: paypointspagetext
+                id: accesspagetext
                 color: "#194b77"
                 font.family: "Noto Sans CJK KR Thint"
                 font.pointSize: 15
+                anchors.topMargin: 45
+                anchors.top: rowaccessswitcher.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
-                y: paypointsheader.y + 50
-
+                y: accesspageheader.y + 50
+                text: "<br> Включение и выключение доступа.<br>
+                                         Обратите внимание: Данная опция<br>
+                                         предоставляется для удобства, <br>
+                                         как дополнительная бесплатная услуга,<br>
+                                         и не влияет на размер ежемесячной <br>
+                                         абонентской платы."
 
             }
+
+
+
         }
 
         Rectangle{
             x: 0
             y: 0
-            id: paypointsheader
+            id: accesspageheader
             color: "#4B94FF"
 
+            width: parent.width
+            height: parent.parent.height / 7 - 10
+
             Button{
-                id: backfrompoints
+                id: backfromaccesspage
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                width: paysheader.height
-                height: paysheader.height
+                width: accesspageheader.height
+                height: accesspageheader.height
                 background: Rectangle{
                     anchors.fill: parent
                     //color: "#4B94FF"
                     opacity: 0
                 }
 
+                enabled: (accesspage.x === 0)? true : false
+
                 Image {
-                    id: arrow
+                    id: arrowaccesspage
                     source: "qrc:/arrow-left.png"
-                    width: paysheader.height / 2 -10
-                    height: paysheader.height / 2 -10
+                    width: accesspageheader.height / 2 -10
+                    height: accesspageheader.height / 2 -10
                     //anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
                     //anchors.leftMargin: 25
@@ -1888,36 +2421,32 @@ ApplicationWindow{
                 }
 
                 onClicked: {
-                    paypointspageanimquit.running = true
+                    accesspageanimquit.running = true
                 }
 
             }
 
-            width: parent.width
-            height: parent.parent.height / 7 - 10
+
 
             layer.enabled: true
             layer.effect: DropShadow {
-                id: paypointspageheadershadow
+                id: accesspageheadershadow
                 transparentBorder: true
-                //horizontalOffset: 8
                 verticalOffset: 10
                 samples: 30
-                //spread: 0.6
                 radius: 25
-
                 color: "gray"
-
             }
 
         }
 
 
         SequentialAnimation{
-            id: paypointspageanim
+            id: accesspageanim
             running: false
+
             NumberAnimation{
-                target: paypointspage
+                target: accesspage
                 easing.amplitude: 0.5
                 from: mainwnd.width
                 to: 0
@@ -1925,290 +2454,25 @@ ApplicationWindow{
                 easing.type: Easing.OutExpo
                 duration: 1100
             }
-             onStarted: paypointspage.visible = true
-             onStopped: {
-                 flick.visible = false
-                 flick.enabled = false
-             }
+            onStarted: accesspage.visible = true
 
 
-        }
-
-
-        SequentialAnimation{
-            id: paypointspageanimquit
-            running: false
-            NumberAnimation{
-                target: paypointspage
-                easing.amplitude: 0.5
-                from: 0
-                to: mainwnd.width
-                properties: "x"
-                easing.type: Easing.OutCirc
-                duration: 500
-            }
-            onStarted: {
-                flick.enabled = true
-                flick.visible = true
-            }
-            onStopped: paypointspage.visible = false
-
-        }
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Rectangle{
-        id: paymentspage
-        width: mainwnd.width
-        height: mainwnd.height
-        color: "white"
-        x: mainwnd.width
-        visible: false
-
-        Keys.onPressed: {
-            if(event.key === Qt.Key_Back)
-            {
-                event.accepted = true;
-
-                if(paymentspage.x < mainwnd.width)
-                {
-                    paymentspageanim.running = false
-                    paymentspageanimquit.running = true
-                }
-                else
-                {
-                    Qt.quit();
-                }
-            }
-        }
-
-
-        ListModel {
-            id: payModel
-
-            ListElement {
-                date: ""
-                cash: ""
-                comment: ""
-            }
-        }
-
-
-        Rectangle{
-            id: payflick
-            width: paymentspage.width
-            height: mainwnd.height - paysheader.height
-            Component{
-                id: paydelegate
-                Item {
-                    anchors.centerIn: parent
-                    width: payflick.width - 8
-                    height: payflick.height / 6
-                    Row{
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 3
-                        Rectangle{
-                            height: payflick.height / 6
-                            width: payflickView.width * 0.3 -4;
-                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
-                            Text {
-                                anchors.centerIn: parent;
-                                id: dates
-                                color: "steelblue"
-                                font.pointSize: 12
-                                text: date
-                            }
-                        }
-
-                        Rectangle{
-                            height: payflick.height / 6
-                            width: payflickView.width * 0.2;
-                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
-                            Text {
-                                anchors.centerIn: parent;
-                                id: cashes
-                                color: "steelblue"
-                                font.pointSize: 12
-                                text: cash
-                            }
-                        }
-
-                        Rectangle{
-                            height: payflick.height / 6
-                            width: payflickView.width * 0.5 -4;
-                            color: (index % 2 == 0)? "#c4f0f9" : "#ebfbfb"
-                            Text {
-                                anchors.centerIn: parent;
-                                id: comments
-                                color: "black"
-                                font.pointSize: 7
-                                text: comment
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        ListView{
-            id: payflickView
-            width: paymentspage.width
-            height: mainwnd.height - paysheader.height
-            anchors.top: paysheader.bottom
-            anchors.horizontalCenter: mainwnd.horizontalCenter
-            smooth: true
-            focus: true
-            maximumFlickVelocity: 1000000
-            headerPositioning: ListView.OverlayHeader
-            spacing: 3
-
-            header: Rectangle{
-                width: parent.width
-                height: paysheader.height / 2
-                z: 2
-
-                Row{
-                    anchors.centerIn: parent
-                    spacing: 3
-                    Rectangle{
-                        border.color: "lightblue"
-                        radius: 2
-                        border.width: 1
-                        height: paysheader.height / 2 -2
-                        width: payflickView.width * 0.3 -4;
-                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Время: " }
-                    }
-                    Rectangle{
-                        border.color: "lightblue"
-                        radius: 2
-                        border.width: 1
-                        height: paysheader.height / 2 -2
-                        width: payflickView.width * 0.2;
-                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Сумма: " }
-                    }
-                    Rectangle{
-                        border.color: "lightblue"
-                        radius: 2
-                        border.width: 1
-                        height: paysheader.height / 2 -2
-                        width: payflickView.width * 0.5 -4;
-                        Text { anchors.centerIn: parent; font.pointSize: 16; color: "steelblue"; text: "Комментарий: " }
-                    }
-
-
-
-                }
-            }
-
-
-            model: payModel
-            delegate: paydelegate
-
-
-        }
-
-
-
-        //        }
-
-        Rectangle{
-            x: 0
-            y: 0
-            id: paysheader
-            color: "#4B94FF"
-
-            Button{
-                id: backfrompays
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                //anchors.leftMargin: 25
-                width: paysheader.height
-                height: paysheader.height
-                background: Rectangle{
-                    anchors.fill: parent
-                    //color: "#4B94FF"
-                    opacity: 0
-                }
-
-                Image {
-                    id: arrowpoints
-                    source: "qrc:/arrow-left.png"
-                    width: paysheader.height / 2 -10
-                    height: paysheader.height / 2 -10
-                    //anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    //anchors.leftMargin: 25
-                    anchors.centerIn: parent
-                }
-
-                onClicked: {
-                    paymentspageanimquit.running = true
-                }
-
-            }
-
-            width: parent.width
-            height: parent.parent.height / 7 - 10
-
-            layer.enabled: true
-            layer.effect: DropShadow {
-                id: paysheadershadow
-                transparentBorder: true
-                //horizontalOffset: 8
-                verticalOffset: 10
-                samples: 30
-                //spread: 0.6
-                radius: 25
-
-                color: "gray"
-
-            }
-
-        }
-
-
-        SequentialAnimation{
-            id: paymentspageanim
-            running: false
-            NumberAnimation{
-                target: paymentspage
-                easing.amplitude: 0.5
-                from: mainwnd.width
-                to: 0
-                properties: "x"
-                easing.type: Easing.OutExpo
-                duration: 1100
-            }
-            onStarted: paymentspage.visible = true
             onStopped: {
-                flick.visible = false
-                flick.enabled = false
+
+                    flick.enabled = false
+                    flick.visible = false
+
             }
+
 
         }
 
 
         SequentialAnimation{
-            id: paymentspageanimquit
+            id: accesspageanimquit
             running: false
             NumberAnimation{
-                target: paymentspage
+                target: accesspage
                 easing.amplitude: 0.5
                 from: 0
                 to: mainwnd.width
@@ -2220,10 +2484,47 @@ ApplicationWindow{
                 flick.enabled = true
                 flick.visible = true
             }
-            onStopped: paymentspage.visible = false
+            onStopped: accesspage.visible = false
+
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
