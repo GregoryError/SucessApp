@@ -7,98 +7,40 @@ import QtQuick.Window 2.3
 ApplicationWindow {
     id: window
     visible: true
-    width: 540
-    height: 960
-   // width: Screen.width
-   // height: Screen.height
+    //width: 540
+    //height: 960
+    width: Screen.width
+    height: Screen.height
 
     color: "#f7f7f7"
 
     header: ToolBar {
         id: head
-        //contentHeight: toolButton.implicitHeight
-
-        contentHeight: infoRect.height
-
-        Rectangle{
-            id: infoRect
-            width: window.width
-            height: window.height * 0.4
-            anchors.top: window.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#323643"
-
-
-                Image {
-                    id: logo
-                    scale: window.height / 1530
-                    source: "qrc:/vallet.png"
-                    width: 90
-                    height: 90
-                    smooth: true
-                    anchors.verticalCenter: billVal.verticalCenter
-                    anchors.left: infoRect.left
-                    anchors.margins: 20
-                }
-
-
-                Text{
-                    id: billVal
-                    y: infoRect.y + (infoRect.height / 2 - 100) / 2
-                    anchors.right: billRow.right
-                    anchors.horizontalCenter: infoRect.horizontalCenter
-                    font.family: "Segoe UI Light"
-                    font.pointSize: 60
-                    color: "#f7f7f7"
-                    text: "550"
-                }
-
-
-
-            Text{
-                id: bill
-                anchors.top: billVal.bottom
-                //anchors.margins: 30
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                color: "#f7f7f7"
-                font.family: "Noto Sans CJK KR Thin"
-                font.pointSize: 10
-                text: "Баланс на сегодня"
-            }
-
-
-
-
-
-            Rectangle{
-                id: infoline
-                opacity: 0.7
-                width: parent.width - 30
-                height: 1
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                y:  infoRect.y + (infoRect.height / 2 + 30)
-                color: "white"
-            }
+        contentHeight: toolButton.implicitHeight
+        background: Rectangle{
+            anchors.fill: parent
+            color: infoRect.color
         }
+
+
 
 
         ToolButton {
             id: toolButton
-            // opacity: 0.4
-            //text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            //font.pixelSize: Qt.application.font.pixelSize * 4
-
-
-            Image {
-                id: toolPic
-                source: "qrc:/toolPic.png"
-                width: 90
-                height: 90
-                smooth: true
+            width: 140
+            height: 140
+            background: Rectangle{
                 anchors.fill: parent
+                color: infoRect.color
             }
 
-
+            Image {
+                id: toolLogo
+                anchors.centerIn: parent
+                source: stackView.depth > 1 ? "qrc:/arrow-left.png" : "qrc:/toolPic.png"
+                scale: 0.5
+                smooth: true
+            }
 
 
             onClicked: {
@@ -117,15 +59,75 @@ ApplicationWindow {
     }
 
 
+
+    Rectangle{
+        id: infoRect
+        width: window.width
+        height: window.height * 0.4
+        anchors.top: head.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: "#323643"
+
+
+        Image {
+            id: logo
+            scale: window.height / 1530
+            source: "qrc:/vallet.png"
+            width: 90
+            height: 90
+            smooth: true
+            anchors.verticalCenter: billVal.verticalCenter
+            anchors.left: infoRect.left
+            anchors.margins: 20
+        }
+
+
+        Text{
+            id: billVal
+            y: infoRect.y + (infoRect.height / 2 - 100) / 2
+            anchors.horizontalCenter: infoRect.horizontalCenter
+            font.family: "Segoe UI Light"
+            font.pointSize: 60
+            color: "#f7f7f7"
+            text: "550"
+        }
+
+
+
+        Text{
+            id: bill
+            anchors.top: billVal.bottom
+            //anchors.margins: 30
+            anchors.horizontalCenter: infoRect.horizontalCenter
+            color: "#f7f7f7"
+            font.family: "Noto Sans CJK KR Thin"
+            font.pointSize: 10
+            text: "Баланс на сегодня"
+        }
+
+
+        Rectangle{
+            id: infoline
+            opacity: 0.7
+            width: parent.width - 30
+            height: 1
+            anchors.horizontalCenter: infoRect.horizontalCenter
+            y:  infoRect.y + (infoRect.height / 2 + 30)
+            color: "white"
+        }
+    }
+
+
     Rectangle{
         id: bigMenu
         width: window.width - 70
         height: window.height * 0.6
         anchors.horizontalCenter: head.horizontalCenter
-        y: head.y + head.height - (window.height / 100) * 3
+        y: infoRect.y + infoRect.height - (window.height / 100) * 3
         radius: 4
         z: 2
         color: "white"
+
 
 
         layer.enabled: true
@@ -149,6 +151,11 @@ ApplicationWindow {
         id: drawer
         width: window.width * 0.6
         height: window.height
+        dragMargin: 40
+
+
+
+
 
 
         Column {
@@ -166,7 +173,7 @@ ApplicationWindow {
                 text: qsTr("Page 2")
                 width: parent.width
                 onClicked: {
-                   // stackView.push("Page2Form.ui.qml")
+                    // stackView.push("Page2Form.ui.qml")
                     drawer.close()
                 }
             }
@@ -175,7 +182,7 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-       // initialItem: "HomeForm.ui.qml"
+        // initialItem: "HomeForm.ui.qml"
         anchors.fill: parent
     }
 }

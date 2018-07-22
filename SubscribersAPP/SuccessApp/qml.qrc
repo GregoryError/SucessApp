@@ -16,5 +16,6 @@
         <file>Menu/social.png</file>
         <file>Menu/trusted.png</file>
         <file>arrow-left.png</file>
+        <file>toolPic.png</file>
     </qresource>
 </RCC>
