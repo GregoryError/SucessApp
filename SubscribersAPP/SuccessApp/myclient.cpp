@@ -72,11 +72,11 @@ void MyClient::slotReadyRead()
     {
         if (!m_nNextBlockSize)
         {
-           if (m_pTcpSocket->bytesAvailable() < sizeof(quint16))
-           {
-               break;
-           }
-           in >> m_nNextBlockSize;
+            if (m_pTcpSocket->bytesAvailable() < sizeof(quint16))
+            {
+                break;
+            }
+            in >> m_nNextBlockSize;
         }
         if (m_pTcpSocket->bytesAvailable() < m_nNextBlockSize)
         {
@@ -87,11 +87,11 @@ void MyClient::slotReadyRead()
         m_nNextBlockSize = 0;
     }
 
-   // qDebug() << m_ptxtInfo;
+    // qDebug() << m_ptxtInfo;
 
-   // m_ptxtInfo = m_pTcpSocket->readAll();
+    // m_ptxtInfo = m_pTcpSocket->readAll();
 
-   // m_pTcpSocket->close();
+    // m_pTcpSocket->close();
     //isConnect = true;
 
     if(m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 11) == "getAllData!")
@@ -209,16 +209,16 @@ void MyClient::Sender(const QString &msg)
     }
     connectToHost();
 
-//
-//
-//    QByteArray arrBlock;
-//    QDataStream out(&arrBlock, QIODevice::WriteOnly);
-//    out.setVersion(QDataStream::Qt_5_9);
-//    out << quint16(0) << msg;
-//    out.device()->seek(0);
-//    out << quint16(arrBlock.size() - sizeof(quint16));
-//    m_pTcpSocket->write(arrBlock);
-//
+    //
+    //
+    //    QByteArray arrBlock;
+    //    QDataStream out(&arrBlock, QIODevice::WriteOnly);
+    //    out.setVersion(QDataStream::Qt_5_9);
+    //    out << quint16(0) << msg;
+    //    out.device()->seek(0);
+    //    out << quint16(arrBlock.size() - sizeof(quint16));
+    //    m_pTcpSocket->write(arrBlock);
+    //
 
 
 
@@ -353,96 +353,96 @@ void MyClient::showPayments()
 
 
     QString result = payments.mid(12);
-   // qDebug() << "Overall: ";
-   // qDebug() << result;
+    // qDebug() << "Overall: ";
+    // qDebug() << result;
 
 
 
 
-        times_vct.clear();
-        cashes_vct.clear();
-        comments_vct.clear();
+    times_vct.clear();
+    cashes_vct.clear();
+    comments_vct.clear();
 
-        // payStrVec.reserve(payLines * 3);
+    // payStrVec.reserve(payLines * 3);
 
 
-        QString tmpPayStr;
+    QString tmpPayStr;
 
-        QChar dataType = ' ';
+    QChar dataType = ' ';
 
-        for(auto &ch:result)
+    for(auto &ch:result)
+    {
+
+        if(ch != 't' && ch != '$' && ch != '@'
+                && ch != '~' && ch != "\n")
+            tmpPayStr += ch;
+
+        if(ch == "\n")
+            tmpPayStr += "<br>";
+
+
+
+        if(ch == 't')
+            dataType = 't';
+        if(ch == '$')
+            dataType = '$';
+        //if(ch == '@')
+        //    break;
+
+
+        if(dataType == ' ' && ch == ' ')
         {
+            // qDebug() << "times_vct: " << tmpPayStr;
+            times_vct.push_back(QDateTime::fromSecsSinceEpoch(tmpPayStr.toInt()).toString("dd.MM.yyyy hh:mm"));
 
-            if(ch != 't' && ch != '$' && ch != '@'
-                    && ch != '~' && ch != "\n")
-                tmpPayStr += ch;
-
-            if(ch == "\n")
-                tmpPayStr += "<br>";
-
-
-
-            if(ch == 't')
-                dataType = 't';
-            if(ch == '$')
-                dataType = '$';
-            //if(ch == '@')
-            //    break;
-
-
-            if(dataType == ' ' && ch == ' ')
-            {
-               // qDebug() << "times_vct: " << tmpPayStr;
-                times_vct.push_back(QDateTime::fromSecsSinceEpoch(tmpPayStr.toInt()).toString("dd.MM.yyyy hh:mm"));
-
-                tmpPayStr.clear();
-            }
-
-
-            if(dataType == 't' && ch == ' ')
-            {
-                tmpPayStr += " руб.";
-                cashes_vct.push_back(tmpPayStr);
-                //qDebug() << "cashes_vct: " << tmpPayStr;
-                tmpPayStr.clear();
-            }
-
-
-
-            if(dataType == '$' && ch == "~")
-            {
-               // qDebug() << "To the comments_vct: " << tmpPayStr;
-                if(tmpPayStr.isEmpty())
-                    comments_vct.push_back(" - ");
-
-                if(tmpPayStr.length() > 47)
-                {
-                    int halfLen = tmpPayStr.length() / 2;
-                    QString tmpStr;
-                    bool added = false;
-                    for(auto &c:tmpPayStr)
-                    {
-                        tmpStr+= c;
-                        if(tmpStr.length() > halfLen && c == ' ' && added != true)
-                        {
-                            tmpStr += "<br>";
-                            added = true;
-                        }
-                    }
-                    tmpPayStr.clear();
-                    tmpPayStr = tmpStr;
-
-                }
-
-                comments_vct.push_back(tmpPayStr);
-                tmpPayStr.clear();
-            }
-
+            tmpPayStr.clear();
         }
 
-        std::reverse(times_vct.begin(), times_vct.end());
-        std::reverse(cashes_vct.begin(), cashes_vct.end());
-        std::reverse(comments_vct.begin(), comments_vct.end());
+
+        if(dataType == 't' && ch == ' ')
+        {
+            tmpPayStr += " руб.";
+            cashes_vct.push_back(tmpPayStr);
+            //qDebug() << "cashes_vct: " << tmpPayStr;
+            tmpPayStr.clear();
+        }
+
+
+
+        if(dataType == '$' && ch == "~")
+        {
+            // qDebug() << "To the comments_vct: " << tmpPayStr;
+            if(tmpPayStr.isEmpty())
+                comments_vct.push_back(" - ");
+
+            if(tmpPayStr.length() > 47)
+            {
+                int halfLen = tmpPayStr.length() / 2;
+                QString tmpStr;
+                bool added = false;
+                for(auto &c:tmpPayStr)
+                {
+                    tmpStr+= c;
+                    if(tmpStr.length() > halfLen && c == ' ' && added != true)
+                    {
+                        tmpStr += "<br>";
+                        added = true;
+                    }
+                }
+                tmpPayStr.clear();
+                tmpPayStr = tmpStr;
+
+            }
+
+            comments_vct.push_back(tmpPayStr);
+            tmpPayStr.clear();
+        }
+
+    }
+
+    std::reverse(times_vct.begin(), times_vct.end());
+    std::reverse(cashes_vct.begin(), cashes_vct.end());
+    std::reverse(comments_vct.begin(), comments_vct.end());
 
 }
 
