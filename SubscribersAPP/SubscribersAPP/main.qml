@@ -14,6 +14,10 @@ ApplicationWindow {
 
     color: "#f7f7f7"
 
+
+
+
+
     header: ToolBar {
         id: head
         //contentHeight: toolButton.implicitHeight
@@ -85,23 +89,23 @@ ApplicationWindow {
         }
 
 
-        ToolButton {
+        ToolButton{
             id: toolButton
-            width: 30
-            height: 30
-            x: 30
+            width: toolPic.width
+            height: toolPic.height
+            x: 35
             y: 20
+
+
 
             // opacity: 0.4
             //text: stackView.depth > 1 ? "\u25C0" : "\u2630"
             //font.pixelSize: Qt.application.font.pixelSize * 4
-
-
-            Image {
+            background: Image {
                 id: toolPic
                 source: "qrc:/toolPic.png"
-                width: 30
-                height: 30
+                width: 20
+                height: 15
                 smooth: true
                 anchors.fill: parent
             }
@@ -111,13 +115,19 @@ ApplicationWindow {
 
 
 
+
+
             onClicked: {
+
+
                 if (stackView.depth > 1) {
                     stackView.pop()
                 } else {
                     drawer.open()
                 }
             }
+
+
         }
 
         Label {
@@ -159,40 +169,63 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
-        width: window.width * 0.6
+        width: window.width * 0.7
         height: window.height
-        dragMargin: 30
-
-        z: 0
+        dragMargin: (position == 0.0) ? 35 : window.width
 
 
-        Column {
-            anchors.fill: parent
 
-            ItemDelegate {
-                text: qsTr("Page 1")
-                width: parent.width
-                onClicked: {
-                    //stackView.push("Page1Form.ui.qml")
-                    drawer.close()
+             background: Rectangle{
+                 id: drawerBack
+                 anchors.fill: parent
+                 color: "#586ac6"
+                 gradient: Gradient {
+                     GradientStop {
+                         position: 0.00;
+                         color: "#5886c6";
+                     }
+                     GradientStop {
+                         position: 0.67;
+                         color: "#ffffff";
+                     }
+                     GradientStop {
+                         position: 0.95;
+                         color: "#beeef5";
+                     }
+                 }
+
+
+
+
+
+
+
+
+            Column {
+                anchors.fill: parent
+
+                ItemDelegate {
+                    text: qsTr("Page 1")
+                    width: parent.width
+                    onClicked: {
+                        //stackView.push("Page1Form.ui.qml")
+                        drawer.close()
+                    }
+                }
+                ItemDelegate {
+                    text: qsTr("Page 2")
+                    width: parent.width
+                    onClicked: {
+                        // stackView.push("Page2Form.ui.qml")
+                        drawer.close()
+                    }
                 }
             }
-            ItemDelegate {
-                text: qsTr("Page 2")
-                width: parent.width
-                onClicked: {
-                    // stackView.push("Page2Form.ui.qml")
-                    drawer.close()
-                }
-            }
+
         }
 
 
     }
-
-
-
-
 
 
 
