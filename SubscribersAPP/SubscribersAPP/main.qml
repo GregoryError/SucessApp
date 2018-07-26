@@ -4,6 +4,14 @@ import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.3
 
+
+
+import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
+import QtQuick.Controls.Styles 1.4
+
+
+
 ApplicationWindow {
     id: window
     visible: true
@@ -89,46 +97,95 @@ ApplicationWindow {
         }
 
 
-        ToolButton{
-            id: toolButton
-            width: toolPic.width
-            height: toolPic.height
+
+
+
+
+
+        Rectangle{                     // add background if use "Toolbutton"
+            // anchors.fill: parent
+            id: toolRect
+            color: infoRect.color
+            // opacity: 0.4
+            radius: 25
+            width: toolPic.width * 2.5
+            height: toolPic.height * 2.5
             x: 35
             y: 20
+            clip: true
 
 
-
-            // opacity: 0.4
-            //text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            //font.pixelSize: Qt.application.font.pixelSize * 4
-            background: Image {
+            Image {
                 id: toolPic
                 source: "qrc:/toolPic.png"
                 width: 20
                 height: 15
                 smooth: true
-                anchors.fill: parent
+                anchors.centerIn: parent
             }
 
 
+            Rectangle {
+                id: toolButtoncolorRect
+                height: 0
+                width: 0
+                color: "#c2ddff"
 
-
-
-
-
-
-            onClicked: {
-
-
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
+                transform: Translate {
+                    x: -toolButtoncolorRect.width / 2
+                    y: -toolButtoncolorRect.height / 2
                 }
             }
 
 
+
+            MouseArea{
+                id: toolButton
+                anchors.fill: parent
+                //  width: toolPic.width * 2.2
+                //  height: toolPic.height * 2.2
+                //  x: 35
+                //  y: 20
+
+                onClicked: {
+
+                    toolButtoncolorRect.x = mouseX
+                    toolButtoncolorRect.y = mouseY
+                    toolButtoncircleAnimation.start()
+
+
+
+
+                    if (stackView.depth > 1) {
+                        stackView.pop()
+                    } else {
+                       // drawer.open()
+                    }
+                }
+            }
         }
+
+
+
+
+
+        PropertyAnimation {
+            id: toolButtoncircleAnimation
+            target: toolButtoncolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: toolRect.width*3
+            duration: 250
+
+            onStopped: {
+                toolButtoncolorRect.width = 0
+                toolButtoncolorRect.height = 0
+
+
+            }
+        }
+
+
 
         Label {
             text: stackView.currentItem.title
@@ -143,7 +200,7 @@ ApplicationWindow {
         height: window.height * 0.6
         anchors.horizontalCenter: head.horizontalCenter
         y: head.y + head.height - (window.height / 100) * 3
-        radius: 4
+        radius: 2
         z: 2
         color: "white"
 
@@ -175,28 +232,24 @@ ApplicationWindow {
 
 
 
-             background: Rectangle{
-                 id: drawerBack
-                 anchors.fill: parent
-                 color: "#586ac6"
-                 gradient: Gradient {
-                     GradientStop {
-                         position: 0.00;
-                         color: "#5886c6";
-                     }
-                     GradientStop {
-                         position: 0.67;
-                         color: "#ffffff";
-                     }
-                     GradientStop {
-                         position: 0.95;
-                         color: "#beeef5";
-                     }
-                 }
-
-
-
-
+        background: Rectangle{
+            id: drawerBack
+            anchors.fill: parent
+            color: "#586ac6"
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.00;
+                    color: "#5886c6";
+                }
+                GradientStop {
+                    position: 0.67;
+                    color: "#ffffff";
+                }
+                GradientStop {
+                    position: 0.95;
+                    color: "#beeef5";
+                }
+            }
 
 
 
