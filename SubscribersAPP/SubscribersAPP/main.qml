@@ -84,10 +84,10 @@ ApplicationWindow {
             Rectangle{
                 id: infoline
                 opacity: 0.7
-                width: parent.width - 30
+                width: parent.width - 70
                 height: 1
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                y:  infoRect.y + (infoRect.height / 2 + 30)
+                y:  infoRect.y + (infoRect.height / 2 + 5)
                 color: "white"
             }
 
@@ -108,9 +108,9 @@ ApplicationWindow {
             color: infoRect.color
             // opacity: 0.4
             radius: 25
-            width: toolPic.width * 2.5
-            height: toolPic.height * 2.5
-            x: 35
+            width: toolPic.width * 2.2
+            height: toolPic.height * 2.2
+            x: 30
             y: 20
             clip: true
 
@@ -129,7 +129,7 @@ ApplicationWindow {
                 id: toolButtoncolorRect
                 height: 0
                 width: 0
-                color: "#c2ddff"
+                color: "#f7f7f7"
 
                 transform: Translate {
                     x: -toolButtoncolorRect.width / 2
@@ -159,7 +159,7 @@ ApplicationWindow {
                     if (stackView.depth > 1) {
                         stackView.pop()
                     } else {
-                       // drawer.open()
+                        drawer.open()
                     }
                 }
             }
@@ -175,11 +175,12 @@ ApplicationWindow {
             properties: "width,height,radius"
             from: 0
             to: toolRect.width*3
-            duration: 250
+            duration: 450
 
             onStopped: {
                 toolButtoncolorRect.width = 0
                 toolButtoncolorRect.height = 0
+
 
 
             }
@@ -228,7 +229,7 @@ ApplicationWindow {
         id: drawer
         width: window.width * 0.7
         height: window.height
-        dragMargin: (position == 0.0) ? 35 : window.width
+        dragMargin: (position == 0.0) ? 40 : window.width
 
 
 
