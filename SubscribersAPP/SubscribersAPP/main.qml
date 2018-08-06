@@ -15,15 +15,14 @@ import QtQuick.Controls.Styles 1.4
 ApplicationWindow {
     id: window
     visible: true
-    width: 540
-    height: 960
+    //width: 540
+    //height: 960
+    width: 1080
+    height: 1920
     //width: Screen.width
     //height: Screen.height
 
     color: "#f7f7f7"
-
-
-
 
 
     header: ToolBar {
@@ -36,7 +35,7 @@ ApplicationWindow {
         Rectangle{
             id: infoRect
             width: window.width
-            height: window.height * 0.4
+            height: window.height * 0.3
             anchors.top: window.top
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#323643"
@@ -58,20 +57,24 @@ ApplicationWindow {
 
             Text{
                 id: billVal
-                y: infoRect.y + (infoRect.height / 2 - 100) / 2
-                anchors.right: billRow.right
+
+                y: logoPic.y + logoPic.height + 5
+
+                anchors.top: logoPic.bottom
+               // anchors.right: billRow.right
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: "Segoe UI Light"
-                font.pointSize: 60
+                font.pointSize: 45
                 color: "#f7f7f7"
-                text: "550"
+                text: "550 ₽"
             }
 
 
 
             Text{
                 id: bill
-                anchors.top: billVal.bottom
+                //anchors.top: billVal.bottom
+                y: billVal.y + billVal.height
                 //anchors.margins: 30
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 color: "#f7f7f7"
@@ -87,81 +90,120 @@ ApplicationWindow {
                 width: parent.width - 70
                 height: 1
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                y:  infoRect.y + (infoRect.height / 2 + 5)
+                y:  bill.y + bill.height + 3
                 color: "white"
             }
 
 
-
-
         }
 
 
 
-        Rectangle{                     // add background if use "Toolbutton"
-            // anchors.fill: parent
-            id: toolRect
-            color: infoRect.color
-            // opacity: 0.4
-            radius: 25
-            width: toolPic.width * 2.2
-            height: toolPic.height * 2.2
-            x: 25
-            y: 20
-            clip: true
+            Rectangle{                     // add background if use "Toolbutton"
+                id: toolRect
+                color: infoRect.color
+                // opacity: 0.4
+                radius: 25
+                width: toolPic.width * 2.2
+                height: toolPic.height * 2.2
+                 x: 20
+                 y: 20
+                clip: true
 
 
-            Image {
-                id: toolPic
-                source: "qrc:/toolPic.png"
-                width: 20
-                height: 15
-                smooth: true
-                anchors.centerIn: parent
-            }
-
-
-            Rectangle {
-                id: toolButtoncolorRect
-                height: 0
-                width: 0
-                color: "#f7f7f7"
-
-                transform: Translate {
-                    x: -toolButtoncolorRect.width / 2
-                    y: -toolButtoncolorRect.height / 2
+                Image {
+                    id: toolPic
+                    source: "qrc:/toolPic.png"
+                    width: 20
+                    height: 15
+                    smooth: true
+                    anchors.centerIn: parent
                 }
-            }
+
+
+                Rectangle {
+                    id: toolButtoncolorRect
+                    height: 0
+                    width: 0
+                    color: "#f7f7f7"
+
+                    transform: Translate {
+                        x: -toolButtoncolorRect.width / 2
+                        y: -toolButtoncolorRect.height / 2
+                    }
+                }
 
 
 
-            MouseArea{
-                id: toolButton
-                anchors.fill: parent
-                //  width: toolPic.width * 2.2
-                //  height: toolPic.height * 2.2
-                //  x: 35
-                //  y: 20
+                MouseArea{
+                    id: toolButton
+                    anchors.fill: parent
 
-                onClicked: {
+                    onClicked: {
 
-                    toolButtoncolorRect.x = mouseX
-                    toolButtoncolorRect.y = mouseY
-                    toolButtoncircleAnimation.start()
+                        toolButtoncolorRect.x = mouseX
+                        toolButtoncolorRect.y = mouseY
+                        toolButtoncircleAnimation.start()
 
 
-
-
-                    if (stackView.depth > 1) {
-                        stackView.pop()
-                    } else {
-                        drawer.open()
+                        if (stackView.depth > 1) {
+                            stackView.pop()
+                        } else {
+                            drawer.open()
+                        }
                     }
                 }
             }
-        }
 
 
+
+            Image {
+                id: logoPic
+                source: "qrc:/RotatingLogo.png"
+                smooth: true
+                width: window.width / 4
+                height: window.height / 21
+
+                anchors.horizontalCenter: infoRect.horizontalCenter
+                y: 20
+
+
+           }
+
+
+
+
+            Rectangle{
+                id: bigMenu
+                width: window.width - 30
+                height: window.height - infoRect.height
+                anchors.horizontalCenter: infoRect.horizontalCenter
+                radius: 2
+                anchors.top: infoRect.bottom
+                anchors.topMargin: -15
+                z: 3
+                color: "white"
+
+
+
+
+
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    id: bigMenushadow
+                    transparentBorder: true
+                    //horizontalOffset: 8
+                    verticalOffset: 10
+                    samples: 30
+                    //spread: 0.6
+                    radius: 10
+
+                    color: "gray"
+
+                }
+
+            }
 
 
 
@@ -191,41 +233,46 @@ ApplicationWindow {
     }
 
 
-    Rectangle{
-        id: bigMenu
-        width: window.width - 70
-        height: window.height * 0.6
-        anchors.horizontalCenter: head.horizontalCenter
-        y: head.y + head.height - (window.height / 100) * 3
-        radius: 2
-        z: 2
-        color: "white"
 
-
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            id: bigMenushadow
-            transparentBorder: true
-            //horizontalOffset: 8
-            verticalOffset: 10
-            samples: 30
-            //spread: 0.6
-            radius: 20
-
-            color: "gray"
-
-        }
-
-    }
-
-
+//    Rectangle{
+//        id: bigMenu
+//        width: window.width - 40
+//        height: window.height - infoRect.height + 40
+//        anchors.horizontalCenter: head.horizontalCenter
+//        radius: 2
+//        //anchors.top: infoRect.bottom
+//        anchors.margins: 200
+//        z: 3
+//        color: "white"
+//
+//
+//
+//
+//
+//
+//        layer.enabled: true
+//        layer.effect: DropShadow {
+//            id: bigMenushadow
+//            transparentBorder: true
+//            //horizontalOffset: 8
+//            verticalOffset: 10
+//            samples: 30
+//            //spread: 0.6
+//            radius: 10
+//
+//            color: "gray"
+//
+//        }
+//
+//    }
+//
+//
 
     Drawer {
         id: drawer
         width: window.width * 0.7
         height: window.height
-        dragMargin: (position == 0.0) ? 35 : window.width
+        dragMargin: (position == 0.0) ? 30 : window.width
 
 
 
