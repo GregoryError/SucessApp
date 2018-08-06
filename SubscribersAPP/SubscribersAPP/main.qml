@@ -98,10 +98,6 @@ ApplicationWindow {
 
 
 
-
-
-
-
         Rectangle{                     // add background if use "Toolbutton"
             // anchors.fill: parent
             id: toolRect
@@ -110,7 +106,7 @@ ApplicationWindow {
             radius: 25
             width: toolPic.width * 2.2
             height: toolPic.height * 2.2
-            x: 30
+            x: 25
             y: 20
             clip: true
 
@@ -229,7 +225,7 @@ ApplicationWindow {
         id: drawer
         width: window.width * 0.7
         height: window.height
-        dragMargin: (position == 0.0) ? 40 : window.width
+        dragMargin: (position == 0.0) ? 35 : window.width
 
 
 
