@@ -283,15 +283,11 @@ ApplicationWindow {
             gradient: Gradient {
                 GradientStop {
                     position: 0.00;
-                    color: "#5886c6";
-                }
-                GradientStop {
-                    position: 0.67;
-                    color: "#ffffff";
+                    color: "#93deff";
                 }
                 GradientStop {
                     position: 0.95;
-                    color: "#beeef5";
+                    color: "#f7f7f7";
                 }
             }
 
