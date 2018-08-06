@@ -17,5 +17,6 @@
         <file>Menu/trusted.png</file>
         <file>arrow-left.png</file>
         <file>toolPic.png</file>
+        <file>Wallet.png</file>
     </qresource>
 </RCC>
