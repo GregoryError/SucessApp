@@ -15,10 +15,10 @@ import QtQuick.Controls.Styles 1.4
 ApplicationWindow {
     id: window
     visible: true
-    //width: 540
-    //height: 960
-    width: 1080
-    height: 1920
+    width: 540
+    height: 960
+    //width: 1080
+    //height: 1920
     //width: Screen.width
     //height: Screen.height
 
@@ -35,7 +35,7 @@ ApplicationWindow {
         Rectangle{
             id: infoRect
             width: window.width
-            height: window.height * 0.3
+            height: window.height * 0.4 - 10
             anchors.top: window.top
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#323643"
@@ -193,14 +193,9 @@ ApplicationWindow {
                 layer.effect: DropShadow {
                     id: bigMenushadow
                     transparentBorder: true
-                    //horizontalOffset: 8
-                    verticalOffset: 10
                     samples: 30
-                    //spread: 0.6
-                    radius: 10
-
-                    color: "gray"
-
+                    radius: 12
+                    color: "#606470"
                 }
 
             }
@@ -233,40 +228,6 @@ ApplicationWindow {
     }
 
 
-
-//    Rectangle{
-//        id: bigMenu
-//        width: window.width - 40
-//        height: window.height - infoRect.height + 40
-//        anchors.horizontalCenter: head.horizontalCenter
-//        radius: 2
-//        //anchors.top: infoRect.bottom
-//        anchors.margins: 200
-//        z: 3
-//        color: "white"
-//
-//
-//
-//
-//
-//
-//        layer.enabled: true
-//        layer.effect: DropShadow {
-//            id: bigMenushadow
-//            transparentBorder: true
-//            //horizontalOffset: 8
-//            verticalOffset: 10
-//            samples: 30
-//            //spread: 0.6
-//            radius: 10
-//
-//            color: "gray"
-//
-//        }
-//
-//    }
-//
-//
 
     Drawer {
         id: drawer
