@@ -25,6 +25,7 @@ ApplicationWindow{
 
     // color: "#f7f7f7"
 
+
     header: ToolBar {
         id: head
         //contentHeight: toolButton.implicitHeight
@@ -36,7 +37,8 @@ ApplicationWindow{
             width: parent.width
             height: parent.height
             anchors.fill: parent
-            color: infoRect.color
+            //color: infoRect.color
+            opacity: 0
 
             Image {
                 id: logoPic
@@ -391,7 +393,8 @@ ApplicationWindow{
             height: mainwnd.height * 0.3
             anchors.top: mainwnd.top
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#323643"
+           // color: "#323643"
+            opacity: 0
 
 
             Image {
@@ -493,11 +496,11 @@ ApplicationWindow{
                 id: countPic
                 anchors.right: countTxt.left
                 anchors.verticalCenter: countTxt.verticalCenter
-                anchors.rightMargin: 40
+                anchors.rightMargin: 50
                 anchors.horizontalCenter: walletPic.horizontalCenter
 
-                width: walletPic.width * 0.4
-                height: walletPic.height * 0.4
+                width: walletPic.width * 0.3
+                height: walletPic.height * 0.3
                 source: "qrc:/CountNum.png"
                 //width: 70
                 //height: 60
@@ -524,20 +527,17 @@ ApplicationWindow{
                 id: datePic
                 anchors.right: dateTxt.left
                 anchors.verticalCenter: dateTxt.verticalCenter
-                anchors.rightMargin: 40
+                anchors.rightMargin: 50
                 anchors.horizontalCenter: countPic.horizontalCenter
                 //scale: mainwnd.height / 1530
-                width: walletPic.width * 0.4
-                height: walletPic.height * 0.4
+                width: walletPic.width * 0.3
+                height: walletPic.height * 0.3
                 source: "qrc:/Calendar.png"
                 //width: 70
                 //height: 60
                 smooth: true
 
             }
-
-
-
 
 
 
