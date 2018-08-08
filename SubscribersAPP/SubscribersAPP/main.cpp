@@ -1,6 +1,7 @@
 #include "myclient.h"
 #include "backend.h"
 
+
 int main(int argc, char *argv[])
 {
 
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("Success");
     app.setOrganizationDomain("www.comfort-tv.ru/");
     app.setApplicationName("Success");
+
 
 
    // QPixmap lg(":/logo.png");

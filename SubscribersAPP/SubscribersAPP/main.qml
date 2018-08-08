@@ -10,6 +10,7 @@ import QtQuick.Controls.Styles 1.4
 
 
 
+
 ApplicationWindow{
     id: mainwnd
     visible: true
@@ -610,7 +611,9 @@ ApplicationWindow{
         id: drawer
         width: mainwnd.width * 0.7
         height: mainwnd.height
-        dragMargin: (position == 0.0) ? 40 : mainwnd.width
+        dragMargin: (position == 0.0) ? flick.visible == true ? 40 : 0 : mainwnd.width
+
+
 
 
 
