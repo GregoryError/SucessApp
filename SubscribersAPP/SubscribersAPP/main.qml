@@ -25,107 +25,35 @@ ApplicationWindow{
 
     // color: "#f7f7f7"
 
-
-    header: ToolBar {
-        id: head
-        //contentHeight: toolButton.implicitHeight
-
-        contentHeight: toolRect.height * 2
-
-        background: Rectangle{
-            id: toolBarBack
-            width: parent.width
-            height: parent.height
+    Rectangle{
+        id: startHead
+        width: mainwnd.width
+        height: 66
+        x: 0
+        y: 0
+        LinearGradient {
             anchors.fill: parent
-            //color: infoRect.color
-            opacity: 0
-
-            Image {
-                id: logoPic
-                source: "qrc:/RotatingLogo.png"
-                smooth: true
-                scale: 0.4
-                //width: mainwnd.width / 4
-                //height: mainwnd.height / 21
-                anchors.horizontalCenter: toolBarBack.horizontalCenter
-                anchors.verticalCenter: toolBarBack.verticalCenter
-
+            start: Qt.point(0, 0)
+            end: Qt.point(mainwnd.width, mainwnd.width)
+            gradient: Gradient {
+                GradientStop { position: 0.1; color: "#93deff" }
+                GradientStop { position: 0.2; color: "#638AA1" }
+                GradientStop { position: 1.0; color: "#323643" }
             }
         }
 
-        Rectangle{                     // add background if use "Toolbutton"
-            id: toolRect
-            color: infoRect.color
-            // opacity: 0.4
-            visible: false
-            radius: 25
-            width: toolPic.width * 2.2
-            height: toolPic.height * 2.2
-            x: 20
-            y: 20
-            clip: true
-
-            Image {
-                id: toolPic
-                source: "qrc:/toolPic.png"
-                width: 20
-                height: 15
-                smooth: true
-                anchors.centerIn: parent
-            }
-
-            Rectangle {
-                id: toolButtoncolorRect
-                height: 0
-                width: 0
-                color: "#f7f7f7"
-
-                transform: Translate {
-                    x: -toolButtoncolorRect.width / 2
-                    y: -toolButtoncolorRect.height / 2
-                }
-            }
-
-            MouseArea{
-                id: toolButton
-                anchors.fill: parent
-
-                onClicked: {
-
-                    toolButtoncolorRect.x = mouseX
-                    toolButtoncolorRect.y = mouseY
-                    toolButtoncircleAnimation.start()
 
 
-                    if (stackView.depth > 1) {
-                        stackView.pop()
-                    } else {
-                        drawer.open()
-                    }3
-                }
-            }
-        }
+        Image {
+            id: startlogo
+            source: "qrc:/RotatingLogo.png"
+            smooth: true
+            scale: 0.4
+            anchors.horizontalCenter: startHead.horizontalCenter
+            anchors.verticalCenter: startHead.verticalCenter
 
-        PropertyAnimation {
-            id: toolButtoncircleAnimation
-            target: toolButtoncolorRect
-            properties: "width,height,radius"
-            from: 0
-            to: toolRect.width*3
-            duration: 280
-
-            onStopped: {
-                toolButtoncolorRect.width = 0
-                toolButtoncolorRect.height = 0
-
-
-
-            }
         }
     }
-
-
-
 
 
     Rectangle {
@@ -135,10 +63,12 @@ ApplicationWindow{
         //visible: myClient.isAuth() ? false : true
 
         width: mainwnd.width * 0.5
-        height: flick.height * 0.4
-        anchors.top: head.bottom
-        anchors.horizontalCenter: head.horizontalCenter
-        anchors.topMargin: 15
+        height: mainwnd.height * 0.4
+        anchors.top: startHead.bottom
+        anchors.horizontalCenter: startHead.horizontalCenter
+        //anchors.topMargin: 15
+        //y:
+
         // color: "orange"
 
 
@@ -202,10 +132,7 @@ ApplicationWindow{
 
                 }
 
-
-
             }
-
 
 
             Column {
@@ -247,8 +174,20 @@ ApplicationWindow{
 
                 Rectangle {
                     id: loginButton
-                    color: "#93deff"
-                    radius: 7
+                    //color: "#93deff"
+                    radius: 5
+
+
+                    gradient: Gradient {
+                        GradientStop { position: 0.8; color: "#93deff" }
+                        GradientStop { position: 1.0; color: "#638AA1" }
+
+                    }
+
+
+
+
+
                     clip: true
 
                     implicitWidth: startform.width - 20
@@ -266,7 +205,7 @@ ApplicationWindow{
                         id: loginButtoncolorRect
                         height: 0
                         width: 0
-                        color: "#c2ddff"
+                        color: "#f7f7f7"
 
                         transform: Translate {
                             x: -loginButtoncolorRect.width / 2
@@ -298,7 +237,7 @@ ApplicationWindow{
                         properties: "width,height,radius"
                         from: 0
                         to: order.width*3
-                        duration: 450
+                        duration: 250
 
                         onStopped: {
                             loginButtoncolorRect.width = 0
@@ -309,9 +248,15 @@ ApplicationWindow{
 
                 Rectangle{
                     id: order
-                    color: "#93deff"
-                    radius: 7
+                    radius: 5
                     clip: true
+
+                    gradient: Gradient {
+                        GradientStop { position: 0.8; color: "#93deff" }
+                        GradientStop { position: 1.0; color: "#638AA1" }
+
+                    }
+
 
                     implicitWidth: startform.width - 20
                     implicitHeight: startform.height / 5
@@ -329,7 +274,7 @@ ApplicationWindow{
                         id: ordercolorRect
                         height: 0
                         width: 0
-                        color: "#c2ddff"
+                        color: "#f7f7f7"
 
                         transform: Translate {
                             x: -ordercolorRect.width / 2
@@ -363,7 +308,7 @@ ApplicationWindow{
                     properties: "width,height,radius"
                     from: 0
                     to: order.width*3
-                    duration: 450
+                    duration: 250
 
                     onStopped: {
                         ordercolorRect.width = 0
@@ -377,25 +322,152 @@ ApplicationWindow{
 
 
 
-
     Rectangle{
         id: flick
         width: mainwnd.width
-        height: mainwnd.height
-        anchors.fill: parent
+        height: head.height + infoRect.height
+        //anchors.fill: parent
+        // color: "steelblue"
+        x: 0
+        y: 0
+        z: 0
+
 
         visible: false  // (myClient.isAuth()) ? true : false
-        // opacity: 0
 
-        Rectangle{
+
+
+
+
+
+
+        LinearGradient {
+            anchors.fill: parent
+            //visible: false
+            start: Qt.point(0, 0)
+            end: Qt.point(mainwnd.width, mainwnd.width)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#93deff" }
+                GradientStop { position: 0.2; color: "#638AA1" }
+                GradientStop { position: 0.4; color: "#4B6072" }
+                GradientStop { position: 0.7; color: "#323643" }
+                GradientStop { position: 1.0; color: "#323643" }
+            }
+        }
+
+
+        //   }
+
+
+
+
+        Item{
+            id: head
+            x: 0
+            y: 0
+            width: mainwnd.width
+            height: toolRect.height * 2
+            //color: "#323643"
+            //opacity: 0
+            z: 3
+
+
+
+            Image {
+                id: logoPic
+                source: "qrc:/RotatingLogo.png"
+                smooth: true
+                scale: 0.4
+                anchors.horizontalCenter: head.horizontalCenter
+                anchors.verticalCenter: head.verticalCenter
+
+            }
+
+
+            Rectangle{                     // add background if use "Toolbutton"
+                id: toolRect
+                color: "transparent"
+                //visible: false
+                radius: 25
+                width: toolPic.width * 2.2
+                height: toolPic.height * 2.2
+                x: 20
+                y: 20
+                clip: true
+
+
+
+                Image {
+                    id: toolPic
+                    source: "qrc:/toolPic.png"
+                    width: 20
+                    height: 15
+                    smooth: true
+                    anchors.centerIn: parent
+                }
+
+                Rectangle {
+                    id: toolButtoncolorRect
+                    height: 0
+                    width: 0
+                    color: "#93deff"
+
+                    transform: Translate {
+                        x: -toolButtoncolorRect.width / 2
+                        y: -toolButtoncolorRect.height / 2
+                    }
+                }
+
+                MouseArea{
+                    id: toolButton
+                    anchors.fill: parent
+                    onClicked: {
+
+                        toolButtoncolorRect.x = mouseX
+                        toolButtoncolorRect.y = mouseY
+                        toolButtoncircleAnimation.start()
+
+                    }
+                }
+            }
+
+            PropertyAnimation {
+                id: toolButtoncircleAnimation
+                target: toolButtoncolorRect
+                properties: "width,height,radius"
+                from: 0
+                to: toolRect.width*3
+                duration: 120
+
+                onStopped: {
+                    toolButtoncolorRect.width = 0
+                    toolButtoncolorRect.height = 0
+
+
+                    if (stackView.depth > 1) {
+                        stackView.pop()
+                    } else {
+                        drawer.open()
+                    }
+
+
+
+                }
+            }
+        }
+
+
+
+
+        Item{
             id: infoRect
             width: mainwnd.width
             height: mainwnd.height * 0.3
-            anchors.top: mainwnd.top
-            anchors.horizontalCenter: parent.horizontalCenter
-           // color: "#323643"
-            opacity: 0
-
+            anchors.top: head.bottom
+            anchors.horizontalCenter: flick.horizontalCenter
+            //color: "#323643"
+            z: 3
+            // visible: false
 
             Image {
                 id: walletPic
@@ -425,7 +497,9 @@ ApplicationWindow{
 
             Text{
                 id: billVal
-                y: head.y + head.height + 5
+                //y: head.y + head.height + 5
+                anchors.top: head.bottom
+
                 anchors.topMargin: 8
                 // anchors.top: logoPic.bottom
                 anchors.horizontalCenter: infoRect.horizontalCenter
@@ -478,8 +552,6 @@ ApplicationWindow{
             }
 
 
-
-
             Text {
                 id: countTxt
                 anchors.top: infoline.bottom
@@ -527,7 +599,7 @@ ApplicationWindow{
                 id: datePic
                 anchors.right: dateTxt.left
                 anchors.verticalCenter: dateTxt.verticalCenter
-                anchors.rightMargin: 50
+                anchors.rightMargin: 53
                 anchors.horizontalCenter: countPic.horizontalCenter
                 //scale: mainwnd.height / 1530
                 width: walletPic.width * 0.3
@@ -558,9 +630,6 @@ ApplicationWindow{
 
 
 
-
-
-
             layer.enabled: true
             layer.effect: DropShadow {
                 id: bigMenushadow
@@ -574,144 +643,140 @@ ApplicationWindow{
 
 
 
-
-        Label {
-            text: stackView.currentItem.title
-            anchors.centerIn: parent
-        }
+    }
 
 
 
 
-        Drawer {
-            id: drawer
-            width: mainwnd.width * 0.7
-            height: mainwnd.height
-            dragMargin: (position == 0.0) ? 30 : mainwnd.width
-
-
-
-            background: Rectangle{
-                id: drawerBack
-                anchors.fill: parent
-                color: "#586ac6"
-                gradient: Gradient {
-                    GradientStop {
-                        position: 0.00;
-                        color: "#93deff";
-                    }
-                    GradientStop {
-                        position: 0.95;
-                        color: "#f7f7f7";
-                    }
-                }
 
 
 
 
-                Column {
-                    anchors.fill: parent
-
-                    ItemDelegate {
-                        text: qsTr("Page 1")
-                        width: parent.width
-                        onClicked: {
-                            //stackView.push("Page1Form.ui.qml")
-                            drawer.close()
-                        }
-                    }
-                    ItemDelegate {
-                        text: qsTr("Page 2")
-                        width: parent.width
-                        onClicked: {
-                            // stackView.push("Page2Form.ui.qml")
-                            drawer.close()
-                        }
-                    }
-                }
-
-            }
+    Label {
+        text: stackView.currentItem.title
+        anchors.centerIn: parent
+    }
 
 
-        }
+    Drawer {
+        id: drawer
+        width: mainwnd.width * 0.7
+        height: mainwnd.height
+        dragMargin: (position == 0.0) ? 30 : mainwnd.width
 
 
 
-
-        StackView {
-            id: stackView
-            // initialItem: "HomeForm.ui.qml"
+        background: Rectangle{
+            id: drawerBack
             anchors.fill: parent
-        }
-
-
-
-
-        Timer {
-            id: firsttimer
-            interval: 2000;
-
-            //running: (myClient.isAuth()) ? true : false
-
-
-            onTriggered:{
-
-                if(true/*myClient.isAuthRight()*/){           // Для теста
-
-                    //  bigbusy.running = false
-                    //
-                    disappearStartForm.running = true
-                    //
-                    //
-                    //  flick.opacity = 0
-                    mainwnd.visible = true
-                    toolRect.visible = true
-                    flick.visible = true
-                    //
-                    //  flickappear.running = true
-                    //
-                    //
-
-                    //billVal.text = myClient.showBill() + "₽"
-
-                    // if(myClient.showState() === "off")
-                    //     bigPaneltext.color = "#B84BFF"
-                    // else bigPaneltext.color = "#f7f7f7"
-                    //
-                    // planName.text = myClient.showPlan()
-
-
-                    //  lefttext.text = "Номер счета: <br>"
-                    //          + myClient.showId()
-                    //
-                    //  righttext.text = "День платежа: <br>"
-                    //          + myClient.showPay_day()
-                    //
-
-                    startform.visible = false
-                    startform.enabled = false
-
-
-
-                    //demoappear1.running = true
-
-
-                }else{
-                    messageDialog.text = myClient.authResult();
-                    bigbusy.running = false
-                    messageDialog.visible = true;
-                    flick.visible = false
+            color: "#586ac6"
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.00;
+                    color: "#93deff";
                 }
-
-
+                GradientStop {
+                    position: 0.95;
+                    color: "#f7f7f7";
+                }
             }
+
+
+            Column {
+                anchors.fill: parent
+
+                ItemDelegate {
+                    text: qsTr("Page 1")
+                    width: parent.width
+                    onClicked: {
+                        //stackView.push("Page1Form.ui.qml")
+                        drawer.close()
+                    }
+                }
+                ItemDelegate {
+                    text: qsTr("Page 2")
+                    width: parent.width
+                    onClicked: {
+                        // stackView.push("Page2Form.ui.qml")
+                        drawer.close()
+                    }
+                }
+            }
+
         }
 
 
     }
 
-    //   }
 
+
+    StackView {
+        id: stackView
+        // initialItem: "HomeForm.ui.qml"
+        anchors.fill: parent
+    }
+
+
+
+    Timer {
+        id: firsttimer
+        interval: 2000;
+
+        //running: (myClient.isAuth()) ? true : false
+
+
+        onTriggered:{
+
+            if(true/*myClient.isAuthRight()*/){           // Для теста
+
+                //  bigbusy.running = false
+                //
+                disappearStartForm.running = true
+                //
+                //
+                //  flick.opacity = 0
+                mainwnd.visible = true
+                toolRect.visible = true
+                flick.visible = true
+                //
+                //  flickappear.running = true
+                //
+                //
+
+                //billVal.text = myClient.showBill() + "₽"
+
+                // if(myClient.showState() === "off")
+                //     bigPaneltext.color = "#B84BFF"
+                // else bigPaneltext.color = "#f7f7f7"
+                //
+                // planName.text = myClient.showPlan()
+
+
+                //  lefttext.text = "Номер счета: <br>"
+                //          + myClient.showId()
+                //
+                //  righttext.text = "День платежа: <br>"
+                //          + myClient.showPay_day()
+                //
+
+                startform.visible = false
+                startform.enabled = false
+
+
+
+                //demoappear1.running = true
+
+
+            }else{
+                messageDialog.text = myClient.authResult();
+                bigbusy.running = false
+                messageDialog.visible = true;
+                flick.visible = false
+            }
+
+
+        }
+    }
 
 }
 
