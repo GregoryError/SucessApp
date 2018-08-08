@@ -67,8 +67,8 @@ ApplicationWindow{
         //visible: true
         //visible: myClient.isAuth() ? false : true
 
-        width: mainwnd.width * 0.5
-        height: mainwnd.height * 0.4
+        width: mainwnd.width * 0.6
+        height: mainwnd.height * 0.5
         anchors.top: startHead.bottom
         anchors.horizontalCenter: startHead.horizontalCenter
         //anchors.topMargin: 15
@@ -568,7 +568,7 @@ ApplicationWindow{
         Rectangle{
             id: bigMenu
             width: mainwnd.width - 30
-            height: mainwnd.height - infoRect.height
+            height: mainwnd.height - flick.height
             anchors.horizontalCenter: infoRect.horizontalCenter
             radius: 2
             anchors.top: infoRect.bottom
