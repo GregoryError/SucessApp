@@ -25,6 +25,11 @@ ApplicationWindow{
 
     // color: "#f7f7f7"
 
+
+    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+
+
+
     Rectangle{
         id: startHead
         width: mainwnd.width
@@ -48,7 +53,7 @@ ApplicationWindow{
             id: startlogo
             source: "qrc:/RotatingLogo.png"
             smooth: true
-            scale: 0.4
+            scale: 0.3
             anchors.horizontalCenter: startHead.horizontalCenter
             anchors.verticalCenter: startHead.verticalCenter
 
@@ -119,6 +124,7 @@ ApplicationWindow{
                     onAccepted: passwordInput.forceActiveFocus()
                     color: "#606470"
                     font.pointSize: nameInput.width  * 0.1
+                    font.family: gotham_XNarrow.name;
                     placeholderText: "Имя"
                     KeyNavigation.tab: passwordInput
 
@@ -152,6 +158,7 @@ ApplicationWindow{
                     onAccepted: login()
                     color: "#606470"
                     font.pointSize: passwordInput.width * 0.1
+                    font.family: gotham_XNarrow.name;
                     placeholderText: "Пароль"
                     echoMode: TextInput.PasswordEchoOnEdit
                     KeyNavigation.tab: loginButton
@@ -174,19 +181,8 @@ ApplicationWindow{
 
                 Rectangle {
                     id: loginButton
-                    //color: "#93deff"
+                    color: "#93deff"
                     radius: 5
-
-
-                    gradient: Gradient {
-                        GradientStop { position: 0.8; color: "#93deff" }
-                        GradientStop { position: 1.0; color: "#638AA1" }
-
-                    }
-
-
-
-
 
                     clip: true
 
@@ -196,7 +192,7 @@ ApplicationWindow{
                         anchors.centerIn: parent
                         color: "white"
                         font.pointSize: loginButton.width  * 0.1
-                        font.family: "Sawasdee"
+                        font.family: gotham_XNarrow.name;
                         text: "Войти";
                     }
 
@@ -209,7 +205,7 @@ ApplicationWindow{
 
                         transform: Translate {
                             x: -loginButtoncolorRect.width / 2
-                            y: -loginButtoncolorRect.height / 2
+                            y: -loginButtoncolorRect.height  / 2
                         }
                     }
 
@@ -236,8 +232,8 @@ ApplicationWindow{
                         target: loginButtoncolorRect
                         properties: "width,height,radius"
                         from: 0
-                        to: order.width*3
-                        duration: 250
+                        to: order.width * 2
+                        duration: 130
 
                         onStopped: {
                             loginButtoncolorRect.width = 0
@@ -250,12 +246,7 @@ ApplicationWindow{
                     id: order
                     radius: 5
                     clip: true
-
-                    gradient: Gradient {
-                        GradientStop { position: 0.8; color: "#93deff" }
-                        GradientStop { position: 1.0; color: "#638AA1" }
-
-                    }
+                    color: "#93deff"
 
 
                     implicitWidth: startform.width - 20
@@ -266,7 +257,7 @@ ApplicationWindow{
                         anchors.centerIn: parent
                         color: "white"
                         font.pointSize: order.width  * 0.1
-                        font.family: "Sawasdee"
+                        font.family: gotham_XNarrow.name;
                         text: "Подключиться";
                     }
 
@@ -307,8 +298,8 @@ ApplicationWindow{
                     target: ordercolorRect
                     properties: "width,height,radius"
                     from: 0
-                    to: order.width*3
-                    duration: 250
+                    to: order.width * 2
+                    duration: 130
 
                     onStopped: {
                         ordercolorRect.width = 0
@@ -320,7 +311,7 @@ ApplicationWindow{
     }
 
 
-
+    ////////////////////////////////////////////////////////////// END OF START-FORM ////////////////////////////////////////////////
 
     Rectangle{
         id: flick
@@ -334,11 +325,6 @@ ApplicationWindow{
 
 
         visible: false  // (myClient.isAuth()) ? true : false
-
-
-
-
-
 
 
         LinearGradient {
@@ -366,10 +352,11 @@ ApplicationWindow{
             x: 0
             y: 0
             width: mainwnd.width
-            height: toolRect.height * 2
+            height: 66
             //color: "#323643"
             //opacity: 0
             z: 3
+
 
 
 
@@ -377,9 +364,9 @@ ApplicationWindow{
                 id: logoPic
                 source: "qrc:/RotatingLogo.png"
                 smooth: true
-                scale: 0.4
+                scale: 0.3
                 anchors.horizontalCenter: head.horizontalCenter
-                anchors.verticalCenter: head.verticalCenter
+                anchors.verticalCenter: toolRect.verticalCenter
 
             }
 
@@ -387,14 +374,13 @@ ApplicationWindow{
             Rectangle{                     // add background if use "Toolbutton"
                 id: toolRect
                 color: "transparent"
-                //visible: false
                 radius: 25
-                width: toolPic.width * 2.2
-                height: toolPic.height * 2.2
-                x: 20
-                y: 20
+                width: toolPic.width * 3.5
+                height: toolPic.height * 3.5
+                x: 15
+                y: 15
                 clip: true
-
+                smooth: true
 
 
                 Image {
@@ -436,8 +422,8 @@ ApplicationWindow{
                 target: toolButtoncolorRect
                 properties: "width,height,radius"
                 from: 0
-                to: toolRect.width*3
-                duration: 120
+                to: toolRect.width * 0.6
+                duration: 80
 
                 onStopped: {
                     toolButtoncolorRect.width = 0
@@ -449,8 +435,6 @@ ApplicationWindow{
                     } else {
                         drawer.open()
                     }
-
-
 
                 }
             }
@@ -465,6 +449,7 @@ ApplicationWindow{
             height: mainwnd.height * 0.3
             anchors.top: head.bottom
             anchors.horizontalCenter: flick.horizontalCenter
+            anchors.topMargin: 0
             //color: "#323643"
             z: 3
             // visible: false
@@ -481,33 +466,17 @@ ApplicationWindow{
                 anchors.margins: 40
             }
 
-            //  Text {
-            //      id: walletTxt
-            //      anchors.topMargin: 8
-            //      anchors.top: walletPic.bottom
-            //      anchors.horizontalCenter: walletPic.horizontalCenter
-            //      color: "#f7f7f7"
-            //      font.family: "Segoe UI Light"
-            //      font.pointSize: 10
-            //      text: "Оплата<br>без комиссии"
-            //
-            //
-            //  }
-            //
-
             Text{
                 id: billVal
-                //y: head.y + head.height + 5
-                anchors.top: head.bottom
-
-                anchors.topMargin: 8
-                // anchors.top: logoPic.bottom
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: "Segoe UI Light"
-                font.pointSize: 40
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 50
                 color: "#f7f7f7"
                 text: "550 ₽"
                 //text: myClient.showBill() + "₽"
+
+                //wrapMode: Text.WordWrap
+
             }
 
 
@@ -515,11 +484,11 @@ ApplicationWindow{
                 id: bill
                 // y: billVal.y + billVal.height
                 anchors.top: billVal.bottom
-                anchors.topMargin: 8
+                anchors.topMargin: 4
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 color: "#f7f7f7"
-                font.family: "Segoe UI Light"
-                font.pointSize: 12
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 14
                 text: "Баланс на сегодня"
             }
 
@@ -527,10 +496,10 @@ ApplicationWindow{
             Text{
                 id: planName
                 anchors.top: bill.bottom
-                anchors.topMargin: 8
+                anchors.topMargin: 4
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: "Segoe UI Light"
-                font.pointSize: 20
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 25
                 color: "#f7f7f7"
                 text: "Комплекс 550"
                 //text: myClient.showPlan()
@@ -542,14 +511,29 @@ ApplicationWindow{
             Rectangle{
                 id: infoline
                 opacity: 0.7
-                width: parent.width - 70
+                width: bigMenu.width
                 height: 1
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 anchors.top: planName.bottom
-                anchors.topMargin: 8
+                anchors.topMargin: 4
                 //y:  bill.y + bill.height + 3
                 color: "white"
             }
+
+
+
+            Image {
+                id: infoPic
+                y: countTxt.y + 4
+                anchors.horizontalCenter: walletPic.horizontalCenter
+                width: (walletPic.width - 10) * 0.5
+                height: walletPic.height * 0.5
+                source: "qrc:/infoPic.png"
+                smooth: true
+
+            }
+
+
 
 
             Text {
@@ -557,65 +541,29 @@ ApplicationWindow{
                 anchors.top: infoline.bottom
                 anchors.topMargin: 8
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: "Segoe UI Light"
-                font.pointSize: 12
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 14
                 text: "Ваш номер счета: 5502"
                 color: "#f7f7f7"
 
             }
 
-            Image {
-                id: countPic
-                anchors.right: countTxt.left
-                anchors.verticalCenter: countTxt.verticalCenter
-                anchors.rightMargin: 50
-                anchors.horizontalCenter: walletPic.horizontalCenter
-
-                width: walletPic.width * 0.3
-                height: walletPic.height * 0.3
-                source: "qrc:/CountNum.png"
-                //width: 70
-                //height: 60
-                smooth: true
-
-            }
 
 
-
-            Text {
+            Text{
                 id: dateTxt
                 anchors.top: countTxt.bottom
                 anchors.topMargin: 8
                 anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: "Segoe UI Light"
-                font.pointSize: 12
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 14
                 text: "Ваш день платежа: 17"
                 color: "#f7f7f7"
 
             }
 
 
-            Image {
-                id: datePic
-                anchors.right: dateTxt.left
-                anchors.verticalCenter: dateTxt.verticalCenter
-                anchors.rightMargin: 53
-                anchors.horizontalCenter: countPic.horizontalCenter
-                //scale: mainwnd.height / 1530
-                width: walletPic.width * 0.3
-                height: walletPic.height * 0.3
-                source: "qrc:/Calendar.png"
-                //width: 70
-                //height: 60
-                smooth: true
-
-            }
-
-
-
         }
-
-
 
         Rectangle{
             id: bigMenu
@@ -662,7 +610,7 @@ ApplicationWindow{
         id: drawer
         width: mainwnd.width * 0.7
         height: mainwnd.height
-        dragMargin: (position == 0.0) ? 30 : mainwnd.width
+        dragMargin: (position == 0.0) ? 40 : mainwnd.width
 
 
 
