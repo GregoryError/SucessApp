@@ -18,5 +18,7 @@
         <file>arrow-left.png</file>
         <file>toolPic.png</file>
         <file>Wallet.png</file>
+        <file>CountNum.png</file>
+        <file>Calendar.png</file>
     </qresource>
 </RCC>

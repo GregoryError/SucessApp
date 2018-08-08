@@ -13,8 +13,10 @@ import QtQuick.Controls.Styles 1.4
 ApplicationWindow{
     id: mainwnd
     visible: true
-    width: 540
-    height: 960
+    // width: 540
+    // height: 960
+    width: 430
+    height: 850
     // width: 1080
     // height: 1920
     //  width: Screen.width
@@ -97,8 +99,25 @@ ApplicationWindow{
                         stackView.pop()
                     } else {
                         drawer.open()
-                    }
+                    }3
                 }
+            }
+        }
+
+        PropertyAnimation {
+            id: toolButtoncircleAnimation
+            target: toolButtoncolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: toolRect.width*3
+            duration: 280
+
+            onStopped: {
+                toolButtoncolorRect.width = 0
+                toolButtoncolorRect.height = 0
+
+
+
             }
         }
     }
@@ -357,10 +376,6 @@ ApplicationWindow{
 
 
 
-
-
-
-
     Rectangle{
         id: flick
         width: mainwnd.width
@@ -369,9 +384,6 @@ ApplicationWindow{
 
         visible: false  // (myClient.isAuth()) ? true : false
         // opacity: 0
-
-
-
 
         Rectangle{
             id: infoRect
@@ -382,17 +394,15 @@ ApplicationWindow{
             color: "#323643"
 
 
-
-
             Image {
                 id: walletPic
                 scale: mainwnd.height / 1530
-                source: "qrc:/Wallet.png"
                 width: 70
                 height: 60
+                source: "qrc:/Wallet.png"
                 smooth: true
                 anchors.verticalCenter: billVal.verticalCenter
-                anchors.left:  billVal.right
+                anchors.right: billVal.left
                 anchors.margins: 40
             }
 
@@ -412,14 +422,14 @@ ApplicationWindow{
 
             Text{
                 id: billVal
-                y: logoPic.y + logoPic.height + 5
+                y: head.y + head.height + 5
                 anchors.topMargin: 8
                 // anchors.top: logoPic.bottom
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: "Segoe UI Light"
                 font.pointSize: 40
                 color: "#f7f7f7"
-                //text: "550 ₽"
+                text: "550 ₽"
                 //text: myClient.showBill() + "₽"
             }
 
@@ -432,7 +442,7 @@ ApplicationWindow{
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 color: "#f7f7f7"
                 font.family: "Segoe UI Light"
-                font.pointSize: 10
+                font.pointSize: 12
                 text: "Баланс на сегодня"
             }
 
@@ -445,7 +455,7 @@ ApplicationWindow{
                 font.family: "Segoe UI Light"
                 font.pointSize: 20
                 color: "#f7f7f7"
-                //text: "Комплекс 550"
+                text: "Комплекс 550"
                 //text: myClient.showPlan()
 
 
@@ -463,6 +473,72 @@ ApplicationWindow{
                 //y:  bill.y + bill.height + 3
                 color: "white"
             }
+
+
+
+
+            Text {
+                id: countTxt
+                anchors.top: infoline.bottom
+                anchors.topMargin: 8
+                anchors.horizontalCenter: infoRect.horizontalCenter
+                font.family: "Segoe UI Light"
+                font.pointSize: 12
+                text: "Ваш номер счета: 5502"
+                color: "#f7f7f7"
+
+            }
+
+            Image {
+                id: countPic
+                anchors.right: countTxt.left
+                anchors.verticalCenter: countTxt.verticalCenter
+                anchors.rightMargin: 40
+                anchors.horizontalCenter: walletPic.horizontalCenter
+
+                width: walletPic.width * 0.4
+                height: walletPic.height * 0.4
+                source: "qrc:/CountNum.png"
+                //width: 70
+                //height: 60
+                smooth: true
+
+            }
+
+
+
+            Text {
+                id: dateTxt
+                anchors.top: countTxt.bottom
+                anchors.topMargin: 8
+                anchors.horizontalCenter: infoRect.horizontalCenter
+                font.family: "Segoe UI Light"
+                font.pointSize: 12
+                text: "Ваш день платежа: 17"
+                color: "#f7f7f7"
+
+            }
+
+
+            Image {
+                id: datePic
+                anchors.right: dateTxt.left
+                anchors.verticalCenter: dateTxt.verticalCenter
+                anchors.rightMargin: 40
+                anchors.horizontalCenter: countPic.horizontalCenter
+                //scale: mainwnd.height / 1530
+                width: walletPic.width * 0.4
+                height: walletPic.height * 0.4
+                source: "qrc:/Calendar.png"
+                //width: 70
+                //height: 60
+                smooth: true
+
+            }
+
+
+
+
 
 
         }
@@ -496,24 +572,6 @@ ApplicationWindow{
 
         }
 
-
-
-        PropertyAnimation {
-            id: toolButtoncircleAnimation
-            target: toolButtoncolorRect
-            properties: "width,height,radius"
-            from: 0
-            to: toolRect.width*3
-            duration: 450
-
-            onStopped: {
-                toolButtoncolorRect.width = 0
-                toolButtoncolorRect.height = 0
-
-
-
-            }
-        }
 
 
 
