@@ -201,8 +201,9 @@ ApplicationWindow{
 
                     Rectangle {
                         id: loginButtoncolorRect
-                        height: 0
-                        width: 0
+                        height: 10
+                        width: 10
+                        visible: false
                         color: "#f7f7f7"
 
                         transform: Translate {
@@ -236,13 +237,18 @@ ApplicationWindow{
                         id: loginButtoncircleAnimation
                         target: loginButtoncolorRect
                         properties: "width,height,radius"
-                        from: 0
+                        from: loginButtoncolorRect.width
                         to: order.width * 2
                         duration: 250
 
+                        onStarted: {
+                            loginButtoncolorRect.visible = true
+                        }
+
                         onStopped: {
-                            loginButtoncolorRect.width = 0
-                            loginButtoncolorRect.height = 0
+                            loginButtoncolorRect.width = 10
+                            loginButtoncolorRect.height = 10
+                            loginButtoncolorRect.visible = false
                         }
                     }
 
@@ -279,8 +285,9 @@ ApplicationWindow{
 
                     Rectangle {
                         id: ordercolorRect
-                        height: 0
-                        width: 0
+                        height: 10
+                        width: 10
+                        visible: false
                         color: "#f7f7f7"
 
                         transform: Translate {
@@ -298,7 +305,6 @@ ApplicationWindow{
                             ordercolorRect.x = mouseX
                             ordercolorRect.y = mouseY
                             orderButtonCircleAnimation.start()
-                            orderButtonOpacityAnimation.start()
                         }
 
 
@@ -314,13 +320,20 @@ ApplicationWindow{
                     id: orderButtonCircleAnimation
                     target: ordercolorRect
                     properties: "width,height,radius"
-                    from: 0
+                    from: ordercolorRect.width
                     to: order.width * 2
                     duration: 250
+                    easing.type: Easing.OutExpo
+
+                    onStarted: {
+                        ordercolorRect.visible = true
+                        orderButtonOpacityAnimation.start()
+                    }
 
                     onStopped: {
-                        ordercolorRect.width = 0
-                        ordercolorRect.height = 0
+                        ordercolorRect.width = 10
+                        ordercolorRect.height = 10
+                        ordercolorRect.visible = false
                     }
                 }
                 PropertyAnimation {
@@ -355,608 +368,632 @@ ApplicationWindow{
     //var space = 3;             // space between buttons
 
 
-    Rectangle{
-        id: flick
+    Item {
+        id: mainItem
         width: mainwnd.width
-        height: head.height + infoRect.height
-        //anchors.fill: parent
-        // color: "steelblue"
-        x: 0
-        y: 0
-        z: 0
+        height: mainwnd.height - head.height
+        anchors.top: head.bottom
 
-        // visible: (myClient.isAuth()) ? true : false
-        opacity: 0
-        visible: false  // (myClient.isAuth()) ? true : false
 
 
 
-
-        OpacityAnimator {
-            id: flickappear
-            target: flick;
-            from: 0;
-            to: 1;
-            duration: 600
-            running: false
-            //running: (myClient.isAuth()) ? true : false
-            onStopped: {
-                cells.visible = true
-            }
-
-
-        }
-
-
-        color: "steelblue"
-
-
-        //  LinearGradient {
-        //     anchors.fill: parent
-        //     //visible: false
-        //     start: Qt.point(0, 0)
-        //     end: Qt.point(mainwnd.width, mainwnd.width)
-        //     gradient: Gradient {
-        //         GradientStop { position: 0.0; color: "#93deff" }
-        //         GradientStop { position: 0.2; color: "#638AA1" }
-        //         GradientStop { position: 0.4; color: "#4B6072" }
-        //         GradientStop { position: 0.7; color: "#323643" }
-        //         GradientStop { position: 1.0; color: "#323643" }
-        //     }
-        // }
-
-
-        //   }
-
-
-
-        Item{
-            id: head
-            x: 0
-            y: 0
-            width: mainwnd.width
-            height: 66
-            //color: "#323643"
-            //opacity: 0
-            z: 3
-
-
-
-
-            Image {
-                id: logoPic
-                source: "qrc:/RotatingLogo.png"
-                smooth: true
-                scale: 0.3
-                anchors.horizontalCenter: head.horizontalCenter
-                anchors.verticalCenter: toolRect.verticalCenter
-
-            }
-
-
-            Rectangle{                     // add background if use "Toolbutton"
-                id: toolRect
-                color: "transparent"
-                radius: 25
-                width: toolPic.width * 3.5
-                height: toolPic.height * 3.5
-                x: 15
-                y: 15
-                clip: true
-                smooth: true
-
-
-
-                Image {
-                    id: toolPic
-                    source: "qrc:/toolPic.png"
-                    width: 20
-                    height: 15
-                    smooth: true
-                    anchors.centerIn: toolRect
-                }
-
-                Rectangle {
-                    id: toolButtoncolorRect
-                    height: 0
-                    width: 0
-                    anchors.centerIn: toolRect
-                    color: "#93deff"
-
-                    transform: Translate {
-                        // x: -toolButtoncolorRect.width / 2
-                        // y: -toolButtoncolorRect.height / 2
-                    }
-                }
-
-                MouseArea{
-                    id: toolButton
-                    anchors.fill: parent
-                    onClicked: {
-
-                        //toolButtoncolorRect.x = mouseX
-                        //toolButtoncolorRect.y = mouseY
-                        toolButtoncircleAnimation.start()
-                        toolButtonOpacityAnimation.start()
-
-                    }
-                }
-            }
-
-            PropertyAnimation {
-                id: toolButtoncircleAnimation
-                target: toolButtoncolorRect
-                properties: "width,height,radius"
-                from: 0
-                to: toolRect.width * 0.8
-                duration: 170
-
-                onStopped: {
-                    toolButtoncolorRect.width = 0
-                    toolButtoncolorRect.height = 0
-
-
-                    if (stackView.depth > 1) {
-                        stackView.pop()
-                    } else {
-                        drawer.open()
-                    }
-
-                }
-            }
-
-
-            PropertyAnimation {
-                id: toolButtonOpacityAnimation
-                target: toolButtoncolorRect
-                properties: "opacity"
-                from: 1
-                to: 0
-                duration: 250
-
-            }
-
-
-        }
-
-
-
-
-        Item{
-            id: infoRect
-            width: mainwnd.width
-            height: mainwnd.height * 0.3
-            anchors.top: head.bottom
-            anchors.horizontalCenter: flick.horizontalCenter
-            anchors.topMargin: 0
-            //color: "#323643"
-            z: 3
-            // visible: false
-
-            Image {
-                id: walletPic
-                scale: mainwnd.height / 1530
-                width: 70
-                height: 60
-                source: "qrc:/Wallet.png"
-                smooth: true
-                anchors.verticalCenter: billVal.verticalCenter
-                anchors.right: billVal.left
-                anchors.margins: 40
-            }
-
-            Text{
-                id: billVal
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: gotham_XNarrow.name;
-                font.pointSize: 50
-                color: "#f7f7f7"
-                //text: "550 ₽"
-                //text: myClient.showBill() + "₽"
-
-                //wrapMode: Text.WordWrap
-
-            }
-
-
-            Text{
-                id: bill
-                // y: billVal.y + billVal.height
-                anchors.top: billVal.bottom
-                anchors.topMargin: 4
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                color: "#f7f7f7"
-                font.family: gotham_XNarrow.name;
-                font.pointSize: 14
-                text: "Баланс на сегодня"
-            }
-
-
-            Text{
-                id: planName
-                anchors.top: bill.bottom
-                anchors.topMargin: 4
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: gotham_XNarrow.name;
-                font.pointSize: 24
-                color: "#f7f7f7"
-                //text: "Комплекс 550"
-                //text: myClient.showPlan()
-
-
-            }
-
-
-            Rectangle{
-                id: infoline
-                opacity: 0.7
-                width: bigMenu.width
-                height: 1
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                anchors.top: planName.bottom
-                anchors.topMargin: 4
-                //y:  bill.y + bill.height + 3
-                color: "white"
-            }
-
-
-
-            Image {
-                id: infoPic
-                y: countTxt.y + 4
-                anchors.horizontalCenter: walletPic.horizontalCenter
-                width: (walletPic.width - 10) * 0.5
-                height: walletPic.height * 0.5
-                source: "qrc:/infoPic.png"
-                smooth: true
-
-            }
-
-
-
-
-            Text {
-                id: countTxt
-                anchors.top: infoline.bottom
-                anchors.topMargin: 8
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: gotham_XNarrow.name;
-                font.pointSize: 14
-                //text:
-                color: "#f7f7f7"
-
-            }
-
-
-
-            Text{
-                id: dateTxt
-                anchors.top: countTxt.bottom
-                anchors.topMargin: 8
-                anchors.horizontalCenter: infoRect.horizontalCenter
-                font.family: gotham_XNarrow.name;
-                font.pointSize: 14
-                // text: "Ваш день платежа: 17"
-                color: "#f7f7f7"
-
-            }
-
-
-        }
-
-        /////////////////////////////////// BUTTONS /////////////////////////////////////////////////////
-
-
-
-
-        ListModel {
-            id: myModel
-
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/payhistory.png"
-                active: true
-                mtext: "Платежи"
-            }
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/gps.png"
-                active: true
-                mtext: "Точки оплаты"
-            }
-
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/trusted.png"
-                active: true
-                mtext: "Обещанный платеж"
-            }
-
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/activity.png"
-                active: true
-                mtext: "Моя активность"
-            }
-
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/call.png"
-                active: true
-                mtext: "Позвонить нам"
-            }
-
-            ListElement {
-                mycolor: "#2cbaf1"
-                backdata: "qrc:/Menu/oursite.png"
-                active: true
-                mtext: "Наш сайт"
-            }
-
-        }
 
 
 
 
         Rectangle{
-            id: bigMenu
-            width: mainwnd.width - 30
-            height: mainwnd.height - flick.height
-            anchors.horizontalCenter: infoRect.horizontalCenter
-            radius: 2
-            anchors.top: infoRect.bottom
-            anchors.topMargin: -15
-            // color: "transparent"
+            id: flick
+            width: mainwnd.width
+            height: head.height + infoRect.height
+            //anchors.fill: parent
+            // color: "steelblue"
+            x: 0
+            y: 0
+            z: 0
 
-           // clip: true
-            smooth: true
+            // visible: (myClient.isAuth()) ? true : false
+            opacity: 0
+            visible: false  // (myClient.isAuth()) ? true : false
 
-            layer.enabled: true
-            layer.effect: DropShadow {
-                id: bigMenushadow
-                transparentBorder: true
-                samples: 30
-                radius: 12
-                color: "#606470"
+
+
+
+            OpacityAnimator {
+                id: flickappear
+                target: flick;
+                from: 0;
+                to: 1;
+                duration: 600
+                running: false
+                //running: (myClient.isAuth()) ? true : false
+                onStopped: {
+                    cells.visible = true
+                }
+
+
+            }
+
+
+            color: "steelblue"
+
+
+            //   LinearGradient {
+            //      anchors.fill: parent
+            //      //visible: false
+            //      start: Qt.point(0, 0)
+            //      end: Qt.point(mainwnd.width, mainwnd.width)
+            //      gradient: Gradient {
+            //          GradientStop { position: 0.0; color: "#93deff" }
+            //          GradientStop { position: 0.2; color: "#638AA1" }
+            //          GradientStop { position: 0.4; color: "#4B6072" }
+            //          GradientStop { position: 0.7; color: "#323643" }
+            //          GradientStop { position: 1.0; color: "#323643" }
+            //      }
+            //  }
+
+
+            //   }
+
+
+
+            Item{
+                id: head
+                x: 0
+                y: 0
+                width: mainwnd.width
+                height: 66
+                //color: "#323643"
+                //opacity: 0
+                z: 3
+
+
+
+
+                Image {
+                    id: logoPic
+                    source: "qrc:/RotatingLogo.png"
+                    smooth: true
+                    scale: 0.3
+                    anchors.horizontalCenter: head.horizontalCenter
+                    anchors.verticalCenter: toolRect.verticalCenter
+
+                }
+
+
+                Rectangle{                     // add background if use "Toolbutton"
+                    id: toolRect
+                    color: "transparent"
+                    radius: 25
+                    width: toolPic.width * 3.5
+                    height: toolPic.height * 3.5
+                    x: 15
+                    y: 15
+                    clip: true
+                    smooth: true
+
+
+
+                    Image {
+                        id: toolPic
+                        source: "qrc:/toolPic.png"
+                        width: 20
+                        height: 15
+                        smooth: true
+                        anchors.centerIn: toolRect
+                    }
+
+                    Rectangle {
+                        id: toolButtoncolorRect
+                        height: 0
+                        width: 0
+                        anchors.centerIn: toolRect
+                        color: "#93deff"
+
+                        transform: Translate {
+                            // x: -toolButtoncolorRect.width / 2
+                            // y: -toolButtoncolorRect.height / 2
+                        }
+                    }
+
+                    MouseArea{
+                        id: toolButton
+                        anchors.fill: parent
+                        onPressed: {
+
+                            //toolButtoncolorRect.x = mouseX
+                            //toolButtoncolorRect.y = mouseY
+                            toolButtoncircleAnimation.start()
+                            toolButtonOpacityAnimation.start()
+
+                        }
+                    }
+                }
+
+                PropertyAnimation {
+                    id: toolButtoncircleAnimation
+                    target: toolButtoncolorRect
+                    properties: "width,height,radius"
+                    from: 0
+                    to: toolRect.width * 0.8
+                    duration: 170
+
+                    onStopped: {
+                        toolButtoncolorRect.width = 0
+                        toolButtoncolorRect.height = 0
+
+
+                        if (stackView.depth > 1) {
+                            stackView.pop()
+                        } else {
+                            drawer.open()
+                        }
+
+                    }
+                }
+
+
+                PropertyAnimation {
+                    id: toolButtonOpacityAnimation
+                    target: toolButtoncolorRect
+                    properties: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 250
+
+                }
+
 
             }
 
 
 
 
+            Item{
+                id: infoRect
+                width: mainwnd.width
+                height: mainwnd.height * 0.3
+                anchors.top: head.bottom
+                anchors.horizontalCenter: flick.horizontalCenter
+                anchors.topMargin: 0
+                //color: "#323643"
+                z: 3
+                // visible: false
+
+                Image {
+                    id: walletPic
+                    scale: mainwnd.height / 1530
+                    width: 70
+                    height: 60
+                    source: "qrc:/Wallet.png"
+                    smooth: true
+                    anchors.verticalCenter: billVal.verticalCenter
+                    anchors.right: billVal.left
+                    anchors.margins: 40
+                }
+
+                Text{
+                    id: billVal
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 50
+                    color: "#f7f7f7"
+                    //text: "550 ₽"
+                    //text: myClient.showBill() + "₽"
+
+                    //wrapMode: Text.WordWrap
+
+                }
 
 
-           //
-           // LinearGradient {
-           //     anchors.fill: parent
-           //     source: bigMenu
-           //     start: Qt.point(0, 0)
-           //     end: Qt.point(cells.width, cells.width)
-           //     gradient: Gradient {
-           //         GradientStop { position: 0.2; color: "#f7f7f7" }
-           //         GradientStop { position: 0.5; color: "#93deff" }
-           //         GradientStop { position: 0.8; color: "#f7f7f7" }
-           //     }
-           // }
+                Text{
+                    id: bill
+                    // y: billVal.y + billVal.height
+                    anchors.top: billVal.bottom
+                    anchors.topMargin: 4
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    color: "#f7f7f7"
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 14
+                    text: "Баланс на сегодня"
+                }
+
+
+                Text{
+                    id: planName
+                    anchors.top: bill.bottom
+                    anchors.topMargin: 4
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 24
+                    color: "#f7f7f7"
+                    //text: "Комплекс 550"
+                    //text: myClient.showPlan()
+
+
+                }
+
+
+                Rectangle{
+                    id: infoline
+                    opacity: 0.7
+                    width: bigMenu.width
+                    height: 1
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    anchors.top: planName.bottom
+                    anchors.topMargin: 4
+                    //y:  bill.y + bill.height + 3
+                    color: "white"
+                }
 
 
 
-            GridView{
-                id: cells
-                interactive: false
-                visible: false
-                anchors.centerIn: parent
+                Image {
+                    id: infoPic
+                    y: countTxt.y + 4
+                    anchors.horizontalCenter: walletPic.horizontalCenter
+                    width: (walletPic.width - 10) * 0.5
+                    height: walletPic.height * 0.5
+                    source: "qrc:/infoPic.png"
+                    smooth: true
+
+                }
+
+
+
+
+                Text {
+                    id: countTxt
+                    anchors.top: infoline.bottom
+                    anchors.topMargin: 8
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 14
+                    //text:
+                    color: "#f7f7f7"
+
+                }
+
+
+
+                Text{
+                    id: dateTxt
+                    anchors.top: countTxt.bottom
+                    anchors.topMargin: 8
+                    anchors.horizontalCenter: infoRect.horizontalCenter
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 14
+                    // text: "Ваш день платежа: 17"
+                    color: "#f7f7f7"
+
+                }
+
+
+            }
+
+            /////////////////////////////////// BUTTONS /////////////////////////////////////////////////////
+
+
+
+
+            ListModel {
+                id: myModel
+
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/payhistory.png"
+                    active: true
+                    mtext: "Платежи"
+                }
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/gps.png"
+                    active: true
+                    mtext: "Точки оплаты"
+                }
+
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/trusted.png"
+                    active: true
+                    mtext: "Обещанный платеж"
+                }
+
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/activity.png"
+                    active: true
+                    mtext: "Моя активность"
+                }
+
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/call.png"
+                    active: true
+                    mtext: "Позвонить нам"
+                }
+
+                ListElement {
+                    mycolor: "#2cbaf1"
+                    backdata: "qrc:/Menu/oursite.png"
+                    active: true
+                    mtext: "Наш сайт"
+                }
+
+            }
+
+
+
+
+            Rectangle{
+                id: bigMenu
+                width: mainwnd.width - 30
+                height: mainwnd.height - flick.height
+                anchors.horizontalCenter: infoRect.horizontalCenter
+                radius: 2
+                anchors.top: infoRect.bottom
+                anchors.topMargin: -15
+                // color: "transparent"
+
+                // clip: true
                 smooth: true
 
-                width: cellWidth * 2
-                height: cellHeight * 3
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    id: bigMenushadow
+                    transparentBorder: true
+                    samples: 30
+                    radius: 12
+                    color: "#606470"
 
-                cellHeight: bigMenu.height / 3
-                cellWidth: bigMenu.width / 2
-
-
-                model: myModel
-
-
-             //   Rectangle{
-             //       id: cellBack
-             //       anchors.fill: parent
-             //       color: "#f7f7f7"
-             //       width: cells.width
-             //       height: cells.height
-             //       z: 0
-             //   }
+                }
 
 
 
-                //clip: true
-                delegate: Component{
-                    id: cellDelegat
-                    Item {
-                        id: oneCell
-                        width: cells.cellWidth
-                        height: cells.cellHeight
-                        smooth: true
 
 
-                        MouseArea{
-                            id: buttons
-                            enabled: active
-                            width: oneCell.width
-                            height: oneCell.height
-                            clip: true
+
+                //
+                // LinearGradient {
+                //     anchors.fill: parent
+                //     source: bigMenu
+                //     start: Qt.point(0, 0)
+                //     end: Qt.point(cells.width, cells.width)
+                //     gradient: Gradient {
+                //         GradientStop { position: 0.2; color: "#f7f7f7" }
+                //         GradientStop { position: 0.5; color: "#93deff" }
+                //         GradientStop { position: 0.8; color: "#f7f7f7" }
+                //     }
+                // }
 
 
-                            Rectangle {
-                                id: bigMenucolorRect
-                                height: 0
-                                width: 0
-                                color: "#93deff"
-                                z: 2
 
-                                transform: Translate {
-                                    x: -bigMenucolorRect.width / 2
-                                    y: -bigMenucolorRect.height  / 2
-                                }
-                            }
+                GridView{
+                    id: cells
+                    interactive: false
+                    visible: false
+                    anchors.centerIn: parent
+                    smooth: true
 
-                            Rectangle{
-                                id: backOfCell
-                                color: "#f7f7f7"
-                                smooth: true
+                    width: cellWidth * 2
+                    height: cellHeight * 3
+
+                    cellHeight: bigMenu.height / 3
+                    cellWidth: bigMenu.width / 2
+
+
+                    model: myModel
+
+
+                    //   Rectangle{
+                    //       id: cellBack
+                    //       anchors.fill: parent
+                    //       color: "#f7f7f7"
+                    //       width: cells.width
+                    //       height: cells.height
+                    //       z: 0
+                    //   }
+
+
+
+                    //clip: true
+                    delegate: Component{
+                        id: cellDelegat
+                        Item {
+                            id: oneCell
+                            width: cells.cellWidth
+                            height: cells.cellHeight
+                            smooth: true
+
+
+
+
+
+
+                            MouseArea{
+                                id: buttons
+                                enabled: active
+                                width: oneCell.width
+                                height: oneCell.height
+                                clip: true
                                 anchors.fill: parent
-                                radius: 3
-                                anchors.margins: 1
 
-                                Image {
-                                    id: buttImg
+
+                                Rectangle{
+                                    id: backOfCell
+                                    color: "#f7f7f7"
                                     smooth: true
-                                    //anchors.fill: parent
-                                    anchors.centerIn: parent
+                                    anchors.fill: parent
+                                    radius: 3
+                                    anchors.margins: 1
 
 
-                                    source: backdata
-                                    //scale: 0.3
+
+                                    Rectangle {
+                                        id: bigMenucolorRect
+                                        height: 0
+                                        width: 0
+                                        visible: false
+                                        color: "#93deff"
+                                        opacity: 0.7
+
+                                        transform: Translate {
+                                            x: -bigMenucolorRect.width / 2
+                                            y: -bigMenucolorRect.height  / 2
+                                        }
+                                    }
+
+
+                                    Image {
+                                        id: buttImg
+                                        smooth: true
+                                        //anchors.fill: parent
+                                        anchors.centerIn: parent
+
+
+                                        source: backdata
+                                        //scale: 0.3
+
+                                    }
+
+                                    Text {
+                                        id: cellButtonTxt
+                                        anchors.top: buttImg.bottom
+                                        anchors.topMargin: 10
+                                        anchors.horizontalCenter: buttImg.horizontalCenter
+                                        color: "#606470"
+                                        font.family: gotham_XNarrow.name;
+                                        font.pointSize: 16
+                                        text: mtext
+                                        smooth: true
+                                    }
+
+
+
+
+
+                                }
+                                onPressed: {
+                                    //game_engine.soundTap()
+
+
+                                    bigMenucolorRect.x = mouseX
+                                    bigMenucolorRect.y = mouseY
+
+                                    if(cellButtoncircleAnimation.running)
+                                        cellButtoncircleAnimation.stop()
+
+                                    cellButtoncircleAnimation.start()
+
+
+
+                                    if (index === 0)
+                                        stackView.push("payments.qml")
+
+
+                                    console.log(index)
+
 
                                 }
 
-                                Text {
-                                    id: cellButtonTxt
-                                    anchors.top: buttImg.bottom
-                                    anchors.topMargin: 10
-                                    anchors.horizontalCenter: buttImg.horizontalCenter
-                                    color: "#606470"
-                                    font.family: gotham_XNarrow.name;
-                                    font.pointSize: 16
-                                    text: mtext
-                                    smooth: true
+
+
+                                ParallelAnimation {
+                                    id: cellButtoncircleAnimation
+
+                                    NumberAnimation {
+                                        //id: cellButtoncircleAnimation
+                                        target: bigMenucolorRect;
+                                        properties: "width,height,radius";
+                                        from: bigMenucolorRect.width;
+                                        to: buttons.width * 1.8;
+                                        duration: 900;
+                                        easing.type: Easing.OutExpo;
+
+                                    }
+
+
+                                    NumberAnimation {
+                                        id: cellButtonOpacityAnimation
+                                        target: bigMenucolorRect;
+                                        easing.type: Easing.InExpo;
+                                        properties: "opacity";
+                                        from: 0.7;
+                                        to: 0;
+                                        duration: 250;
+
+                                    }
+
+                                    onStarted: {
+                                        bigMenucolorRect.visible = true
+                                    }
+
+                                    onStopped: {
+                                        bigMenucolorRect.width = 0
+                                        bigMenucolorRect.height = 0
+                                        bigMenucolorRect.visible = false
+                                    }
+
                                 }
 
 
+                            }
 
+                        }
+
+                    }
+
+
+                    ScaleAnimator{
+                        id: cellAppear
+                        target: cells
+                        running: cells.visible
+                        from: 0.7
+                        to: 1
+                        duration: 200
+
+                        easing.type: Easing.InCirc
+                        onStopped: {
+                            // some soundeffects
+                            // game_engine.soundBegin()
+                            //backgroundAppear.start()
+                        }
+                    }
+
+
+
+                    SequentialAnimation{
+                        id: cellsExit
+                        running: false
+
+
+                        ParallelAnimation{
+
+                            NumberAnimation{
+                                target: cells
+                                properties: "scale"
+                                from: 1
+                                to: 150
+                                duration: 700
+                                easing.type: Easing.InExpo
 
 
                             }
-                            onClicked: {
-                                //game_engine.soundTap()
-
-
-                                bigMenucolorRect.x = mouseX
-                                bigMenucolorRect.y = mouseY
-                                cellButtoncircleAnimation.start()
-                                cellButtonOpacityAnimation.start()
-
-                                console.log(index)
-
-
-                            }
-
-                            PropertyAnimation {
-                                id: cellButtoncircleAnimation
-                                target: bigMenucolorRect
-                                properties: "width,height,radius"
-                                from: 0
-                                to: buttons.width * 2
-                                duration: 400
-
-                                onStopped: {
-                                    bigMenucolorRect.width = 0
-                                    bigMenucolorRect.height = 0
-                                }
-                            }
-
-
-                            PropertyAnimation {
-                                id: cellButtonOpacityAnimation
-                                target: bigMenucolorRect
+                            NumberAnimation{
+                                target: cells
                                 properties: "opacity"
                                 from: 1
                                 to: 0
-                                duration: 350
+                                duration: 800
+                                easing.type: Easing.InExpo
 
                             }
 
                         }
 
-                    }
-
-                }
-
-
-                ScaleAnimator{
-                    id: cellAppear
-                    target: cells
-                    running: cells.visible
-                    from: 0
-                    to: 1
-                    duration: 300
-
-                    easing.type: Easing.OutBounce
-                    onStopped: {
-                        // some soundeffects
-                        // game_engine.soundBegin()
-                        //backgroundAppear.start()
-                    }
-                }
-
-
-
-                SequentialAnimation{
-                    id: cellsExit
-                    running: false
-
-
-                    ParallelAnimation{
-
-                        NumberAnimation{
-                            target: cells
-                            properties: "scale"
-                            from: 1
-                            to: 150
-                            duration: 700
-                            easing.type: Easing.InExpo
+                        onStopped: {
 
 
                         }
-                        NumberAnimation{
-                            target: cells
-                            properties: "opacity"
-                            from: 1
-                            to: 0
-                            duration: 800
-                            easing.type: Easing.InExpo
-
-                        }
-
-                    }
-
-                    onStopped: {
-                        // Here must be the slot, that reset all of values,
-                        // and begin new game again.
-
-                        // if(!network_core.amIServer())
-                        // {
-                        // network_core.client_disconnect()
-                        // connecttimer.running = true
-                        // }
-
-
-                        console.log(myModel.rowCount());
-
-
-                        for(var i = 0; i !== myModel.count; ++i)
-                        {
-                            myModel.get(i).backdata = "null"
-                            myModel.get(i).active = true
-                        }
-
-                        if(network_core.amIServer())
-                            network_core.gameRestart()
-
-
-                        cells.visible = true
-                        cells.opacity = 1
-                        cellAppear.running = true
 
                     }
 
@@ -966,10 +1003,8 @@ ApplicationWindow{
 
         }
 
+
     }
-
-
-
 
 
     Label {
@@ -1035,7 +1070,7 @@ ApplicationWindow{
 
     StackView {
         id: stackView
-        // initialItem: "HomeForm.ui.qml"
+        initialItem: "flick"
         anchors.fill: parent
     }
 

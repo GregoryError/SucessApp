@@ -22,5 +22,6 @@
         <file>Calendar.png</file>
         <file>fonts/Gotham_XNarrow.ttf</file>
         <file>infoPic.png</file>
+        <file>payments.qml</file>
     </qresource>
 </RCC>
