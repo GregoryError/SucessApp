@@ -234,8 +234,8 @@ void MyClient::Sender(const QString &msg)
 void MyClient::connectToHost()
 {
     //m_pTcpSocket->connectToHostEncrypted("176.125.152.88", 2323);
-    //m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+    //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 }
 

@@ -7,6 +7,10 @@ import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs 1.1
+
+
+
 
 
 
@@ -66,7 +70,7 @@ ApplicationWindow{
         id: startform
         opacity: 0
         //visible: true
-        //visible: myClient.isAuth() ? false : true
+        visible: myClient.isAuth() ? false : true
 
         width: mainwnd.width * 0.6
         height: mainwnd.height * 0.5
@@ -95,7 +99,7 @@ ApplicationWindow{
             to: 0;
             duration: 1700
             //running: false
-            //running: (myClient.isAuth()) ? true : false
+            running: (myClient.isAuth()) ? true : false
             easing.type: Easing.InOutExpo
         }
 
@@ -220,7 +224,9 @@ ApplicationWindow{
                             loginButtoncolorRect.y = mouseY
                             loginButtoncircleAnimation.start()
 
-                            // myClient.setAuthData(nameInput.text, passwordInput.text);
+                            myClient.setAuthData(nameInput.text, passwordInput.text);
+
+                            console.log(nameInput.text, passwordInput.text)
 
                             //  bigbusy.running = true
                             firsttimer.running = true
@@ -312,7 +318,23 @@ ApplicationWindow{
     }
 
 
-    ////////////////////////////////////////////////////////////// END OF START-FORM ////////////////////////////////////////////////
+
+    MessageDialog {
+        id: messageDialog
+        title: "Вход невозможен"
+        onAccepted: {
+            // Qt.quit()
+        }
+        Component.onCompleted: visible = false
+
+    }
+
+
+    //////////////////////////////////////////// END OF START-FORM ////////////////////////////////////////////////
+
+
+    //var space = 3;             // space between buttons
+
 
     Rectangle{
         id: flick
@@ -324,8 +346,9 @@ ApplicationWindow{
         y: 0
         z: 0
 
+        visible: (myClient.isAuth()) ? true : false
 
-        visible: false  // (myClient.isAuth()) ? true : false
+        //visible: false  // (myClient.isAuth()) ? true : false
 
 
         LinearGradient {
@@ -473,7 +496,7 @@ ApplicationWindow{
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 50
                 color: "#f7f7f7"
-                text: "550 ₽"
+                //text: "550 ₽"
                 //text: myClient.showBill() + "₽"
 
                 //wrapMode: Text.WordWrap
@@ -502,7 +525,7 @@ ApplicationWindow{
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 25
                 color: "#f7f7f7"
-                text: "Комплекс 550"
+                //text: "Комплекс 550"
                 //text: myClient.showPlan()
 
 
@@ -544,7 +567,7 @@ ApplicationWindow{
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 14
-                text: "Ваш номер счета: 5502"
+                //text:
                 color: "#f7f7f7"
 
             }
@@ -558,13 +581,15 @@ ApplicationWindow{
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 14
-                text: "Ваш день платежа: 17"
+               // text: "Ваш день платежа: 17"
                 color: "#f7f7f7"
 
             }
 
 
         }
+
+        /////////////////////////////////// BUTTONS /////////////////////////////////////////////////////
 
         Rectangle{
             id: bigMenu
@@ -575,7 +600,7 @@ ApplicationWindow{
             anchors.top: infoRect.bottom
             anchors.topMargin: -15
             z: 3
-            color: "white"
+            // color: "transparent"
 
 
 
@@ -588,14 +613,100 @@ ApplicationWindow{
                 color: "#606470"
             }
 
+
+
+
+            Rectangle{
+                id: paysList
+                height: bigMenu.height / 3 - 3
+                width: bigMenu.width / 2 - 3
+
+
+                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
+                anchors.verticalCenter: bigMenu.verticalCenter - bigMenu.height / 5
+                radius: 5
+
+            }
+
+
+            Rectangle{
+                id: cashPoints
+                height: paysList.height
+                width: paysList.width
+
+
+
+                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
+                anchors.top: paysList.bottom
+                anchors.topMargin: 3
+                radius: 5
+
+            }
+
+
+            Rectangle{
+                id: trustedPay
+                height: paysList.height
+                width: paysList.width
+
+
+
+                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
+                anchors.top: cashPoints.bottom
+                anchors.topMargin: 3
+                radius: 5
+
+            }
+
+            //////////
+
+            Rectangle{
+                id: messages
+                height: paysList.height
+                width: paysList.width
+
+
+                anchors.verticalCenter: paysList.verticalCenter
+                anchors.left: paysList.right
+                anchors.leftMargin: 3
+                radius: 5
+
+            }
+
+
+            Rectangle{
+                id: callUs
+                height: paysList.height
+                width: paysList.width
+
+
+                anchors.verticalCenter: cashPoints.verticalCenter
+                anchors.left: cashPoints.right
+                anchors.leftMargin: 3
+                radius: 5
+
+            }
+
+
+            Rectangle{
+                id: webSite
+                height: paysList.height
+                width: paysList.width
+
+
+
+                anchors.verticalCenter: trustedPay.verticalCenter
+                anchors.left: trustedPay.right
+                anchors.leftMargin: 3
+                radius: 5
+
+            }
+
+
         }
 
 
-
     }
-
-
-
 
 
 
@@ -641,6 +752,7 @@ ApplicationWindow{
                     width: parent.width
                     onClicked: {
                         //stackView.push("Page1Form.ui.qml")
+                        myClient.quitAndClear()
                         drawer.close()
                     }
                 }
@@ -673,19 +785,19 @@ ApplicationWindow{
         id: firsttimer
         interval: 2000;
 
-        //running: (myClient.isAuth()) ? true : false
+        running: (myClient.isAuth()) ? true : false
 
 
         onTriggered:{
 
-            if(true/*myClient.isAuthRight()*/){           // Для теста
+            if(myClient.isAuthRight()){           // Для теста
 
                 //  bigbusy.running = false
                 //
                 disappearStartForm.running = true
                 //
                 //
-                //  flick.opacity = 0
+                //flick.opacity = 0
                 mainwnd.visible = true
                 toolRect.visible = true
                 flick.visible = true
@@ -694,13 +806,19 @@ ApplicationWindow{
                 //
                 //
 
-                //billVal.text = myClient.showBill() + "₽"
+                billVal.text = myClient.showBill() + "₽"
 
                 // if(myClient.showState() === "off")
                 //     bigPaneltext.color = "#B84BFF"
                 // else bigPaneltext.color = "#f7f7f7"
                 //
-                // planName.text = myClient.showPlan()
+
+
+                planName.text = myClient.showPlan();
+
+                countTxt.text = "Ваш номер счета: " + myClient.showId();
+
+                dateTxt.text = "Ваш день платежа: " + myClient.showPay_day();
 
 
                 //  lefttext.text = "Номер счета: <br>"
@@ -720,7 +838,7 @@ ApplicationWindow{
 
             }else{
                 messageDialog.text = myClient.authResult();
-                bigbusy.running = false
+                //bigbusy.running = false
                 messageDialog.visible = true;
                 flick.visible = false
             }
