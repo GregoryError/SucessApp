@@ -808,11 +808,6 @@ ApplicationWindow{
                                 radius: 3
                                 anchors.margins: 1
 
-
-
-
-
-
                                 Image {
                                     id: buttImg
                                     smooth: true
@@ -861,8 +856,8 @@ ApplicationWindow{
                                 target: bigMenucolorRect
                                 properties: "width,height,radius"
                                 from: 0
-                                to: buttons.width * 5
-                                duration: 450
+                                to: buttons.width * 2
+                                duration: 400
 
                                 onStopped: {
                                     bigMenucolorRect.width = 0
@@ -877,7 +872,7 @@ ApplicationWindow{
                                 properties: "opacity"
                                 from: 1
                                 to: 0
-                                duration: 600
+                                duration: 350
 
                             }
 
