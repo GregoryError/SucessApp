@@ -11,10 +11,6 @@ import QtQuick.Dialogs 1.1
 
 
 
-
-
-
-
 ApplicationWindow{
     id: mainwnd
     visible: true
@@ -24,8 +20,9 @@ ApplicationWindow{
     height: 850
     // width: 1080
     // height: 1920
-    //  width: Screen.width
-    //  height: Screen.height
+    // width: Screen.width
+    // height: Screen.height
+
 
 
     // color: "#f7f7f7"
@@ -223,12 +220,13 @@ ApplicationWindow{
                             loginButtoncolorRect.x = mouseX
                             loginButtoncolorRect.y = mouseY
                             loginButtoncircleAnimation.start()
+                            loginButtonOpacityAnimation.start()
 
                             myClient.setAuthData(nameInput.text, passwordInput.text);
 
                             console.log(nameInput.text, passwordInput.text)
 
-                            //  bigbusy.running = true
+                            bigbusy.running = true
                             firsttimer.running = true
 
                         }
@@ -240,12 +238,23 @@ ApplicationWindow{
                         properties: "width,height,radius"
                         from: 0
                         to: order.width * 2
-                        duration: 130
+                        duration: 250
 
                         onStopped: {
                             loginButtoncolorRect.width = 0
                             loginButtoncolorRect.height = 0
                         }
+                    }
+
+
+                    PropertyAnimation {
+                        id: loginButtonOpacityAnimation
+                        target: loginButtoncolorRect
+                        properties: "opacity"
+                        from: 1
+                        to: 0
+                        duration: 300
+
                     }
                 }
 
@@ -288,7 +297,8 @@ ApplicationWindow{
 
                             ordercolorRect.x = mouseX
                             ordercolorRect.y = mouseY
-                            circleAnimation.start()
+                            orderButtonCircleAnimation.start()
+                            orderButtonOpacityAnimation.start()
                         }
 
 
@@ -301,17 +311,26 @@ ApplicationWindow{
                 }
 
                 PropertyAnimation {
-                    id: circleAnimation
+                    id: orderButtonCircleAnimation
                     target: ordercolorRect
                     properties: "width,height,radius"
                     from: 0
                     to: order.width * 2
-                    duration: 130
+                    duration: 250
 
                     onStopped: {
                         ordercolorRect.width = 0
                         ordercolorRect.height = 0
                     }
+                }
+                PropertyAnimation {
+                    id: orderButtonOpacityAnimation
+                    target: ordercolorRect
+                    properties: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 300
+
                 }
             }
         }
@@ -346,28 +365,48 @@ ApplicationWindow{
         y: 0
         z: 0
 
-        visible: (myClient.isAuth()) ? true : false
+        // visible: (myClient.isAuth()) ? true : false
+        opacity: 0
+        visible: false  // (myClient.isAuth()) ? true : false
 
-        //visible: false  // (myClient.isAuth()) ? true : false
 
 
-        LinearGradient {
-            anchors.fill: parent
-            //visible: false
-            start: Qt.point(0, 0)
-            end: Qt.point(mainwnd.width, mainwnd.width)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#93deff" }
-                GradientStop { position: 0.2; color: "#638AA1" }
-                GradientStop { position: 0.4; color: "#4B6072" }
-                GradientStop { position: 0.7; color: "#323643" }
-                GradientStop { position: 1.0; color: "#323643" }
+
+        OpacityAnimator {
+            id: flickappear
+            target: flick;
+            from: 0;
+            to: 1;
+            duration: 600
+            running: false
+            //running: (myClient.isAuth()) ? true : false
+            onStopped: {
+                cells.visible = true
             }
+
+
         }
 
 
-        //   }
+        color: "steelblue"
 
+
+        //  LinearGradient {
+        //     anchors.fill: parent
+        //     //visible: false
+        //     start: Qt.point(0, 0)
+        //     end: Qt.point(mainwnd.width, mainwnd.width)
+        //     gradient: Gradient {
+        //         GradientStop { position: 0.0; color: "#93deff" }
+        //         GradientStop { position: 0.2; color: "#638AA1" }
+        //         GradientStop { position: 0.4; color: "#4B6072" }
+        //         GradientStop { position: 0.7; color: "#323643" }
+        //         GradientStop { position: 1.0; color: "#323643" }
+        //     }
+        // }
+
+
+        //   }
 
 
 
@@ -425,8 +464,8 @@ ApplicationWindow{
                     color: "#93deff"
 
                     transform: Translate {
-                       // x: -toolButtoncolorRect.width / 2
-                       // y: -toolButtoncolorRect.height / 2
+                        // x: -toolButtoncolorRect.width / 2
+                        // y: -toolButtoncolorRect.height / 2
                     }
                 }
 
@@ -476,8 +515,6 @@ ApplicationWindow{
                 duration: 250
 
             }
-
-
 
 
         }
@@ -541,7 +578,7 @@ ApplicationWindow{
                 anchors.topMargin: 4
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: gotham_XNarrow.name;
-                font.pointSize: 25
+                font.pointSize: 24
                 color: "#f7f7f7"
                 //text: "Комплекс 550"
                 //text: myClient.showPlan()
@@ -599,7 +636,7 @@ ApplicationWindow{
                 anchors.horizontalCenter: infoRect.horizontalCenter
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 14
-               // text: "Ваш день платежа: 17"
+                // text: "Ваш день платежа: 17"
                 color: "#f7f7f7"
 
             }
@@ -609,6 +646,58 @@ ApplicationWindow{
 
         /////////////////////////////////// BUTTONS /////////////////////////////////////////////////////
 
+
+
+
+        ListModel {
+            id: myModel
+
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/payhistory.png"
+                active: true
+                mtext: "Платежи"
+            }
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/gps.png"
+                active: true
+                mtext: "Точки оплаты"
+            }
+
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/trusted.png"
+                active: true
+                mtext: "Обещанный платеж"
+            }
+
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/activity.png"
+                active: true
+                mtext: "Моя активность"
+            }
+
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/call.png"
+                active: true
+                mtext: "Позвонить нам"
+            }
+
+            ListElement {
+                mycolor: "#2cbaf1"
+                backdata: "qrc:/Menu/oursite.png"
+                active: true
+                mtext: "Наш сайт"
+            }
+
+        }
+
+
+
+
         Rectangle{
             id: bigMenu
             width: mainwnd.width - 30
@@ -617,10 +706,10 @@ ApplicationWindow{
             radius: 2
             anchors.top: infoRect.bottom
             anchors.topMargin: -15
-            z: 3
             // color: "transparent"
 
-
+           // clip: true
+            smooth: true
 
             layer.enabled: true
             layer.effect: DropShadow {
@@ -629,100 +718,258 @@ ApplicationWindow{
                 samples: 30
                 radius: 12
                 color: "#606470"
-            }
-
-
-
-
-            Rectangle{
-                id: paysList
-                height: bigMenu.height / 3 - 3
-                width: bigMenu.width / 2 - 3
-
-
-                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
-                anchors.verticalCenter: bigMenu.verticalCenter - bigMenu.height / 5
-                radius: 5
 
             }
 
 
-            Rectangle{
-                id: cashPoints
-                height: paysList.height
-                width: paysList.width
 
 
 
-                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
-                anchors.top: paysList.bottom
-                anchors.topMargin: 3
-                radius: 5
+
+           //
+           // LinearGradient {
+           //     anchors.fill: parent
+           //     source: bigMenu
+           //     start: Qt.point(0, 0)
+           //     end: Qt.point(cells.width, cells.width)
+           //     gradient: Gradient {
+           //         GradientStop { position: 0.2; color: "#f7f7f7" }
+           //         GradientStop { position: 0.5; color: "#93deff" }
+           //         GradientStop { position: 0.8; color: "#f7f7f7" }
+           //     }
+           // }
+
+
+
+            GridView{
+                id: cells
+                interactive: false
+                visible: false
+                anchors.centerIn: parent
+                smooth: true
+
+                width: cellWidth * 2
+                height: cellHeight * 3
+
+                cellHeight: bigMenu.height / 3
+                cellWidth: bigMenu.width / 2
+
+
+                model: myModel
+
+
+             //   Rectangle{
+             //       id: cellBack
+             //       anchors.fill: parent
+             //       color: "#f7f7f7"
+             //       width: cells.width
+             //       height: cells.height
+             //       z: 0
+             //   }
+
+
+
+                //clip: true
+                delegate: Component{
+                    id: cellDelegat
+                    Item {
+                        id: oneCell
+                        width: cells.cellWidth
+                        height: cells.cellHeight
+                        smooth: true
+
+
+                        MouseArea{
+                            id: buttons
+                            enabled: active
+                            width: oneCell.width
+                            height: oneCell.height
+                            clip: true
+
+
+                            Rectangle {
+                                id: bigMenucolorRect
+                                height: 0
+                                width: 0
+                                color: "#93deff"
+                                z: 2
+
+                                transform: Translate {
+                                    x: -bigMenucolorRect.width / 2
+                                    y: -bigMenucolorRect.height  / 2
+                                }
+                            }
+
+                            Rectangle{
+                                id: backOfCell
+                                color: "#f7f7f7"
+                                smooth: true
+                                anchors.fill: parent
+                                radius: 3
+                                anchors.margins: 1
+
+
+
+
+
+
+                                Image {
+                                    id: buttImg
+                                    smooth: true
+                                    //anchors.fill: parent
+                                    anchors.centerIn: parent
+
+
+                                    source: backdata
+                                    //scale: 0.3
+
+                                }
+
+                                Text {
+                                    id: cellButtonTxt
+                                    anchors.top: buttImg.bottom
+                                    anchors.topMargin: 10
+                                    anchors.horizontalCenter: buttImg.horizontalCenter
+                                    color: "#606470"
+                                    font.family: gotham_XNarrow.name;
+                                    font.pointSize: 16
+                                    text: mtext
+                                    smooth: true
+                                }
+
+
+
+
+
+                            }
+                            onClicked: {
+                                //game_engine.soundTap()
+
+
+                                bigMenucolorRect.x = mouseX
+                                bigMenucolorRect.y = mouseY
+                                cellButtoncircleAnimation.start()
+                                cellButtonOpacityAnimation.start()
+
+                                console.log(index)
+
+
+                            }
+
+                            PropertyAnimation {
+                                id: cellButtoncircleAnimation
+                                target: bigMenucolorRect
+                                properties: "width,height,radius"
+                                from: 0
+                                to: buttons.width * 5
+                                duration: 450
+
+                                onStopped: {
+                                    bigMenucolorRect.width = 0
+                                    bigMenucolorRect.height = 0
+                                }
+                            }
+
+
+                            PropertyAnimation {
+                                id: cellButtonOpacityAnimation
+                                target: bigMenucolorRect
+                                properties: "opacity"
+                                from: 1
+                                to: 0
+                                duration: 600
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+
+                ScaleAnimator{
+                    id: cellAppear
+                    target: cells
+                    running: cells.visible
+                    from: 0
+                    to: 1
+                    duration: 300
+
+                    easing.type: Easing.OutBounce
+                    onStopped: {
+                        // some soundeffects
+                        // game_engine.soundBegin()
+                        //backgroundAppear.start()
+                    }
+                }
+
+
+
+                SequentialAnimation{
+                    id: cellsExit
+                    running: false
+
+
+                    ParallelAnimation{
+
+                        NumberAnimation{
+                            target: cells
+                            properties: "scale"
+                            from: 1
+                            to: 150
+                            duration: 700
+                            easing.type: Easing.InExpo
+
+
+                        }
+                        NumberAnimation{
+                            target: cells
+                            properties: "opacity"
+                            from: 1
+                            to: 0
+                            duration: 800
+                            easing.type: Easing.InExpo
+
+                        }
+
+                    }
+
+                    onStopped: {
+                        // Here must be the slot, that reset all of values,
+                        // and begin new game again.
+
+                        // if(!network_core.amIServer())
+                        // {
+                        // network_core.client_disconnect()
+                        // connecttimer.running = true
+                        // }
+
+
+                        console.log(myModel.rowCount());
+
+
+                        for(var i = 0; i !== myModel.count; ++i)
+                        {
+                            myModel.get(i).backdata = "null"
+                            myModel.get(i).active = true
+                        }
+
+                        if(network_core.amIServer())
+                            network_core.gameRestart()
+
+
+                        cells.visible = true
+                        cells.opacity = 1
+                        cellAppear.running = true
+
+                    }
+
+                }
 
             }
-
-
-            Rectangle{
-                id: trustedPay
-                height: paysList.height
-                width: paysList.width
-
-
-
-                anchors.horizontalCenter: bigMenu.horizontalCenter - bigMenu.width / 4
-                anchors.top: cashPoints.bottom
-                anchors.topMargin: 3
-                radius: 5
-
-            }
-
-            //////////
-
-            Rectangle{
-                id: messages
-                height: paysList.height
-                width: paysList.width
-
-
-                anchors.verticalCenter: paysList.verticalCenter
-                anchors.left: paysList.right
-                anchors.leftMargin: 3
-                radius: 5
-
-            }
-
-
-            Rectangle{
-                id: callUs
-                height: paysList.height
-                width: paysList.width
-
-
-                anchors.verticalCenter: cashPoints.verticalCenter
-                anchors.left: cashPoints.right
-                anchors.leftMargin: 3
-                radius: 5
-
-            }
-
-
-            Rectangle{
-                id: webSite
-                height: paysList.height
-                width: paysList.width
-
-
-
-                anchors.verticalCenter: trustedPay.verticalCenter
-                anchors.left: trustedPay.right
-                anchors.leftMargin: 3
-                radius: 5
-
-            }
-
 
         }
-
 
     }
 
@@ -810,24 +1057,24 @@ ApplicationWindow{
 
             if(myClient.isAuthRight()){           // Для теста
 
-                //  bigbusy.running = false
+                bigbusy.running = false
                 //
                 disappearStartForm.running = true
                 //
                 //
-                //flick.opacity = 0
+                flick.opacity = 0
                 mainwnd.visible = true
                 toolRect.visible = true
                 flick.visible = true
                 //
-                //  flickappear.running = true
+                flickappear.running = true
                 //
                 //
 
                 billVal.text = myClient.showBill() + "₽"
 
-                // if(myClient.showState() === "off")
-                //     bigPaneltext.color = "#B84BFF"
+                // if(myClient.showState() === "off")     // This feature allowed to change balance
+                //     bigPaneltext.color = "#B84BFF"     // color, depend of access status.
                 // else bigPaneltext.color = "#f7f7f7"
                 //
 
@@ -856,7 +1103,7 @@ ApplicationWindow{
 
             }else{
                 messageDialog.text = myClient.authResult();
-                //bigbusy.running = false
+                bigbusy.running = false
                 messageDialog.visible = true;
                 flick.visible = false
             }
@@ -864,6 +1111,83 @@ ApplicationWindow{
 
         }
     }
+
+
+
+
+
+    BusyIndicator {
+        id: bigbusy
+        opacity: 0
+        running: (myClient.isAuth()) ? true : false
+        //running:
+        width: parent.width / 4 + 10
+        height: parent.width / 4 + 10
+        anchors.centerIn: parent
+
+        OpacityAnimator {
+            id: bigbusyappear
+            target: bigbusy;
+            from: 0;
+            to: 1;
+            duration: 600
+            running: true
+            easing.type: Easing.InOutExpo
+        }
+
+        contentItem: Item {
+            id: item
+            // x: parent.width / 2 - 32
+            // y: parent.height / 2 - 32
+            //anchors.fill: parent
+            //width: 64
+            //height: 64
+            opacity: bigbusy.running ? 1 : 0
+
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: 600
+                }
+            }
+
+            RotationAnimator {
+                target: item
+                running: bigbusy.visible && bigbusy.running
+                from: 0
+                to: 360
+                loops: Animation.Infinite
+                duration: 1200
+            }
+
+            Repeater {
+                id: repeater
+                model: 6
+                Rectangle{
+                    id: itemRec
+                    x: item.width / 2 - width / 2
+                    y: item.height / 2 - width / 2
+                    implicitWidth: mainwnd.width / 20
+                    implicitHeight: mainwnd.width / 20
+                    //radius: 50
+                    radius: 2
+                    color: "#606470"
+                    transform: [
+                        Translate {
+                            y: -Math.min(item.width, item.height) * 0.3
+                        },
+                        Rotation {
+                            angle: index / repeater.count * 360
+                            origin.x: width / 2
+                            origin.y: height / 2
+                        }
+                    ]
+                }
+            }
+
+        }
+
+    }
+
 
 }
 
