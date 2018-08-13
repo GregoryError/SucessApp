@@ -407,24 +407,26 @@ ApplicationWindow{
                 smooth: true
 
 
+
                 Image {
                     id: toolPic
                     source: "qrc:/toolPic.png"
                     width: 20
                     height: 15
                     smooth: true
-                    anchors.centerIn: parent
+                    anchors.centerIn: toolRect
                 }
 
                 Rectangle {
                     id: toolButtoncolorRect
                     height: 0
                     width: 0
+                    anchors.centerIn: toolRect
                     color: "#93deff"
 
                     transform: Translate {
-                        x: -toolButtoncolorRect.width / 2
-                        y: -toolButtoncolorRect.height / 2
+                       // x: -toolButtoncolorRect.width / 2
+                       // y: -toolButtoncolorRect.height / 2
                     }
                 }
 
@@ -433,9 +435,10 @@ ApplicationWindow{
                     anchors.fill: parent
                     onClicked: {
 
-                        toolButtoncolorRect.x = mouseX
-                        toolButtoncolorRect.y = mouseY
+                        //toolButtoncolorRect.x = mouseX
+                        //toolButtoncolorRect.y = mouseY
                         toolButtoncircleAnimation.start()
+                        toolButtonOpacityAnimation.start()
 
                     }
                 }
@@ -446,8 +449,8 @@ ApplicationWindow{
                 target: toolButtoncolorRect
                 properties: "width,height,radius"
                 from: 0
-                to: toolRect.width * 0.6
-                duration: 80
+                to: toolRect.width * 0.8
+                duration: 170
 
                 onStopped: {
                     toolButtoncolorRect.width = 0
@@ -462,6 +465,21 @@ ApplicationWindow{
 
                 }
             }
+
+
+            PropertyAnimation {
+                id: toolButtonOpacityAnimation
+                target: toolButtoncolorRect
+                properties: "opacity"
+                from: 1
+                to: 0
+                duration: 250
+
+            }
+
+
+
+
         }
 
 
