@@ -911,7 +911,7 @@ ApplicationWindow{
                                         properties: "width,height,radius";
                                         from: bigMenucolorRect.width;
                                         to: buttons.width * 1.8;
-                                        duration: 750;
+                                        duration: 700;
                                         easing.type: Easing.OutExpo
 
                                     }
@@ -929,15 +929,17 @@ ApplicationWindow{
                                     }
 
 
-                                    PropertyAnimation{
-                                        target: backOfCell
-                                        properties: "color"
-                                        duration: 900
-                                        from: "#C4EDFF"
-                                        to: "#f7f7f7"
-                                        easing.type: Easing.InOutQuad
-                                    }
 
+
+
+                                    ColorAnimation {
+                                       target: backOfCell
+                                       property: "color"
+                                       duration: 800
+                                       from: "#C4EDFF"
+                                       to: "#f7f7f7"
+                                       easing.type: Easing.InExpo;
+                                       }
 
 
                                     onStarted: {
