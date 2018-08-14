@@ -827,14 +827,13 @@ ApplicationWindow{
                                     anchors.margins: 1
 
 
-
                                     Rectangle {
                                         id: bigMenucolorRect
                                         height: 0
                                         width: 0
                                         visible: false
                                         color: "#93deff"
-                                        opacity: 0.7
+                                        opacity: 0.6
 
                                         transform: Translate {
                                             x: -bigMenucolorRect.width / 2
@@ -872,7 +871,13 @@ ApplicationWindow{
 
 
                                 }
+
                                 onPressed: {
+                                    backOfCell.color = "#C4EDFF"    // color: "#f7f7f7"
+                                    backOfCell.opacity = 0.7
+                                }
+
+                                onReleased: {
                                     //game_engine.soundTap()
 
 
@@ -886,8 +891,8 @@ ApplicationWindow{
 
 
 
-                                    if (index === 0)
-                                        stackView.push("payments.qml")
+                                    //if (index === 0)
+                                    //    stackView.push("payments.qml")
 
 
                                     console.log(index)
@@ -906,8 +911,8 @@ ApplicationWindow{
                                         properties: "width,height,radius";
                                         from: bigMenucolorRect.width;
                                         to: buttons.width * 1.8;
-                                        duration: 900;
-                                        easing.type: Easing.OutExpo;
+                                        duration: 750;
+                                        easing.type: Easing.OutExpo
 
                                     }
 
@@ -917,17 +922,32 @@ ApplicationWindow{
                                         target: bigMenucolorRect;
                                         easing.type: Easing.InExpo;
                                         properties: "opacity";
-                                        from: 0.7;
+                                        from: 0.6;
                                         to: 0;
                                         duration: 250;
 
                                     }
+
+
+                                    PropertyAnimation{
+                                        target: backOfCell
+                                        properties: "color"
+                                        duration: 900
+                                        from: "#C4EDFF"
+                                        to: "#f7f7f7"
+                                        easing.type: Easing.InOutQuad
+                                    }
+
+
 
                                     onStarted: {
                                         bigMenucolorRect.visible = true
                                     }
 
                                     onStopped: {
+                                        backOfCell.color = "#f7f7f7"    // color: "#f7f7f7"
+                                        backOfCell.opacity = 1
+
                                         bigMenucolorRect.width = 0
                                         bigMenucolorRect.height = 0
                                         bigMenucolorRect.visible = false
