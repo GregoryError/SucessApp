@@ -873,7 +873,8 @@ ApplicationWindow{
                                 }
 
                                 onPressed: {
-                                    backOfCell.color = "#C4EDFF"    // color: "#f7f7f7"
+                                    //backOfCell.color = "#C4EDFF"    // color: "#f7f7f7"
+                                    onPressedAnim.running = true
                                     backOfCell.opacity = 0.7
                                 }
 
@@ -899,6 +900,21 @@ ApplicationWindow{
 
 
                                 }
+
+
+
+
+
+                                ColorAnimation {
+                                   id: onPressedAnim
+                                   running: false
+                                   target: backOfCell
+                                   property: "color"
+                                   duration: 200
+                                   from: "#f7f7f7"
+                                   to: "#C4EDFF"
+                                   //easing.type: Easing.InExpo;
+                                   }
 
 
 
@@ -932,7 +948,7 @@ ApplicationWindow{
                                     ColorAnimation {
                                        target: backOfCell
                                        property: "color"
-                                       duration: 1600
+                                       duration: 1500
                                        from: "#C4EDFF"
                                        to: "#f7f7f7"
                                        easing.type: Easing.InExpo;
