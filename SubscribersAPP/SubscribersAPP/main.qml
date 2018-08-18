@@ -927,7 +927,7 @@ ApplicationWindow{
                                         properties: "width,height,radius";
                                         from: bigMenucolorRect.width;
                                         to: buttons.width * 1.8;
-                                        duration: 1400;
+                                        duration: 2400;
                                         easing.type: Easing.OutExpo
 
                                     }
@@ -940,7 +940,7 @@ ApplicationWindow{
                                         properties: "opacity";
                                         from: 0.6;
                                         to: 0;
-                                        duration: 450;
+                                        duration: 850;
 
                                     }
 
