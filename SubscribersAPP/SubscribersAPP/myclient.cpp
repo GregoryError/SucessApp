@@ -330,27 +330,6 @@ void MyClient::fillHomePage()
     emit startReadInfo();
 }
 
-void MyClient::startPushPays()
-{
-    emit pushPays();
-}
-
-void MyClient::startPushPayPoints()
-{
-    emit pushPayPoints();
-}
-
-void MyClient::startPushTrusted()
-{
-    emit pushTrusted();
-}
-
-void MyClient::startPushMsg()
-{
-    emit pushMsg();
-}
-
-
 void MyClient::showPayments()
 {
 

@@ -58,11 +58,6 @@ public:
 signals:
     void startReadInfo();
 
-    void pushPays();
-    void pushPayPoints();
-    void pushTrusted();
-    void pushMsg();
-
 
 public slots:
     bool isAuth();               // Возвращает что в QSettings
@@ -76,11 +71,6 @@ public slots:
     int payTableLenght();        // Возвращает кол-во строк в списке платежей
 
     void fillHomePage();
-
-    void startPushPays();
-    void startPushPayPoints();
-    void startPushTrusted();
-    void startPushMsg();
 
 
     QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом

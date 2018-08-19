@@ -273,8 +273,8 @@ Item {
                                 smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                width: 60
-                                height: 60
+                                width: 30
+                                height: 30
                                 source: backdata
                                 //scale: 0.3
 
@@ -396,10 +396,10 @@ Item {
                                 bigMenucolorRect.visible = false
 
                                 switch (index) {
-                                case 0: myClient.startPushPays(); break;
-                                case 1: myClient.startPushPayPoints(); break;
-                                case 2: myClient.startPushTrusted(); break;
-                                case 3: myClient.startPushMsg(); break;
+                                case 0: stackView.push("payments.qml"); break;
+                                case 1: //myClient.startPushPayPoints(); break;
+                                case 2: //myClient.startPushTrusted(); break;
+                                case 3: //myClient.startPushMsg(); break;
                                 case 4: BackEnd.callUs(); break;
                                 case 5: BackEnd.goUrl(); break;
                                 }
@@ -416,59 +416,59 @@ Item {
             }
 
 
-            ScaleAnimator{
-                id: cellAppear
-                target: cells
-                running: cells.visible
-                from: 0.7
-                to: 1
-                duration: 200
-
-                easing.type: Easing.InCirc
-                onStopped: {
-                    // some soundeffects
-                    // game_engine.soundBegin()
-                    //backgroundAppear.start()
-                }
-            }
-
-
-
-            SequentialAnimation{
-                id: cellsExit
-                running: false
+           // OpacityAnimator{
+           //     id: cellAppear
+           //     target: cells
+           //     running: cells.visible
+           //     from: 0
+           //     to: 1
+           //     duration: 200
+           //
+           //     easing.type: Easing.InCirc
+           //     onStopped: {
+           //         // some soundeffects
+           //         // game_engine.soundBegin()
+           //         //backgroundAppear.start()
+           //     }
+           // }
 
 
-                ParallelAnimation{
 
-                    NumberAnimation{
-                        target: cells
-                        properties: "scale"
-                        from: 1
-                        to: 150
-                        duration: 700
-                        easing.type: Easing.InExpo
-
-
-                    }
-                    NumberAnimation{
-                        target: cells
-                        properties: "opacity"
-                        from: 1
-                        to: 0
-                        duration: 800
-                        easing.type: Easing.InExpo
-
-                    }
-
-                }
-
-                onStopped: {
-
-
-                }
-
-            }
+           // SequentialAnimation{
+           //     id: cellsExit
+           //     running: false
+           //
+           //
+           //     ParallelAnimation{
+           //
+           //         NumberAnimation{
+           //             target: cells
+           //             properties: "scale"
+           //             from: 1
+           //             to: 150
+           //             duration: 700
+           //             easing.type: Easing.InExpo
+           //
+           //
+           //         }
+           //         NumberAnimation{
+           //             target: cells
+           //             properties: "opacity"
+           //             from: 1
+           //             to: 0
+           //             duration: 800
+           //             easing.type: Easing.InExpo
+           //
+           //         }
+           //
+           //     }
+           //
+           //     onStopped: {
+           //
+           //
+           //     }
+           //
+           // }
 
         }
 

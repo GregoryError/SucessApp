@@ -16,12 +16,12 @@ ApplicationWindow {
     visible: true
     // width: 540
     // height: 960
-    width: 430
-    height: 850
+    //width: 430
+    //height: 850
     // width: 1080
     // height: 1920
-    // width: Screen.width
-    // height: Screen.height
+    width: Screen.width
+    height: Screen.height
 
 
 
@@ -408,22 +408,37 @@ ApplicationWindow {
         visible: startform.visible? false : true
         enabled: startform.visible? false : true
 
-        LinearGradient {
+
+
+
+        Rectangle{                        // Временный фон на период разработки
+            id: tempRect
             width: window.width
             height: window.height * 0.3 + 50
             x: 0
             y: 0
-            //visible: false
-            start: Qt.point(0, 0)
-            end: Qt.point(window.width, window.width)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#93deff" }
-                GradientStop { position: 0.2; color: "#638AA1" }
-                GradientStop { position: 0.4; color: "#4B6072" }
-                GradientStop { position: 0.7; color: "#323643" }
-                GradientStop { position: 1.0; color: "#323643" }
-            }
+            color: "steelblue"
         }
+
+
+
+
+        //   LinearGradient {
+        //       width: window.width
+        //       height: window.height * 0.3 + 50
+        //       x: 0
+        //       y: 0
+        //       //visible: false
+        //       start: Qt.point(0, 0)
+        //       end: Qt.point(window.width, window.width)
+        //       gradient: Gradient {
+        //           GradientStop { position: 0.0; color: "#93deff" }
+        //           GradientStop { position: 0.2; color: "#638AA1" }
+        //           GradientStop { position: 0.4; color: "#4B6072" }
+        //           GradientStop { position: 0.7; color: "#323643" }
+        //           GradientStop { position: 1.0; color: "#323643" }
+        //       }
+        //   }
 
         FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
@@ -646,16 +661,6 @@ ApplicationWindow {
         }
 
     }
-
-
-
-    Connections{
-        target: myClient
-        onPushPays: {
-            stackView.push("payments.qml")
-        }
-    }
-
 
 
 
