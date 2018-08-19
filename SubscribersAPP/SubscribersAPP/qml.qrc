@@ -18,10 +18,11 @@
         <file>arrow-left.png</file>
         <file>toolPic.png</file>
         <file>Wallet.png</file>
-        <file>CountNum.png</file>
-        <file>Calendar.png</file>
         <file>fonts/Gotham_XNarrow.ttf</file>
         <file>infoPic.png</file>
         <file>payments.qml</file>
+        <file>homePage.qml</file>
+        <file>arrow_left.png</file>
+        <file>Menu/msg.png</file>
     </qresource>
 </RCC>

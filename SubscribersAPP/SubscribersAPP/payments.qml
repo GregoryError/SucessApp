@@ -2,12 +2,24 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 
 
-Rectangle {
-    width: 430
-    height: 850 - 66
-    color: "green"
-    opacity: 0.7
-    //anchors.centerIn: parent
+
+
+
+
+Item {
+    anchors.fill: parent
+    id: mainwnd
+
+    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+
+
+    Rectangle{
+        anchors.centerIn: parent
+        width: 180
+        height: 250
+        color: "steelblue"
+    }
+
 
 
 

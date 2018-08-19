@@ -20,8 +20,6 @@
 #include <QDataStream>
 #include <QByteArray>
 
-
-
 class QTextEdit;
 class QLineEdit;
 
@@ -51,32 +49,43 @@ public:
     bool isConnect = false;
     bool demo = false;
 
-
-
     MyClient(QWidget* pwgt = 0);
     void Sender(const QString& msg);
     void connectToHost();
     Q_INVOKABLE void setAuthData(QString name, QString pass);
+    // Посылает запрос за стартовыми данными getAllData
 
+signals:
+    void startReadInfo();
 
+    void pushPays();
+    void pushPayPoints();
+    void pushTrusted();
+    void pushMsg();
 
 
 public slots:
-    bool isAuth();
-    QString authResult();
-    bool isAuthRight();
-    void quitAndClear();
-    void showPayments();
-    void askForPayments();
-    void askForTrustedPay();
+    bool isAuth();               // Возвращает что в QSettings
+    QString authResult();        // Возвращает строку loginResult
+    bool isAuthRight();          // Возвращает флажек isAuthOk
+    void quitAndClear();         // Очищает все строки с данными и данные в QSettings
+    void showPayments();         // Наполняет контейнеры данными из базы
+    void askForPayments();       // Посылает (логин#gпароль#askPayments!")
+    void askForTrustedPay();     // Посылает (логин#gпароль#requestTrustedPay")
     bool showDemo();
-    int payTableLenght();
+    int payTableLenght();        // Возвращает кол-во строк в списке платежей
+
+    void fillHomePage();
+
+    void startPushPays();
+    void startPushPayPoints();
+    void startPushTrusted();
+    void startPushMsg();
 
 
-    QString givePayTime(int strN);
-    QString givePayCash(int strN);
-    QString givePayComm(int strN);
-
+    QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом
+    QString givePayCash(int strN);   // Возвращает строку "cash" с заданным индексом
+    QString givePayComm(int strN);   // Возвращает строку "коммент" с заданным индексом
 
 
     void slotReadyRead();
@@ -91,8 +100,44 @@ public slots:
     void setAuthNo();
 
 
-
-
-
 };
 #endif  //_MyClient_h_
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

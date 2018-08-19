@@ -209,6 +209,7 @@ void MyClient::Sender(const QString &msg)
     }
     connectToHost();
 
+
     //
     //
     //    QByteArray arrBlock;
@@ -221,15 +222,9 @@ void MyClient::Sender(const QString &msg)
     //
 
 
-
-
     m_pTcpSocket->write(msg.toUtf8());
 
-
-
 }
-
-
 
 void MyClient::connectToHost()
 {
@@ -250,9 +245,6 @@ bool MyClient::isAuthRight()
 {
     return isAuthOk;
 }
-
-
-
 
 void MyClient::setAuthData(QString name, QString pass)
 {
@@ -281,19 +273,12 @@ void MyClient::quitAndClear()
     paket.clear();
 }
 
-
 bool MyClient::isAuth()
 {
-    //dataSet.setValue("isEntered", true);
     if(dataSet.value("isEntered").toBool())
         return true;
     else return false;
-
-    //return false;
-    //return true;
 }
-
-
 
 // ----------------------------------------------------------------------
 void MyClient::slotError(QAbstractSocket::SocketError err)
@@ -320,13 +305,6 @@ bool MyClient::showDemo()
     return demo;
 }
 
-
-
-
-
-
-
-
 void MyClient::askForPayments()
 {
     Sender("(" + dataSet.value("id").toString()
@@ -347,17 +325,37 @@ int MyClient::payTableLenght()
     return times_vct.size();
 }
 
+void MyClient::fillHomePage()
+{
+    emit startReadInfo();
+}
+
+void MyClient::startPushPays()
+{
+    emit pushPays();
+}
+
+void MyClient::startPushPayPoints()
+{
+    emit pushPayPoints();
+}
+
+void MyClient::startPushTrusted()
+{
+    emit pushTrusted();
+}
+
+void MyClient::startPushMsg()
+{
+    emit pushMsg();
+}
+
 
 void MyClient::showPayments()
 {
 
 
     QString result = payments.mid(12);
-    // qDebug() << "Overall: ";
-    // qDebug() << result;
-
-
-
 
     times_vct.clear();
     cashes_vct.clear();
