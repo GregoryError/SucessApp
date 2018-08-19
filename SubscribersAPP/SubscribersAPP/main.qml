@@ -16,12 +16,12 @@ ApplicationWindow {
     visible: true
     // width: 540
     // height: 960
-    //width: 430
-    //height: 850
+    width: 430
+    height: 850
     // width: 1080
     // height: 1920
-    width: Screen.width
-    height: Screen.height
+    //width: Screen.width
+    //height: Screen.height
 
 
 
@@ -511,27 +511,26 @@ ApplicationWindow {
             z: 3
 
 
-
-
             Image {
                 id: logoPic
                 source: "qrc:/RotatingLogo.png"
                 smooth: true
                 scale: 0.3
                 anchors.horizontalCenter: bar.horizontalCenter
-                anchors.verticalCenter: toolRect.verticalCenter
+                anchors.verticalCenter: bar.verticalCenter
 
             }
 
 
             Rectangle{                     // add background if use "Toolbutton"
                 id: toolRect
+                anchors.verticalCenter: logoPic.verticalCenter
                 color: "transparent"
                 radius: 25
                 width: toolPic.width * 3.5
                 height: toolPic.height * 3.5
                 x: 15
-                y: 15
+               // y: 15
                 clip: true
                 smooth: true
 
@@ -668,8 +667,7 @@ ApplicationWindow {
     BusyIndicator {
         id: bigbusy
         opacity: 0
-        //running: (myClient.isAuth()) ? true : false
-        running: true
+        running: false
         width: parent.width / 4 + 10
         height: parent.width / 4 + 10
         anchors.centerIn: parent

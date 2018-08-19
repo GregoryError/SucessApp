@@ -58,6 +58,8 @@ Item {
         Text{
             id: billVal
             anchors.horizontalCenter: infoRect.horizontalCenter
+            anchors.top: infoRect.top
+            anchors.topMargin: -15                      /////// controversal <<<<<<<<<<<<<<<<<<<<
             font.family: gotham_XNarrow.name;
             font.pointSize: 50
             color: "#f7f7f7"
@@ -75,7 +77,7 @@ Item {
             anchors.horizontalCenter: infoRect.horizontalCenter
             color: "#f7f7f7"
             font.family: gotham_XNarrow.name;
-            font.pointSize: 14
+            font.pointSize: 15
             text: "Баланс на сегодня"
         }
 
@@ -120,7 +122,7 @@ Item {
             anchors.topMargin: 8
             anchors.horizontalCenter: infoRect.horizontalCenter
             font.family: gotham_XNarrow.name;
-            font.pointSize: 14
+            font.pointSize: 15
             color: "#f7f7f7"
 
         }
@@ -131,7 +133,7 @@ Item {
             anchors.topMargin: 8
             anchors.horizontalCenter: infoRect.horizontalCenter
             font.family: gotham_XNarrow.name;
-            font.pointSize: 14
+            font.pointSize: 15
             color: "#f7f7f7"
 
 
@@ -396,8 +398,8 @@ Item {
                                 bigMenucolorRect.visible = false
 
                                 switch (index) {
-                                case 0: stackView.push("payments.qml"); break;
-                                case 1: //myClient.startPushPayPoints(); break;
+                                case 0: myClient.askForPayments(); stackView.push("payments.qml"); break;
+                                case 1:stackView.push("payPoints.qml"); break;
                                 case 2: //myClient.startPushTrusted(); break;
                                 case 3: //myClient.startPushMsg(); break;
                                 case 4: BackEnd.callUs(); break;
@@ -416,131 +418,131 @@ Item {
             }
 
 
-           // OpacityAnimator{
-           //     id: cellAppear
-           //     target: cells
-           //     running: cells.visible
-           //     from: 0
-           //     to: 1
-           //     duration: 200
-           //
-           //     easing.type: Easing.InCirc
-           //     onStopped: {
-           //         // some soundeffects
-           //         // game_engine.soundBegin()
-           //         //backgroundAppear.start()
-           //     }
-           // }
+            // OpacityAnimator{
+            //     id: cellAppear
+            //     target: cells
+            //     running: cells.visible
+            //     from: 0
+            //     to: 1
+            //     duration: 200
+            //
+            //     easing.type: Easing.InCirc
+            //     onStopped: {
+            //         // some soundeffects
+            //         // game_engine.soundBegin()
+            //         //backgroundAppear.start()
+            //     }
+            // }
 
 
 
-           // SequentialAnimation{
-           //     id: cellsExit
-           //     running: false
-           //
-           //
-           //     ParallelAnimation{
-           //
-           //         NumberAnimation{
-           //             target: cells
-           //             properties: "scale"
-           //             from: 1
-           //             to: 150
-           //             duration: 700
-           //             easing.type: Easing.InExpo
-           //
-           //
-           //         }
-           //         NumberAnimation{
-           //             target: cells
-           //             properties: "opacity"
-           //             from: 1
-           //             to: 0
-           //             duration: 800
-           //             easing.type: Easing.InExpo
-           //
-           //         }
-           //
-           //     }
-           //
-           //     onStopped: {
-           //
-           //
-           //     }
-           //
-           // }
+            // SequentialAnimation{
+            //     id: cellsExit
+            //     running: false
+            //
+            //
+            //     ParallelAnimation{
+            //
+            //         NumberAnimation{
+            //             target: cells
+            //             properties: "scale"
+            //             from: 1
+            //             to: 150
+            //             duration: 700
+            //             easing.type: Easing.InExpo
+            //
+            //
+            //         }
+            //         NumberAnimation{
+            //             target: cells
+            //             properties: "opacity"
+            //             from: 1
+            //             to: 0
+            //             duration: 800
+            //             easing.type: Easing.InExpo
+            //
+            //         }
+            //
+            //     }
+            //
+            //     onStopped: {
+            //
+            //
+            //     }
+            //
+            // }
 
         }
 
     }
 
 
-   // BusyIndicator {
-   //     id: bigbusy
-   //     opacity: 0
-   //     //running: (myClient.isAuth()) ? true : false
-   //     running: true
-   //     width: parent.width / 4 + 10
-   //     height: parent.width / 4 + 10
-   //     anchors.centerIn: parent
-   //
-   //     OpacityAnimator {
-   //         id: bigbusyappear
-   //         target: bigbusy;
-   //         from: 0;
-   //         to: 1;
-   //         duration: 600
-   //         running: true
-   //         easing.type: Easing.InOutExpo
-   //     }
-   //
-   //     contentItem: Item {
-   //         id: item
-   //         opacity: bigbusy.running ? 1 : 0
-   //
-   //         Behavior on opacity {
-   //             OpacityAnimator {
-   //                 duration: 600
-   //             }
-   //         }
-   //
-   //         RotationAnimator {
-   //             target: item
-   //             running: bigbusy.visible && bigbusy.running
-   //             from: 0
-   //             to: 360
-   //             loops: Animation.Infinite
-   //             duration: 2500
-   //         }
-   //
-   //         Repeater {
-   //             id: repeater
-   //             model: 6
-   //             Rectangle{
-   //                 id: itemRec
-   //                 x: item.width / 2 - width / 2
-   //                 y: item.height / 2 - width / 2
-   //                 implicitWidth: mainwnd.width / 20
-   //                 implicitHeight: mainwnd.width / 20
-   //                 //radius: 50
-   //                 radius: 10
-   //                 color: "#2284e0"
-   //                 transform: [
-   //                     Translate {
-   //                         y: -Math.min(item.width, item.height) * 0.3
-   //                     },
-   //                     Rotation {
-   //                         angle: index / repeater.count * 360
-   //                         origin.x: width / 2
-   //                         origin.y: height / 2
-   //                     }
-   //                 ]
-   //             }
-   //         }
-   //
-   //     }
-   //
-   // }
+    // BusyIndicator {
+    //     id: bigbusy
+    //     opacity: 0
+    //     //running: (myClient.isAuth()) ? true : false
+    //     running: true
+    //     width: parent.width / 4 + 10
+    //     height: parent.width / 4 + 10
+    //     anchors.centerIn: parent
+    //
+    //     OpacityAnimator {
+    //         id: bigbusyappear
+    //         target: bigbusy;
+    //         from: 0;
+    //         to: 1;
+    //         duration: 600
+    //         running: true
+    //         easing.type: Easing.InOutExpo
+    //     }
+    //
+    //     contentItem: Item {
+    //         id: item
+    //         opacity: bigbusy.running ? 1 : 0
+    //
+    //         Behavior on opacity {
+    //             OpacityAnimator {
+    //                 duration: 600
+    //             }
+    //         }
+    //
+    //         RotationAnimator {
+    //             target: item
+    //             running: bigbusy.visible && bigbusy.running
+    //             from: 0
+    //             to: 360
+    //             loops: Animation.Infinite
+    //             duration: 2500
+    //         }
+    //
+    //         Repeater {
+    //             id: repeater
+    //             model: 6
+    //             Rectangle{
+    //                 id: itemRec
+    //                 x: item.width / 2 - width / 2
+    //                 y: item.height / 2 - width / 2
+    //                 implicitWidth: mainwnd.width / 20
+    //                 implicitHeight: mainwnd.width / 20
+    //                 //radius: 50
+    //                 radius: 10
+    //                 color: "#2284e0"
+    //                 transform: [
+    //                     Translate {
+    //                         y: -Math.min(item.width, item.height) * 0.3
+    //                     },
+    //                     Rotation {
+    //                         angle: index / repeater.count * 360
+    //                         origin.x: width / 2
+    //                         origin.y: height / 2
+    //                     }
+    //                 ]
+    //             }
+    //         }
+    //
+    //     }
+    //
+    // }
 
 
 }

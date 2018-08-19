@@ -24,5 +24,6 @@
         <file>homePage.qml</file>
         <file>arrow_left.png</file>
         <file>Menu/msg.png</file>
+        <file>payPoints.qml</file>
     </qresource>
 </RCC>
