@@ -22,6 +22,7 @@ Item {
            plugin: mapPlugin
            center: QtPositioning.coordinate(60.7069, 28.7690) // Oslo
 
+
            zoomLevel: 14
        }
 

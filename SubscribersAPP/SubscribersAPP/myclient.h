@@ -49,7 +49,7 @@ public:
     bool isConnect = false;
     bool demo = false;
 
-    MyClient(QWidget* pwgt = 0);
+    MyClient(QWidget* pwgt = nullptr);
     void Sender(const QString& msg);
     void connectToHost();
     Q_INVOKABLE void setAuthData(QString name, QString pass);
@@ -57,6 +57,8 @@ public:
 
 signals:
     void startReadInfo();
+
+    void startReadPays();
 
 
 public slots:
@@ -71,6 +73,8 @@ public slots:
     int payTableLenght();        // Возвращает кол-во строк в списке платежей
 
     void fillHomePage();
+
+    void fillPaysPage();
 
 
     QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом

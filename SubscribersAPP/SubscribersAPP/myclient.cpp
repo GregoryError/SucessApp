@@ -330,6 +330,12 @@ void MyClient::fillHomePage()
     emit startReadInfo();
 }
 
+void MyClient::fillPaysPage()
+{
+    qDebug() << "in slot fillPaysPage";
+    emit startReadPays();
+}
+
 void MyClient::showPayments()
 {
 

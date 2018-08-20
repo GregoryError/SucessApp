@@ -12,10 +12,12 @@ import QtQuick.Dialogs 1.1
 
 
 Item {
-    anchors.fill: parent
+   // anchors.fill: parent
     id: mainwnd
 
     FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+
+
 
 
 
@@ -28,6 +30,8 @@ Item {
             countTxt.text = "Ваш номер счета: " + myClient.showId()
             dateTxt.text = "Ваш день платежа: " + myClient.showPay_day()
             //bigbusy.running = false
+
+
         }
     }
 
@@ -342,6 +346,23 @@ Item {
                         }
 
 
+                        Timer{
+                            id: operationTimer
+                            running: false
+                            interval: 300
+                            onTriggered: {
+                                switch (index) {
+                                case 0: myClient.askForPayments(); myClient.fillPaysPage(); stackView.push("payments.qml"); break;
+                                case 1: stackView.push("payPoints.qml"); break;
+                                case 2: //myClient.startPushTrusted(); break;
+                                case 3: //myClient.startPushMsg(); break;
+                                case 4: BackEnd.callUs(); break;
+                                case 5: BackEnd.goUrl(); break;
+                                }
+
+                            }
+                        }
+
 
                         ParallelAnimation {
                             id: cellButtoncircleAnimation
@@ -385,7 +406,7 @@ Item {
 
                             onStarted: {
                                 bigMenucolorRect.visible = true
-
+                                operationTimer.running = true
 
                             }
 
@@ -397,16 +418,10 @@ Item {
                                 bigMenucolorRect.height = 0
                                 bigMenucolorRect.visible = false
 
-                                switch (index) {
-                                case 0: myClient.askForPayments(); stackView.push("payments.qml"); break;
-                                case 1:stackView.push("payPoints.qml"); break;
-                                case 2: //myClient.startPushTrusted(); break;
-                                case 3: //myClient.startPushMsg(); break;
-                                case 4: BackEnd.callUs(); break;
-                                case 5: BackEnd.goUrl(); break;
-                                }
+
 
                             }
+
 
                         }
 
@@ -415,7 +430,15 @@ Item {
 
                 }
 
+
+
+
+
+
             }
+
+
+
 
 
             // OpacityAnimator{

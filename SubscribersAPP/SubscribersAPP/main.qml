@@ -24,10 +24,6 @@ ApplicationWindow {
     //height: Screen.height
 
 
-
-
-
-
     Rectangle{
         id: startHead
         visible: myClient.isAuth() ? false : true
@@ -45,7 +41,6 @@ ApplicationWindow {
                 GradientStop { position: 1.0; color: "#323643" }
             }
         }
-
 
 
         Image {
@@ -530,7 +525,7 @@ ApplicationWindow {
                 width: toolPic.width * 3.5
                 height: toolPic.height * 3.5
                 x: 15
-               // y: 15
+                // y: 15
                 clip: true
                 smooth: true
 
