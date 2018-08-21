@@ -70,7 +70,7 @@ public slots:
     void askForPayments();       // Посылает (логин#gпароль#askPayments!")
     void askForTrustedPay();     // Посылает (логин#gпароль#requestTrustedPay")
     bool showDemo();
-    int payTableLenght();        // Возвращает кол-во строк в списке платежей
+    int payTableLength();        // Возвращает кол-во строк в списке платежей
 
     void fillHomePage();
 

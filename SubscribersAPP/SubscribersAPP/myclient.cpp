@@ -320,7 +320,7 @@ void MyClient::askForTrustedPay()
 }
 
 
-int MyClient::payTableLenght()
+int MyClient::payTableLength()
 {
     return times_vct.size();
 }
@@ -332,7 +332,6 @@ void MyClient::fillHomePage()
 
 void MyClient::fillPaysPage()
 {
-    qDebug() << "in slot fillPaysPage";
     emit startReadPays();
 }
 

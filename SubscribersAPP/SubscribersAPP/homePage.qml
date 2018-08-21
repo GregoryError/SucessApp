@@ -325,7 +325,7 @@ Item {
                             //    stackView.push("payments.qml")
 
 
-                            console.log(index)
+                           // console.log(index)
 
 
                         }

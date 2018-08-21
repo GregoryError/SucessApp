@@ -504,6 +504,7 @@ ApplicationWindow {
             //color: "#323643"
             //opacity: 0
             z: 3
+            clip: true
 
 
             Image {
