@@ -74,7 +74,7 @@ public slots:
 
     void fillHomePage();
 
-    void fillPaysPage();
+   // void fillPaysPage();
 
 
     QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом

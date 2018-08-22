@@ -106,8 +106,8 @@ void MyClient::slotReadyRead()
         state.clear();
         pay_day.clear();
         paket.clear();
-
         isAuthOk = true;
+
         if(!dataSet.value("isEntered").toBool()){
             dataSet.setValue("isEntered", true);
             dataSet.setValue("name", enteredName);
@@ -154,10 +154,16 @@ void MyClient::slotReadyRead()
 
 
 
+
+
+
+
         // тут везде надо оставить только проверку на начальные слоги set, get, ask...
 
     }else if(m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 12) == "askPayments!"){
         payments = m_ptxtInfo;
+
+        showPayments();
     }
 
 
@@ -229,7 +235,7 @@ void MyClient::Sender(const QString &msg)
 void MyClient::connectToHost()
 {
     //m_pTcpSocket->connectToHostEncrypted("176.125.152.88", 2323);
-     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+    m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
     //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 }
@@ -330,10 +336,10 @@ void MyClient::fillHomePage()
     emit startReadInfo();
 }
 
-void MyClient::fillPaysPage()
-{
-    emit startReadPays();
-}
+//void MyClient::fillPaysPage()
+//{
+//    emit startReadPays();
+//}
 
 void MyClient::showPayments()
 {
@@ -425,6 +431,8 @@ void MyClient::showPayments()
     std::reverse(times_vct.begin(), times_vct.end());
     std::reverse(cashes_vct.begin(), cashes_vct.end());
     std::reverse(comments_vct.begin(), comments_vct.end());
+
+    emit startReadPays();
 
 }
 

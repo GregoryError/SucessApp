@@ -352,7 +352,7 @@ Item {
                             interval: 250
                             onTriggered: {
                                 switch (index) {
-                                case 0: myClient.askForPayments(); myClient.fillPaysPage(); stackView.push("payments.qml"); break;
+                                case 0: myClient.askForPayments(); /*myClient.fillPaysPage();*/ stackView.push("payments.qml"); break;
                                 case 1: stackView.push("payPoints.qml"); break;
                                 case 2: console.log(stackView.currentItem); break; //myClient.startPushTrusted(); break;
                                 case 3: //myClient.startPushMsg(); break;

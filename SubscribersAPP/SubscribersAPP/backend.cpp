@@ -26,7 +26,7 @@ BackEnd::BackEnd(QObject *parent) :
   source->setUpdateInterval(1000);
   source->requestUpdate();
   }else{
-        QMessageBox::information(0, "Message", "Не возможно определить местоположение"
+        QMessageBox::information(nullptr, "Message", "Не возможно определить местоположение"
                                              "\n на вашем устройстве.");
   }
 
@@ -35,14 +35,14 @@ BackEnd::BackEnd(QObject *parent) :
 
 void BackEnd::payList()
 {
-    QMessageBox::information(0, "Message", "Вот ваши платежи:");
+    QMessageBox::information(nullptr, "Message", "Вот ваши платежи:");
 
 }
 
 
 void BackEnd::trustedPay()
 {
-    QMessageBox::information(0, "Message", "Вам предоставлен временный платеж!");
+    QMessageBox::information(nullptr, "Message", "Вам предоставлен временный платеж!");
 }
 
 QString BackEnd::showATM()

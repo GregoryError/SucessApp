@@ -14,43 +14,61 @@ Item {
         //color: "#606470"
 
 
-
-
-
-
-
-
         Connections{
             target: myClient
             onStartReadPays: {
-                paytimer.start()
-            }
-        }
+                //paytimer.start()
 
-        Timer {
-            id: paytimer
-            interval: 3000;  ////////////////////////////////////////////////
 
-            running: true
 
-            onTriggered:{
 
                 payModel.clear()
 
-                myClient.showPayments();
+                //myClient.showPayments();
 
                 for(var i = 0; i < myClient.payTableLength(); ++i)
                 {
                     if (myClient.givePayCash(i)[0] !== '0')
-                    payModel.append({"date": myClient.givePayTime(i),
-                                        "cash": myClient.givePayCash(i),
-                                        "comment": myClient.givePayComm(i)})
+                        payModel.append({"date": myClient.givePayTime(i),
+                                            "cash": myClient.givePayCash(i),
+                                            "comment": myClient.givePayComm(i)})
                 }
 
                 console.log("Timer event!")   // <- is working
 
+
+
+
+
+
+
             }
         }
+
+       // Timer {
+       //     id: paytimer
+       //     interval: 3000;  ////////////////////////////////////////////////
+       //
+       //     running: true
+       //
+       //     onTriggered:{
+       //
+       //         payModel.clear()
+       //
+       //         myClient.showPayments();
+       //
+       //         for(var i = 0; i < myClient.payTableLength(); ++i)
+       //         {
+       //             if (myClient.givePayCash(i)[0] !== '0')
+       //                 payModel.append({"date": myClient.givePayTime(i),
+       //                                     "cash": myClient.givePayCash(i),
+       //                                     "comment": myClient.givePayComm(i)})
+       //         }
+       //
+       //         console.log("Timer event!")   // <- is working
+       //
+       //     }
+       // }
 
         ListView{
             id: payListView

@@ -22,16 +22,16 @@
 class location
 {
 public:
-    float longitude, latitude;
+    double longitude, latitude;
     QString address;
-    float t_long, t_lat;
+    double t_long, t_lat;
 
     location() = default;
-    location(const float &lon, const float &lat):longitude(lon), latitude(lat){}
-    location(const float &lon, const float &lat, const QString &addr, const float &t_long, const float &t_lat):
+    location(const double &lon, const double &lat):longitude(lon), latitude(lat){}
+    location(const double &lon, const double &lat, const QString &addr, const double &t_long, const double &t_lat):
         longitude(lon), latitude(lat), address(addr), t_long(t_long), t_lat(t_lat) {}
 
-    float ShowDiff(location &first, location &second)
+    double ShowDiff(location &first, location &second)
     {
          return std::abs(pow(pow((second.latitude - first.latitude), 2) + pow((second.longitude - first.longitude), 2), 0.5));
     }
