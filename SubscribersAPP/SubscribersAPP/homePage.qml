@@ -349,12 +349,12 @@ Item {
                         Timer{
                             id: operationTimer
                             running: false
-                            interval: 300
+                            interval: 250
                             onTriggered: {
                                 switch (index) {
                                 case 0: myClient.askForPayments(); myClient.fillPaysPage(); stackView.push("payments.qml"); break;
                                 case 1: stackView.push("payPoints.qml"); break;
-                                case 2: //myClient.startPushTrusted(); break;
+                                case 2: console.log(stackView.currentItem); break; //myClient.startPushTrusted(); break;
                                 case 3: //myClient.startPushMsg(); break;
                                 case 4: BackEnd.callUs(); break;
                                 case 5: BackEnd.goUrl(); break;
@@ -373,7 +373,7 @@ Item {
                                 properties: "width,height,radius";
                                 from: bigMenucolorRect.width;
                                 to: buttons.width;
-                                duration: 1200;
+                                duration: 1100;
                                 easing.type: Easing.OutExpo
 
                             }
@@ -386,7 +386,7 @@ Item {
                                 properties: "opacity";
                                 from: 0.6;
                                 to: 0;
-                                duration: 850;
+                                duration: 800;
 
 
                             }
@@ -395,7 +395,7 @@ Item {
                             ColorAnimation {
                                 target: backOfCell
                                 property: "color"
-                                duration: 1200
+                                duration: 1100
                                 from: "#C4EDFF"
                                 to: "#f7f7f7"
                                 easing.type: Easing.InExpo;

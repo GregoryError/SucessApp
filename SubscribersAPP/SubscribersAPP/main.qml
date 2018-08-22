@@ -42,6 +42,22 @@ ApplicationWindow {
             }
         }
 
+        Keys.onPressed: {
+            if(event.key === Qt.Key_Back)
+            {
+                event.accepted = true;
+
+                if(stackView.depth > 1)
+                {
+                    stackView.pop()
+                }
+                else
+                {
+                    Qt.quit();
+                }
+            }
+        }
+
 
         Image {
             id: startlogo
@@ -647,10 +663,51 @@ ApplicationWindow {
 
             StackView {
                 id: stackView
+                //antialiasing: true
 
                 initialItem: "homePage.qml"
                 anchors.fill: parent
 
+                pushEnter: Transition {
+                    PropertyAnimation {
+                        property: "opacity"
+                        from: 0
+                        to:1
+                        duration: 130
+                    }
+                }
+
+
+                popEnter: Transition {
+                    XAnimator {
+                        from: (stackView.mirrored ? -1 : 1) * -stackView.width
+                        to: 0
+                        duration: 650
+                        easing.type: Easing.OutCubic
+                    }
+                }
+
+
+
+                popExit: Transition {
+                    XAnimator {
+                        from: 0
+                        to: (stackView.mirrored ? -1 : 1) * stackView.width
+                        duration: 80
+                        easing.type: Easing.OutCubic
+                    }
+                }
+
+
+                // popExit: Transition {
+                //         PropertyAnimation {
+                //             property: "opacity"
+                //             from: 1
+                //             to:0
+                //             duration: 150
+                //         }
+                //     }
+                //
 
             }
         }
@@ -726,7 +783,6 @@ ApplicationWindow {
         }
 
     }
-
 
 }
 

@@ -1,18 +1,23 @@
 import QtQuick 2.9
-//import QtQuick.Controls 2.2
-
-
+import QtGraphicalEffects 1.0
 
 Item {
     //anchors.fill: parent
     id: mainwnd
 
+    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+
     Rectangle{
         anchors.fill: parent
-        color: "#f7f7f7"
+        id: backRect
+        color: "#f8f8ff"
+        //color: "#606470"
 
 
-        FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+
+
+
+
 
 
         Connections{
@@ -36,6 +41,7 @@ Item {
 
                 for(var i = 0; i < myClient.payTableLength(); ++i)
                 {
+                    if (myClient.givePayCash(i)[0] !== '0')
                     payModel.append({"date": myClient.givePayTime(i),
                                         "cash": myClient.givePayCash(i),
                                         "comment": myClient.givePayComm(i)})
@@ -58,7 +64,7 @@ Item {
             //headerPositioning: ListView.PullBackHeader
             clip: true
             spacing: 20
-            anchors.topMargin: 20
+            anchors.topMargin: 25
             delegate: paydelegate
             model:   ListModel {
                 id: payModel
@@ -72,47 +78,45 @@ Item {
         Component{
             id: paydelegate
             Item {
-                width: mainwnd.width - 20
+                width: mainwnd.width
                 height: mainwnd.height / 5
                 anchors.horizontalCenter: parent.horizontalCenter
                 Rectangle{
                     id: payUnit
                     anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     width: mainwnd.width - 20
-                    height: mainwnd.height / 5
+                    height: parent.height - 4
                     radius: 8
-                    //color: "steelblue"
-                    color: "white"
                     Rectangle{
                         id: payUnitLine
                         anchors.top: payUnit.top
                         anchors.topMargin: payUnit.height / 3
                         height: 3
                         width: payUnit.width - 20
-                        color: "#f7f7f7"
+                        color: backRect.color
                     }
 
                     Rectangle{
                         id: kindOfPay
-                        width: 10
-                        height: 10
+                        width: 12
+                        height: 12
                         radius: 30
-                        color: cash[0] === '-'? "red" : "lightgreen"
+                        color: cash[0] === '-'? "#ff5c5c" : "lightgreen"
                         anchors.left: payUnit.left
                         anchors.leftMargin: 15
-                        anchors.verticalCenter: payCash.verticalCenter
+                        y: payUnit.y + (payUnit.height / 3) * 0.4
                     }
 
                     Text {
                         id: payDate
                         text: date
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 24
+                        font.pointSize: 22
                         color: "#0074e4"
                         anchors.right: payUnit.right
                         anchors.rightMargin: 20
-                        anchors.top: payUnit.top
-                        anchors.topMargin: 20
+                        anchors.verticalCenter: kindOfPay.verticalCenter
                     }
 
                     Text {
@@ -123,8 +127,7 @@ Item {
                         color: "gray"
                         anchors.left: payUnit.left
                         anchors.leftMargin: 40
-                        anchors.top: payUnit.top
-                        anchors.topMargin: 20
+                        anchors.verticalCenter: kindOfPay.verticalCenter
                     }
                     Text {
                         id: payComment
@@ -136,6 +139,21 @@ Item {
                         anchors.topMargin: 5
                         anchors.horizontalCenter: payUnitLine.horizontalCenter
                     }
+
+                    // layer.enabled: true
+                    // layer.effect: DropShadow {
+                    //     id: payDelegatShadow
+                    //     opacity: 0
+                    //     transparentBorder: true
+                    //     samples: 30
+                    //     radius: 10
+                    //     color: "lightgray"
+                    //
+                    // }
+
+                    border.color: "#E3EAEA"
+                    border.width: 0.5
+
 
 
                 }
