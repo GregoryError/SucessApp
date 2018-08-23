@@ -8,27 +8,38 @@ Item {
 
     FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
+    Connections{
+        target: myClient
+        onTrustedPayDenied:{
+
+        }
+
+        onTrustedPayOk:{
+
+        }
+    }
 
 
 
 
-        Rectangle{
-            id: backRect
-            anchors.fill: parent
-            color: "#f7f7f7"
 
-            Flickable{
-                id: trustedFlick
-                width: backRect.width
-                height: backRect.height
-                anchors.horizontalCenter: backRect.horizontalCenter
-                contentHeight: trustButton.y + trustButton.height + 200
-                contentWidth: parent.width
-                smooth: true
-                boundsBehavior: Flickable.StopAtBounds
-                interactive: true
-                maximumFlickVelocity: 1000000
-                clip: true
+    Rectangle{
+        id: backRect
+        anchors.fill: parent
+        color: "#f7f7f7"
+
+        Flickable{
+            id: trustedFlick
+            width: backRect.width
+            height: backRect.height
+            anchors.horizontalCenter: backRect.horizontalCenter
+            contentHeight: trustButton.y + trustButton.height + 200
+            contentWidth: parent.width
+            smooth: true
+            boundsBehavior: Flickable.StopAtBounds
+            interactive: true
+            maximumFlickVelocity: 1000000
+            clip: true
 
 
             Image {
@@ -47,7 +58,7 @@ Item {
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.family: gotham_XNarrow.name;
-                font.pointSize: 13
+                font.pointSize: 15
                 color: "#0074e4"
                 text: "- Обещанный платеж это бесплатная услуга.<br>
 - Подключив обещанный платеж,<br>
@@ -95,12 +106,12 @@ Item {
                 anchors.top: trustedTXT.bottom
                 anchors.topMargin: 50
                 font.family: gotham_XNarrow.name;
-                font.pointSize: 13
+                font.pointSize: 17
                 text: " Условия принимаю"
 
                 indicator: Rectangle {
-                    implicitWidth: 80
-                    implicitHeight: 80
+                    implicitWidth: 60
+                    implicitHeight: 60
                     x: control.leftPadding
                     y: parent.height / 2 - height / 2
                     radius: 3
@@ -108,8 +119,8 @@ Item {
                     //color: "#0074e4"
 
                     Rectangle {
-                        width: 70
-                        height: 70
+                        width: 50
+                        height: 50
                         anchors.centerIn: parent
                         x: 6
                         y: 6
@@ -129,59 +140,125 @@ Item {
                     leftPadding: control.indicator.width + control.spacing
                 }
 
-
             }
-            Button{
+            MouseArea{
                 id: trustButton
+                clip: true
                 enabled: control.checked ? true : false
-                opacity: 0
                 anchors.horizontalCenter: trustedTXT.horizontalCenter
                 anchors.top: control.bottom
                 anchors.topMargin: 50
                 width: backRect.width / 2
                 height: backRect.width / 4
-                background: Rectangle{
-                    id: trustButtonStyle
+
+                Rectangle{
+                    id: backOfButton
+                    color: "#93deff" //  93deff  //50a5f5
+                    smooth: true
                     anchors.fill: parent
-                    color: "#93deff"
-                    radius: 9
+                    radius: 6
+                    anchors.margins: 1
+
+
+                    Rectangle {
+                        id: backOfButtoncolorRect
+                        height: 0
+                        width: 0
+                        visible: false
+                        color: "#50a5f5"
+                        opacity: 0
+
+                        transform: Translate {
+                            x: -backOfButtoncolorRect.width / 2
+                            y: -backOfButtoncolorRect.height  / 2
+                        }
+                    }
+
+
+                    Text {
+                        id: trButtTxt
+                        anchors.centerIn: parent
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 25
+                        color: "white"
+                        text: "Подключить"
+                    }
+
 
                 }
-                Text {
-                    id: trButtTxt
-                    anchors.centerIn: parent
-                    font.family: gotham_XNarrow.name;
-                    font.pointSize: 20
-                    color: "white"
-                    text: "Подключить"
+
+                onPressed: {
+                    onPressedAnim.running = true
+                    //backOfButton.opacity = 0.7
                 }
 
+                onReleased: {
 
-                onClicked: {
-                    myClient.askForTrustedPay();
+                    backOfButtoncolorRect.x = mouseX
+                    backOfButtoncolorRect.y = mouseY
+
+                    if(cellButtoncircleAnimation.running)
+                        cellButtoncircleAnimation.stop()
+
+                    cellButtoncircleAnimation.start()
+
+
                 }
 
-                OpacityAnimator {
-                    id: trustButtonappear
-                    target: trustButton;
-                    from: 0;
-                    to: 1;
-                    duration: 1000
-                    running: control.checked ? true : false
-                    easing.type: Easing.InOutExpo
+                ColorAnimation {
+                    id: onPressedAnim
+                    running: false
+                    target: backOfButton
+                    property: "color"
+                    duration: 200
+                    from: "#93deff"
+                    to: "#75bbfb"
+                    //easing.type: Easing.InExpo;
                 }
 
+                ParallelAnimation {
+                    id: cellButtoncircleAnimation
 
-                OpacityAnimator {
-                    id: trustButtondisappear
-                    target: trustButton;
-                    from: 1;
-                    to: 0;
-                    duration: 1000
-                    running: control.checked ? false : true
-                    easing.type: Easing.InOutExpo
+                    NumberAnimation {
+                        target: backOfButtoncolorRect;
+                        properties: "width,height,radius";
+                        from: backOfButtoncolorRect.width;
+                        to: trustButton.width;
+                        duration: 1100;
+                        easing.type: Easing.OutExpo
+                    }
+
+                    NumberAnimation {
+                        target: backOfButtoncolorRect;
+                        //easing.type: Easing.InExpo;
+                        properties: "opacity";
+                        from: 1;
+                        to: 0;
+                        duration: 800;
+                    }
+
+                    ColorAnimation {
+                        target: backOfButton
+                        property: "color"
+                        duration: 1100
+                        from: backOfButton.color
+                        to: "#93deff"
+                        easing.type: Easing.InExpo;
+                    }
+
+                    onStarted: {
+                        backOfButtoncolorRect.visible = true
+
+                    }
+
+                    onStopped: {
+                        backOfButtoncolorRect.width = 0
+                        backOfButtoncolorRect.height = 0
+                        backOfButtoncolorRect.visible = false
+
+                    }
+
                 }
-
 
             }
 
@@ -189,8 +266,31 @@ Item {
 
     }
 
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

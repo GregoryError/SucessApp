@@ -297,7 +297,6 @@ Item {
                                 smooth: true
                             }
 
-
                         }
 
                         onPressed: {

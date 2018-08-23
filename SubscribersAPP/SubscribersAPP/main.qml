@@ -718,8 +718,8 @@ ApplicationWindow {
                     XAnimator {
                         from: 0
                         to: (stackView.mirrored ? -1 : 1) * stackView.width
-                        duration: 80
-                        easing.type: Easing.OutCubic
+                        duration: 50
+                        //easing.type: Easing.OutCubic
                     }
                 }
 
@@ -748,8 +748,6 @@ ApplicationWindow {
         running: false
         width: parent.width / 3
         height: parent.width / 3
-
-
         anchors.centerIn: parent
         z: 3
 
@@ -816,7 +814,6 @@ ApplicationWindow {
                         loops:  Animation.Infinite
 
                         NumberAnimation {
-                            running: true
                             target: trans
                             property: "y";
                             easing.type: Easing.OutQuart
@@ -827,7 +824,6 @@ ApplicationWindow {
                         }
 
                         NumberAnimation {
-                            running: true
                             target: trans
                             property: "y";
                             easing.type: Easing.InQuart

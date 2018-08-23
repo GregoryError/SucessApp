@@ -61,6 +61,8 @@ signals:
     void switchToHomePage();
     void busyON();
     void busyOFF();
+    void trustedPayOk();
+    void trustedPayDenied();
 
 
 public slots:

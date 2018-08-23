@@ -145,7 +145,6 @@ void MyClient::slotReadyRead()
                 paket += c;
             }
 
-
             if(c == ' ')
                 ++space;
         }
@@ -163,6 +162,15 @@ void MyClient::slotReadyRead()
         payments = m_ptxtInfo;
 
         showPayments();
+
+    }else if (m_ptxtInfo == "PayDenied")
+    {
+        emit trustedPayDenied();
+
+    }else if (m_ptxtInfo == "PayOk")
+    {
+        emit trustedPayOk();
+
     }
 
 
