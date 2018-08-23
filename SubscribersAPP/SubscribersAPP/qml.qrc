@@ -25,5 +25,7 @@
         <file>arrow_left.png</file>
         <file>Menu/msg.png</file>
         <file>payPoints.qml</file>
+        <file>trustedPayPage.qml</file>
+        <file>trustedBack.png</file>
     </qresource>
 </RCC>

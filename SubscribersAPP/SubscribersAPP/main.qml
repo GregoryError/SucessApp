@@ -33,16 +33,7 @@ ApplicationWindow {
         height: 66
         x: 0
         y: 0
-        LinearGradient {
-            anchors.fill: parent
-            start: Qt.point(0, 0)
-            end: Qt.point(window.width, window.width)
-            gradient: Gradient {
-                GradientStop { position: 0.1; color: "#93deff" }
-                GradientStop { position: 0.2; color: "#638AA1" }
-                GradientStop { position: 1.0; color: "#323643" }
-            }
-        }
+        color: "#93deff"
 
 
         Image {
@@ -362,6 +353,7 @@ ApplicationWindow {
 
 
 
+
     Connections{
         target: myClient
         onSwitchToHomePage: {
@@ -375,6 +367,14 @@ ApplicationWindow {
                 messageDialog.visible = true;
             }
 
+        }
+
+        onBusyON:{
+            bigbusy.running = true;
+        }
+
+        onBusyOFF:{
+            bigbusy.running = false;
         }
     }
 
@@ -431,27 +431,37 @@ ApplicationWindow {
             x: 0
             y: 0
             color: "steelblue"
+            layer.enabled: true
+            layer.effect: DropShadow {
+                id: backhadow
+                transparentBorder: true
+                samples: 30
+                radius: 12
+                color: "#606470"
+
+            }
+
         }
 
 
 
-
-        //   LinearGradient {
-        //       width: window.width
-        //       height: window.height * 0.3 + 50
-        //       x: 0
-        //       y: 0
-        //       //visible: false
-        //       start: Qt.point(0, 0)
-        //       end: Qt.point(window.width, window.width)
-        //       gradient: Gradient {
-        //           GradientStop { position: 0.0; color: "#93deff" }
-        //           GradientStop { position: 0.2; color: "#638AA1" }
-        //           GradientStop { position: 0.4; color: "#4B6072" }
-        //           GradientStop { position: 0.7; color: "#323643" }
-        //           GradientStop { position: 1.0; color: "#323643" }
-        //       }
-        //   }
+        //
+        // LinearGradient {
+        //     width: window.width
+        //     height: window.height * 0.3 + 50
+        //     x: 0
+        //     y: 0
+        //     //visible: false
+        //     start: Qt.point(0, 0)
+        //     end: Qt.point(window.width, window.width)
+        //     gradient: Gradient {
+        //         GradientStop { position: 0.0; color: "#93deff" }
+        //         GradientStop { position: 0.2; color: "#638AA1" }
+        //         GradientStop { position: 0.4; color: "#4B6072" }
+        //         GradientStop { position: 0.7; color: "#323643" }
+        //         GradientStop { position: 1.0; color: "#323643" }
+        //     }
+        // }
 
         FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
@@ -631,20 +641,16 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
 
-            // onOpened:Transition {
-            //     NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 500}
-            // }
-
-
-
-
+            enter:Transition {
+                NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
+            }
 
 
             Column {
                 anchors.fill: parent
 
                 ItemDelegate {
-                    text: qsTr("Page 1")
+                    text: qsTr("Выход")
                     width: parent.width
                     onClicked: {
 
@@ -654,10 +660,12 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
-                    text: qsTr("Page 2")
+                    text: qsTr("Платежи")
                     width: parent.width
                     onClicked: {
-                        stackView.push("payments.qml")
+                        myClient.askForPayments();
+                        stackView.push("payments.qml");
+                        bigbusy.running = true;
                         drawer.close()
                     }
                 }
@@ -738,8 +746,10 @@ ApplicationWindow {
         id: bigbusy
         opacity: 0
         running: false
-        width: parent.width / 4 + 10
-        height: parent.width / 4 + 10
+        width: parent.width / 3
+        height: parent.width / 3
+
+
         anchors.centerIn: parent
         z: 3
 
@@ -769,7 +779,7 @@ ApplicationWindow {
                 from: 0
                 to: 360
                 loops: Animation.Infinite
-                duration: 2500
+                duration: 2000
             }
 
             Repeater {
@@ -779,21 +789,55 @@ ApplicationWindow {
                     id: itemRec
                     x: item.width / 2 - width / 2
                     y: item.height / 2 - width / 2
-                    implicitWidth: window.width / 20
-                    implicitHeight: window.width / 20
+                    implicitWidth: window.width / 22
+                    implicitHeight: window.width / 22
                     //radius: 50
                     radius: 10
                     color: "#2284e0"
                     transform: [
                         Translate {
+                            id: trans
                             y: -Math.min(item.width, item.height) * 0.3
+
                         },
                         Rotation {
                             angle: index / repeater.count * 360
                             origin.x: width / 2
                             origin.y: height / 2
                         }
+
+
+
+
                     ]
+
+                    SequentialAnimation{
+                        running: bigbusy.running == true ? true : false
+                        loops:  Animation.Infinite
+
+                        NumberAnimation {
+                            running: true
+                            target: trans
+                            property: "y";
+                            easing.type: Easing.OutQuart
+                            from: 1
+                            to: -Math.min(item.width, item.height) * 0.8
+                            duration: 1000
+
+                        }
+
+                        NumberAnimation {
+                            running: true
+                            target: trans
+                            property: "y";
+                            easing.type: Easing.InQuart
+                            to: 1
+                            from: -Math.min(item.width, item.height) * 0.8
+                            duration: 1000
+
+                        }
+
+                    }
                 }
             }
 

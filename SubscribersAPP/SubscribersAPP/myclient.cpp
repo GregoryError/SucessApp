@@ -335,6 +335,16 @@ void MyClient::switchToMe()
     emit switchToHomePage();
 }
 
+void MyClient::makeBusyON()
+{
+    emit busyON();
+}
+
+void MyClient::makeBusyOFF()
+{
+    emit busyOFF();
+}
+
 //void MyClient::fillHomePage()
 //{
 //    emit startReadInfo();

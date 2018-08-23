@@ -220,6 +220,7 @@ Item {
         GridView{
             id: cells
             interactive: false
+            opacity: 0
             //visible: false
             anchors.centerIn: parent
             smooth: true
@@ -350,10 +351,10 @@ Item {
                             interval: 250
                             onTriggered: {
                                 switch (index) {
-                                case 0: myClient.askForPayments(); /*myClient.fillPaysPage();*/ stackView.push("payments.qml"); break;
+                                case 0: myClient.askForPayments(); stackView.push("payments.qml"); break;
                                 case 1: stackView.push("payPoints.qml"); break;
-                                case 2: console.log(stackView.currentItem); break; //myClient.startPushTrusted(); break;
-                                case 3: //myClient.startPushMsg(); break;
+                                case 2: stackView.push("trustedPayPage.qml"); break;
+                                case 3: myClient.makeBusyON(); break;
                                 case 4: BackEnd.callUs(); break;
                                 case 5: BackEnd.goUrl(); break;
                                 }
@@ -428,32 +429,23 @@ Item {
 
                 }
 
-
-
-
-
-
             }
 
 
-
-
-
-            // OpacityAnimator{
-            //     id: cellAppear
-            //     target: cells
-            //     running: cells.visible
-            //     from: 0
-            //     to: 1
-            //     duration: 200
-            //
-            //     easing.type: Easing.InCirc
-            //     onStopped: {
-            //         // some soundeffects
-            //         // game_engine.soundBegin()
-            //         //backgroundAppear.start()
-            //     }
-            // }
+             OpacityAnimator{
+                 id: cellAppear
+                 target: cells
+                 running: cells.visible
+                 from: 0
+                 to: 1
+                 duration: 200
+                 easing.type: Easing.InCirc
+                 onStopped: {
+                     // some soundeffects
+                     // game_engine.soundBegin()
+                     //backgroundAppear.start()
+                 }
+             }
 
 
 
@@ -496,75 +488,6 @@ Item {
         }
 
     }
-
-
-    // BusyIndicator {
-    //     id: bigbusy
-    //     opacity: 0
-    //     //running: (myClient.isAuth()) ? true : false
-    //     running: true
-    //     width: parent.width / 4 + 10
-    //     height: parent.width / 4 + 10
-    //     anchors.centerIn: parent
-    //
-    //     OpacityAnimator {
-    //         id: bigbusyappear
-    //         target: bigbusy;
-    //         from: 0;
-    //         to: 1;
-    //         duration: 600
-    //         running: true
-    //         easing.type: Easing.InOutExpo
-    //     }
-    //
-    //     contentItem: Item {
-    //         id: item
-    //         opacity: bigbusy.running ? 1 : 0
-    //
-    //         Behavior on opacity {
-    //             OpacityAnimator {
-    //                 duration: 600
-    //             }
-    //         }
-    //
-    //         RotationAnimator {
-    //             target: item
-    //             running: bigbusy.visible && bigbusy.running
-    //             from: 0
-    //             to: 360
-    //             loops: Animation.Infinite
-    //             duration: 2500
-    //         }
-    //
-    //         Repeater {
-    //             id: repeater
-    //             model: 6
-    //             Rectangle{
-    //                 id: itemRec
-    //                 x: item.width / 2 - width / 2
-    //                 y: item.height / 2 - width / 2
-    //                 implicitWidth: mainwnd.width / 20
-    //                 implicitHeight: mainwnd.width / 20
-    //                 //radius: 50
-    //                 radius: 10
-    //                 color: "#2284e0"
-    //                 transform: [
-    //                     Translate {
-    //                         y: -Math.min(item.width, item.height) * 0.3
-    //                     },
-    //                     Rotation {
-    //                         angle: index / repeater.count * 360
-    //                         origin.x: width / 2
-    //                         origin.y: height / 2
-    //                     }
-    //                 ]
-    //             }
-    //         }
-    //
-    //     }
-    //
-    // }
-
 
 }
 

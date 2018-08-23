@@ -59,6 +59,8 @@ signals:
     void startReadInfo();
     void startReadPays();
     void switchToHomePage();
+    void busyON();
+    void busyOFF();
 
 
 public slots:
@@ -77,6 +79,9 @@ public slots:
    // void fillPaysPage();
 
     void switchToMe();
+
+    void makeBusyON();
+    void makeBusyOFF();
 
 
     QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом

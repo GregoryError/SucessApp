@@ -20,9 +20,6 @@ Item {
             onStartReadPays: {
                 //paytimer.start()
 
-
-
-
                 payModel.clear()
 
                 //myClient.showPayments();
@@ -35,12 +32,10 @@ Item {
                                             "comment": myClient.givePayComm(i)})
                 }
 
-                console.log("Timer event!")   // <- is working
 
+                payListView.model = payModel;
 
-
-
-
+                myClient.makeBusyOFF();
 
 
             }
@@ -71,6 +66,11 @@ Item {
         //     }
         // }
 
+
+        ListModel {
+            id: payModel
+        }
+
         ListView{
             id: payListView
             visible: true
@@ -85,11 +85,6 @@ Item {
             spacing: 20
             anchors.topMargin: 25
             delegate: paydelegate
-            model:   ListModel {
-                id: payModel
-            }
-
-
 
         }
 

@@ -6,24 +6,20 @@ import QtPositioning 5.6
 
 
 Item {
-    anchors.fill: parent
+    //anchors.fill: parent
+
 
 
     Plugin {
            id: mapPlugin
-           name: "osm" //  "esri" //"mapboxgl" //"osm" // "mapboxgl", "esri", ...
-           // specify plugin parameters if necessary
-           // PluginParameter {
-           //     name:
-           //     value:
-           // }
+           name: "osm"
+
        }
 
        Map {
            anchors.fill: parent
            plugin: mapPlugin
-           center: QtPositioning.coordinate(60.7069, 28.7690) // Oslo
-
+           center: QtPositioning.coordinate(60.706, 28.769) // Oslo
 
            zoomLevel: 17
        }
