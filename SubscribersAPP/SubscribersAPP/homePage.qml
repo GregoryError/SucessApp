@@ -29,9 +29,7 @@ Item {
             planName.text = myClient.showPlan()
             countTxt.text = "Ваш номер счета: " + myClient.showId()
             dateTxt.text = "Ваш день платежа: " + myClient.showPay_day()
-            //bigbusy.running = false
-
-
+            myClient.switchToMe();
         }
     }
 

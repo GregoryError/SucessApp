@@ -154,8 +154,7 @@ void MyClient::slotReadyRead()
 
 
 
-
-
+        emit startReadInfo();
 
 
         // тут везде надо оставить только проверку на начальные слоги set, get, ask...
@@ -331,10 +330,15 @@ int MyClient::payTableLength()
     return times_vct.size();
 }
 
-void MyClient::fillHomePage()
+void MyClient::switchToMe()
 {
-    emit startReadInfo();
+    emit switchToHomePage();
 }
+
+//void MyClient::fillHomePage()
+//{
+//    emit startReadInfo();
+//}
 
 //void MyClient::fillPaysPage()
 //{

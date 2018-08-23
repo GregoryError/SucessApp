@@ -57,8 +57,8 @@ public:
 
 signals:
     void startReadInfo();
-
     void startReadPays();
+    void switchToHomePage();
 
 
 public slots:
@@ -72,9 +72,11 @@ public slots:
     bool showDemo();
     int payTableLength();        // Возвращает кол-во строк в списке платежей
 
-    void fillHomePage();
+   // void fillHomePage();
 
    // void fillPaysPage();
+
+    void switchToMe();
 
 
     QString givePayTime(int strN);   // Возвращает строку "время" с заданным индексом

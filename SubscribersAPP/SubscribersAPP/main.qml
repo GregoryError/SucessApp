@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+//import QtQuick 2.11
 
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.3
@@ -24,6 +25,7 @@ ApplicationWindow {
     //height: Screen.height
 
 
+
     Rectangle{
         id: startHead
         visible: myClient.isAuth() ? false : true
@@ -39,22 +41,6 @@ ApplicationWindow {
                 GradientStop { position: 0.1; color: "#93deff" }
                 GradientStop { position: 0.2; color: "#638AA1" }
                 GradientStop { position: 1.0; color: "#323643" }
-            }
-        }
-
-        Keys.onPressed: {
-            if(event.key === Qt.Key_Back)
-            {
-                event.accepted = true;
-
-                if(stackView.depth > 1)
-                {
-                    stackView.pop()
-                }
-                else
-                {
-                    Qt.quit();
-                }
             }
         }
 
@@ -240,7 +226,7 @@ ApplicationWindow {
                             console.log(nameInput.text, passwordInput.text)
 
 
-                            firsttimer.running = true
+                            //firsttimer.running = true
 
                         }
                     }
@@ -376,36 +362,52 @@ ApplicationWindow {
 
 
 
-
-    Timer {
-        id: firsttimer
-        interval: 2000;
-
-        running: (myClient.isAuth()) ? true : false
-
-
-        onTriggered:{
-
+    Connections{
+        target: myClient
+        onSwitchToHomePage: {
             if(myClient.isAuthRight()){
 
                 bigbusy.running = false
-
                 disappearStartForm.running = true
-
-                myClient.fillHomePage()    // this emit signal to QML to update info
-
             }else{
                 messageDialog.text = myClient.authResult();
                 bigbusy.running = false
                 messageDialog.visible = true;
-                infoRect.visible = false
             }
-
 
         }
     }
 
 
+    //  Timer {
+    //      id: firsttimer
+    //      interval: 2000;
+    //
+    //      running: (myClient.isAuth()) ? true : false
+    //
+    //
+    //      onTriggered:{
+    //
+    //          if(myClient.isAuthRight()){
+    //
+    //              bigbusy.running = false
+    //
+    //              disappearStartForm.running = true
+    //
+    //              myClient.fillHomePage()    // this emit signal to QML to update info
+    //
+    //          }else{
+    //              messageDialog.text = myClient.authResult();
+    //              bigbusy.running = false
+    //              messageDialog.visible = true;
+    //              infoRect.visible = false
+    //          }
+    //
+    //
+    //      }
+    //  }
+    //
+    //
 
 
     //////////////////////////////////////////// END OF START-FORM ///////////////////////////////////////////////
@@ -629,6 +631,15 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
 
+            // onOpened:Transition {
+            //     NumberAnimation { property: "opacity"; from: 0.0; to: 1.0; duration: 500}
+            // }
+
+
+
+
+
+
             Column {
                 anchors.fill: parent
 
@@ -664,6 +675,12 @@ ApplicationWindow {
             StackView {
                 id: stackView
                 //antialiasing: true
+
+                focus: true
+                Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
+                                     stackView.pop();
+                                     event.accepted = true;
+                                 }
 
                 initialItem: "homePage.qml"
                 anchors.fill: parent
