@@ -255,6 +255,7 @@ Item {
                         backOfButtoncolorRect.width = 0
                         backOfButtoncolorRect.height = 0
                         backOfButtoncolorRect.visible = false
+                        myClient.askForTrustedPay();
 
                     }
 
