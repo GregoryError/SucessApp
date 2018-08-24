@@ -707,7 +707,7 @@ ApplicationWindow {
                     XAnimator {
                         from: (stackView.mirrored ? -1 : 1) * -stackView.width
                         to: 0
-                        duration: 60
+                        duration: 50
                         //easing.type: Easing.InCubic
                     }
                 }
@@ -718,7 +718,7 @@ ApplicationWindow {
                     XAnimator {
                         from: 0
                         to: (stackView.mirrored ? -1 : 1) * stackView.width
-                        duration: 60
+                        duration: 50
                         //easing.type: Easing.OutCubic
                     }
                 }

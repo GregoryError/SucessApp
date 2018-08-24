@@ -83,7 +83,8 @@ Item {
             //headerPositioning: ListView.PullBackHeader
             clip: true
             spacing: 20
-            anchors.topMargin: 25
+            anchors.topMargin: 20
+            anchors.bottomMargin: 20
             delegate: paydelegate
 
         }
@@ -99,7 +100,7 @@ Item {
                     id: payUnit
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    width: mainwnd.width - 20
+                    width: mainwnd.width - 30
                     height: parent.height - 4
                     radius: 8
                     Rectangle{
@@ -109,6 +110,8 @@ Item {
                         height: 3
                         width: payUnit.width - 20
                         color: backRect.color
+                        border.width: 1
+                        border.color: "#E3EAEA"
                     }
 
                     Rectangle{
