@@ -271,15 +271,14 @@ Item {
                                 }
                             }
 
-
-
                             Image {
                                 id: buttImg
                                 smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                width: 30
-                                height: 30
+                                width: 25
+                                height: 25
+
                                 source: backdata
                                 //scale: 0.3
 
@@ -351,7 +350,7 @@ Item {
                             onTriggered: {
                                 switch (index) {
                                 case 0: myClient.askForPayments(); stackView.push("payments.qml"); break;
-                                case 1: stackView.push("payPoints.qml"); break;
+                                case 1: /*stackView.push("payPoints.qml");*/ break;
                                 case 2: stackView.push("trustedPayPage.qml"); break;
                                 case 3: myClient.makeBusyON(); break;
                                 case 4: BackEnd.callUs(); break;
@@ -415,6 +414,8 @@ Item {
                                 bigMenucolorRect.width = 0
                                 bigMenucolorRect.height = 0
                                 bigMenucolorRect.visible = false
+
+                                if (index === 1) { stackView.push("payPoints.qml"); }
 
 
 

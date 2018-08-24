@@ -641,9 +641,9 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
 
-            enter:Transition {
-                NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
-            }
+           // enter:Transition {
+           //     NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
+           // }
 
 
             Column {
@@ -693,37 +693,37 @@ ApplicationWindow {
                 initialItem: "homePage.qml"
                 anchors.fill: parent
 
-                pushEnter: Transition {
-                    PropertyAnimation {
-                        property: "opacity"
-                        from: 0
-                        to:1
-                        duration: 130
-                    }
-                }
+               // pushEnter: Transition {
+               //     XAnimator {
+               //         from: (stackView.mirrored ? 1 : -1) * stackView.width
+               //         to: 0
+               //         duration: 60
+               //         //easing.type: Easing.InCubic
+               //     }
+               // }
 
 
                 popEnter: Transition {
                     XAnimator {
                         from: (stackView.mirrored ? -1 : 1) * -stackView.width
                         to: 0
-                        duration: 650
-                        easing.type: Easing.OutCubic
+                        duration: 60
+                        //easing.type: Easing.InCubic
                     }
                 }
-
-
-
+              //
+              //
+              //
                 popExit: Transition {
                     XAnimator {
                         from: 0
                         to: (stackView.mirrored ? -1 : 1) * stackView.width
-                        duration: 50
+                        duration: 60
                         //easing.type: Easing.OutCubic
                     }
                 }
-
-
+              //
+              //
                 // popExit: Transition {
                 //         PropertyAnimation {
                 //             property: "opacity"
