@@ -431,15 +431,30 @@ ApplicationWindow {
             x: 0
             y: 0
             color: "steelblue"
-            layer.enabled: true
-            layer.effect: DropShadow {
-                id: backhadow
-                transparentBorder: true
-                samples: 30
-                radius: 12
-                color: "#606470"
+           // layer.enabled: true
+           // layer.effect: DropShadow {
+           //     id: backhadow
+           //     transparentBorder: true
+           //     samples: 30
+           //     radius: 12
+           //     color: "#606470"
+           //
+           // }
 
-            }
+
+            DropShadow {
+                    id: backhadow
+                    anchors.fill: tempRect
+                    cached: true
+                    //horizontalOffset: 3
+                    verticalOffset: 2
+                    radius: 2.0
+                    samples: 5
+                    color: "#80000000"
+                    smooth: true
+                    source: tempRect
+                    opacity: 0.4
+                }
 
         }
 
@@ -669,6 +684,14 @@ ApplicationWindow {
                         drawer.close()
                     }
                 }
+                ItemDelegate {
+                    text: qsTr("Busy indicator")
+                    width: parent.width
+                    onClicked: {
+                        bigbusy.running = true;
+                        drawer.close()
+                    }
+                }
             }
         }
 
@@ -697,31 +720,31 @@ ApplicationWindow {
                //     XAnimator {
                //         from: (stackView.mirrored ? 1 : -1) * stackView.width
                //         to: 0
-               //         duration: 60
+               //         duration: 80
                //         //easing.type: Easing.InCubic
                //     }
                // }
 
 
-                popEnter: Transition {
-                    XAnimator {
-                        from: (stackView.mirrored ? -1 : 1) * -stackView.width
-                        to: 0
-                        duration: 50
-                        //easing.type: Easing.InCubic
-                    }
-                }
+               // popEnter: Transition {
+               //     XAnimator {
+               //         from: (stackView.mirrored ? -1 : 1) * -stackView.width
+               //         to: 0
+               //         duration: 50
+               //         //easing.type: Easing.InCubic
+               //     }
+               // }
               //
               //
               //
-                popExit: Transition {
-                    XAnimator {
-                        from: 0
-                        to: (stackView.mirrored ? -1 : 1) * stackView.width
-                        duration: 50
-                        //easing.type: Easing.OutCubic
-                    }
-                }
+               // popExit: Transition {
+               //     XAnimator {
+               //         from: 0
+               //         to: (stackView.mirrored ? -1 : 1) * stackView.width
+               //         duration: 150
+               //         //easing.type: Easing.OutCubic
+               //     }
+               // }
               //
               //
                 // popExit: Transition {

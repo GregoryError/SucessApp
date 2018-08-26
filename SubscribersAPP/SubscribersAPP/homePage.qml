@@ -42,7 +42,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: 0
         //color: "#323643"
-        z: 3
+        //z: 3
         // visible: false
 
         Image {
@@ -51,7 +51,7 @@ Item {
             width: 70
             height: 60
             source: "qrc:/Wallet.png"
-            smooth: true
+           // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
             anchors.margins: 40
@@ -114,7 +114,7 @@ Item {
             width: (walletPic.width - 10) * 0.5
             height: walletPic.height * 0.5
             source: "qrc:/infoPic.png"
-            smooth: true
+            //smooth: true
 
         }
 
@@ -205,17 +205,23 @@ Item {
         radius: 2
         anchors.top: infoRect.bottom
         anchors.topMargin: -15         // WTF
-        smooth: true
+       // smooth: true
 
-        layer.enabled: true
-        layer.effect: DropShadow {
-            id: bigMenushadow
-            transparentBorder: true
-            samples: 30
-            radius: 12
-            color: "#606470"
 
-        }
+
+        DropShadow {
+                id: bigMenuShadow
+                anchors.fill: bigMenu
+                cached: true
+                //horizontalOffset: 3
+                verticalOffset: 2
+                radius: 3.0
+                samples: 6
+                color: "#80000000"
+                smooth: true
+                source: bigMenu
+                opacity: 0.3
+            }
 
         GridView{
             id: cells
@@ -223,7 +229,7 @@ Item {
             opacity: 0
             //visible: false
             anchors.centerIn: parent
-            smooth: true
+           // smooth: true
 
             width: cellWidth * 2
             height: cellHeight * 3
@@ -233,13 +239,15 @@ Item {
 
             model: myModel
 
+
+
             delegate: Component{
                 id: cellDelegat
                 Item {
                     id: oneCell
                     width: cells.cellWidth
                     height: cells.cellHeight
-                    smooth: true
+                   // smooth: true
 
                     MouseArea{
                         id: buttons
@@ -252,7 +260,7 @@ Item {
                         Rectangle{
                             id: backOfCell
                             color: "#f7f7f7"
-                            smooth: true
+                           // smooth: true
                             anchors.fill: parent
                             radius: 3
                             anchors.margins: 1
@@ -273,11 +281,14 @@ Item {
 
                             Image {
                                 id: buttImg
-                                smooth: true
+                              //  smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                width: 25
-                                height: 25
+                               // width: 25
+                               // height: 25
+
+                                sourceSize.height: 25
+                                sourceSize.width: 25
 
                                 source: backdata
                                 //scale: 0.3
@@ -293,7 +304,7 @@ Item {
                                 font.family: gotham_XNarrow.name;
                                 font.pointSize: 16
                                 text: mtext
-                                smooth: true
+                               // smooth: true
                             }
 
                         }
