@@ -28,13 +28,6 @@ Item {
     MessageDialog {
         id: messageDialog
         title: "Временный платеж"
-        Rectangle{
-            anchors.fill: parent
-            color: "lightblue"
-        }
-
-
-
         onAccepted: {
             // Qt.quit()
         }

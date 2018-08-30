@@ -99,6 +99,8 @@ ApplicationWindow {
                 TextField{
                     id: nameInput
                     maximumLength: 20
+                    implicitWidth: startform.width - 20
+                    implicitHeight: startform.height / 5
                     inputMethodHints: Qt.ImhPreferLowercase |
                                       Qt.ImhNoAutoUppercase |
                                       Qt.ImhNoPredictiveText
@@ -106,8 +108,8 @@ ApplicationWindow {
 
                     background: Rectangle {
                         opacity: 0
-                        implicitWidth: startform.width - 20
-                        implicitHeight: startform.height / 5
+                        anchors.centerIn: parent
+
 
                     }
                     onAccepted: passwordInput.forceActiveFocus()
@@ -122,6 +124,7 @@ ApplicationWindow {
                         height: 1
                         width: nameInput.width
                         anchors.top: nameInput.bottom
+                        anchors.topMargin: -nameInput.height / 4
                         color: "#606470"
                     }
 
@@ -134,6 +137,8 @@ ApplicationWindow {
                 spacing: 4
                 TextField {
                     id: passwordInput
+                    implicitWidth: startform.width - 20
+                    implicitHeight: startform.height / 5
                     maximumLength: 20
                     inputMethodHints: Qt.ImhPreferLowercase |
                                       Qt.ImhNoAutoUppercase |
@@ -141,12 +146,12 @@ ApplicationWindow {
 
                     background: Rectangle {
                         opacity: 0
-                        implicitWidth: startform.width - 20
-                        implicitHeight: startform.height / 5
+                         anchors.centerIn: parent
+
                     }
                     onAccepted: login()
                     color: "#606470"
-                    font.pointSize: passwordInput.width * 0.1
+                    font.pointSize: nameInput.width  * 0.1
                     font.family: gotham_XNarrow.name;
                     placeholderText: "Пароль"
                     echoMode: TextInput.PasswordEchoOnEdit
@@ -157,6 +162,7 @@ ApplicationWindow {
                         height: 1
                         width: passwordInput.width
                         anchors.top: passwordInput.bottom
+                        anchors.topMargin: -nameInput.height / 4
                         color: "#606470"
                     }
 
