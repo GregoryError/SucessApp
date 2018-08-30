@@ -1,6 +1,8 @@
 //import QtQuick 2.0
 import QtQuick 2.7
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.1
+
 
 
 Item {
@@ -11,15 +13,34 @@ Item {
     Connections{
         target: myClient
         onTrustedPayDenied:{
+            messageDialog.text = "Вы уже воспользовались<br>услугой в этом месяце."
+            messageDialog.visible = true;
 
         }
 
         onTrustedPayOk:{
+            messageDialog.text = "Временный платеж активирован."
+            messageDialog.visible = true;
 
         }
     }
 
+    MessageDialog {
+        id: messageDialog
+        title: "Временный платеж"
+        Rectangle{
+            anchors.fill: parent
+            color: "lightblue"
+        }
 
+
+
+        onAccepted: {
+            // Qt.quit()
+        }
+        Component.onCompleted: visible = false
+
+    }
 
 
 
@@ -33,7 +54,7 @@ Item {
             width: backRect.width
             height: backRect.height
             anchors.horizontalCenter: backRect.horizontalCenter
-            contentHeight: trustButton.y + trustButton.height + 200
+            contentHeight: trustButton.y + trustButton.height + 100
             contentWidth: parent.width
             smooth: true
             boundsBehavior: Flickable.StopAtBounds

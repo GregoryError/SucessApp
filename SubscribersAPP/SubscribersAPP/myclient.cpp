@@ -87,7 +87,7 @@ void MyClient::slotReadyRead()
         m_nNextBlockSize = 0;
     }
 
-    // qDebug() << m_ptxtInfo;
+     qDebug() << m_ptxtInfo;
 
     // m_ptxtInfo = m_pTcpSocket->readAll();
 
@@ -163,14 +163,13 @@ void MyClient::slotReadyRead()
 
         showPayments();
 
-    }else if (m_ptxtInfo == "PayDenied")
+    }else if (m_ptxtInfo == "requestTrustedPay!PayDenied")
     {
         emit trustedPayDenied();
 
-    }else if (m_ptxtInfo == "PayOk")
+    }else if (m_ptxtInfo == "requestTrustedPay!PayOk")
     {
         emit trustedPayOk();
-
     }
 
 
