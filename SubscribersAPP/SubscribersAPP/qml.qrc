@@ -27,5 +27,6 @@
         <file>payPoints.qml</file>
         <file>trustedPayPage.qml</file>
         <file>trustedBack.png</file>
+        <file>messagePage.qml</file>
     </qresource>
 </RCC>

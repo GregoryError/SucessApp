@@ -360,10 +360,10 @@ Item {
                             interval: 250
                             onTriggered: {
                                 switch (index) {
-                                case 0: myClient.askForPayments(); stackView.push("payments.qml"); break;
-                                case 1: /*stackView.push("payPoints.qml");*/ break;
+                                case 0: myClient.askForPayments(); myClient.makeBusyON(); stackView.push("payments.qml"); break;
+                                case 1: myClient.makeBusyON(); break;
                                 case 2: stackView.push("trustedPayPage.qml"); break;
-                                case 3: myClient.makeBusyON(); break;
+                                case 3: myClient.makeBusyON(); stackView.push("messagePage.qml"); break;
                                 case 4: BackEnd.callUs(); break;
                                 case 5: BackEnd.goUrl(); break;
                                 }

@@ -20,6 +20,7 @@ Item {
            anchors.fill: parent
            plugin: mapPlugin
            center: QtPositioning.coordinate(60.706, 28.769) // Oslo
+           Component.onCompleted: myClient.makeBusyOFF();
 
            zoomLevel: 17
        }

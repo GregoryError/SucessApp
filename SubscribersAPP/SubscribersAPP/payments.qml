@@ -146,16 +146,35 @@ Item {
                         anchors.leftMargin: 40
                         anchors.verticalCenter: kindOfPay.verticalCenter
                     }
-                    Text {
-                        id: payComment
-                        text: comment
-                        font.family: gotham_XNarrow.name;
-                        font.pointSize: 8
-                        color: "black"
+
+
+                    Rectangle{
+                        id: commentItem
+                        anchors.horizontalCenter: payUnit.horizontalCenter
                         anchors.top: payUnitLine.bottom
-                        anchors.topMargin: 5
-                        anchors.horizontalCenter: payUnitLine.horizontalCenter
+                        anchors.topMargin: 8
+                        width: payUnit.width - 45
+                        height: (payUnit.height - payUnit.height / 3) - 20
+                        color: "transparent"
+
+                        Text {
+                            id: payComment
+                            text: comment
+                            font.family: gotham_XNarrow.name;
+                            //font.pointSize: 8
+                            minimumPointSize: 8
+                            font.pointSize: 16
+                            fontSizeMode: Text.Fit
+                            width: commentItem.width
+                            height: commentItem.height
+                            color: "black"
+                            anchors.topMargin: 5
+                            anchors.horizontalCenter: commentItem.horizontalCenter
+                        }
+
                     }
+
+
 
                     // layer.enabled: true
                     // layer.effect: DropShadow {

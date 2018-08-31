@@ -19,6 +19,7 @@ Item {
             control.visible = false
             resultTxt.text = "Услуга уже была<br>
                            предоставлена."
+            toolButton.enabled = true
 
 
         }
@@ -28,6 +29,7 @@ Item {
             trustButton.visible = false
             control.visible = false
             resultTxt.text = "Услуга активирована!"
+            toolButton.enabled = true
 
         }
     }
@@ -294,7 +296,7 @@ Item {
                 anchors.topMargin: 30
                 radius: 6
                 color: "#f7f7f7"
-                clip: true
+                //clip: true
                 Text {
                     id: resultTxt
                     anchors.horizontalCenter: resultMsg.horizontalCenter
@@ -322,7 +324,7 @@ Item {
                 Rectangle{                     // add background if use "Toolbutton"
                     id: toolRect
                     opacity: 0.9
-                    anchors.top: resultTxt.bottom
+                    anchors.top: resultMsg.bottom
                     anchors.topMargin: 15
                     anchors.horizontalCenter: resultMsg.horizontalCenter
                     color: "#93deff"
@@ -362,6 +364,7 @@ Item {
                     MouseArea{
                         id: toolButton
                         anchors.fill: parent
+                        enabled: false
                         onPressed: {
 
                             //toolButtoncolorRect.x = mouseX
@@ -378,7 +381,7 @@ Item {
                     target: toolButtoncolorRect
                     properties: "width,height,radius"
                     from: 0
-                    to: resultMsg.width * 2
+                    to: toolRect.width * 5
                     duration: 450
 
                     onStopped: {
