@@ -1,7 +1,7 @@
 //import QtQuick 2.0
 import QtQuick 2.7
 import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.1
+//import QtQuick.Dialogs 1.1
 
 
 
@@ -13,27 +13,34 @@ Item {
     Connections{
         target: myClient
         onTrustedPayDenied:{
-            messageDialog.text = "Вы уже воспользовались<br>услугой в этом месяце."
-            messageDialog.visible = true;
+
+            resultAnim.running = true
+            trustButton.visible = false
+            control.visible = false
+            resultTxt.text = "Услуга уже была<br>
+                           предоставлена."
+
 
         }
 
         onTrustedPayOk:{
-            messageDialog.text = "Временный платеж активирован."
-            messageDialog.visible = true;
+            resultAnim.running = true
+            trustButton.visible = false
+            control.visible = false
+            resultTxt.text = "Услуга активирована!"
 
         }
     }
 
-    MessageDialog {
-        id: messageDialog
-        title: "Временный платеж"
-        onAccepted: {
-            // Qt.quit()
-        }
-        Component.onCompleted: visible = false
-
-    }
+  //  MessageDialog {
+  //      id: messageDialog
+  //      title: "Временный платеж"
+  //      onAccepted: {
+  //          // Qt.quit()
+  //      }
+  //      Component.onCompleted: visible = false
+  //
+  //  }
 
 
 
@@ -277,11 +284,152 @@ Item {
 
             }
 
+            Rectangle{
+                id: resultMsg
+                opacity: 0
+                width: mainTP.width * 0.7
+                height: width * 0.7
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: trustedTXT.bottom
+                anchors.topMargin: 30
+                radius: 6
+                color: "#f7f7f7"
+                clip: true
+                Text {
+                    id: resultTxt
+                    anchors.horizontalCenter: resultMsg.horizontalCenter
+                    anchors.verticalCenter: resultMsg.verticalCenter
+                    //anchors.top: resultMsg.top
+                    //anchors.topMargin: 15
+                    font.family: gotham_XNarrow.name
+                    font.pointSize: 20
+                    color: "#0074e4"
+
+                }
+                OpacityAnimator{
+                    id: resultAnim
+                    running: false
+                    target: resultMsg
+                    from: 0
+                    to: 0.8
+                    duration: 1000
+                    onStarted: {
+                        //resultMsg.visible = true
+                    }
+                }
+
+
+                Rectangle{                     // add background if use "Toolbutton"
+                    id: toolRect
+                    opacity: 0.9
+                    anchors.top: resultTxt.bottom
+                    anchors.topMargin: 15
+                    anchors.horizontalCenter: resultMsg.horizontalCenter
+                    color: "#93deff"
+                    radius: 25
+                    width: 45
+                    height: 45
+                    x: 15
+                    // y: 15
+                    //clip: true
+                    smooth: true
+
+
+
+                    Image {
+                        id: toolPic
+                        //source: "qrc:/toolPic.png"
+                        source: "qrc:/arrow_left.png"
+                        width: 30
+                        height: 30
+                        smooth: true
+                        anchors.centerIn: toolRect
+                    }
+
+                    Rectangle {
+                        id: toolButtoncolorRect
+                        height: 0
+                        width: 0
+                        anchors.centerIn: toolRect
+                        color: "#0074e4"
+
+                        transform: Translate {
+                            // x: -toolButtoncolorRect.width / 2
+                            // y: -toolButtoncolorRect.height / 2
+                        }
+                    }
+
+                    MouseArea{
+                        id: toolButton
+                        anchors.fill: parent
+                        onPressed: {
+
+                            //toolButtoncolorRect.x = mouseX
+                            //toolButtoncolorRect.y = mouseY
+                            toolButtoncircleAnimation.start()
+                            toolButtonOpacityAnimation.start()
+
+                        }
+                    }
+                }
+
+                PropertyAnimation {
+                    id: toolButtoncircleAnimation
+                    target: toolButtoncolorRect
+                    properties: "width,height,radius"
+                    from: 0
+                    to: resultMsg.width * 2
+                    duration: 450
+
+                    onStopped: {
+                        toolButtoncolorRect.width = 0
+                        toolButtoncolorRect.height = 0
+                        stackView.pop()
+
+                    }
+                }
+
+
+                PropertyAnimation {
+                    id: toolButtonOpacityAnimation
+                    target: toolButtoncolorRect
+                    properties: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 400
+
+                }
+
+            }
+
         }
 
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

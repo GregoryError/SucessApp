@@ -688,6 +688,7 @@ ApplicationWindow {
                         stackView.push("payments.qml");
                         bigbusy.running = true;
                         drawer.close()
+
                     }
                 }
                 ItemDelegate {
