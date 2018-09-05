@@ -41,31 +41,6 @@ Item {
             }
         }
 
-        // Timer {
-        //     id: paytimer
-        //     interval: 3000;  ////////////////////////////////////////////////
-        //
-        //     running: true
-        //
-        //     onTriggered:{
-        //
-        //         payModel.clear()
-        //
-        //         myClient.showPayments();
-        //
-        //         for(var i = 0; i < myClient.payTableLength(); ++i)
-        //         {
-        //             if (myClient.givePayCash(i)[0] !== '0')
-        //                 payModel.append({"date": myClient.givePayTime(i),
-        //                                     "cash": myClient.givePayCash(i),
-        //                                     "comment": myClient.givePayComm(i)})
-        //         }
-        //
-        //         console.log("Timer event!")   // <- is working
-        //
-        //     }
-        // }
-
 
         ListModel {
             id: payModel
@@ -78,7 +53,7 @@ Item {
             width: mainwnd.width
             height: mainwnd.height
             smooth: true
-            focus: true
+            //focus: true
             maximumFlickVelocity: 1000000
             //headerPositioning: ListView.PullBackHeader
             clip: true
@@ -152,21 +127,23 @@ Item {
                         id: commentItem
                         anchors.horizontalCenter: payUnit.horizontalCenter
                         anchors.top: payUnitLine.bottom
-                        anchors.topMargin: 8
+                        anchors.topMargin: 6
+                        anchors.bottomMargin: 6
                         width: payUnit.width - 45
                         height: (payUnit.height - payUnit.height / 3) - 20
                         color: "transparent"
+                        //color: "gray"
 
                         Text {
                             id: payComment
                             text: comment
                             font.family: gotham_XNarrow.name;
                             //font.pointSize: 8
-                            minimumPointSize: 8
-                            font.pointSize: 16
+                            minimumPointSize: 7
+                            font.pointSize: 12
                             fontSizeMode: Text.Fit
-                            width: commentItem.width
-                            height: commentItem.height
+                            width: parent.width
+                            height: parent.height
                             color: "black"
                             anchors.topMargin: 5
                             anchors.horizontalCenter: commentItem.horizontalCenter
@@ -175,17 +152,6 @@ Item {
                     }
 
 
-
-                    // layer.enabled: true
-                    // layer.effect: DropShadow {
-                    //     id: payDelegatShadow
-                    //     opacity: 0
-                    //     transparentBorder: true
-                    //     samples: 30
-                    //     radius: 10
-                    //     color: "lightgray"
-                    //
-                    // }
 
                     border.color: "#E3EAEA"
                     border.width: 0.5

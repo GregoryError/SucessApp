@@ -4,65 +4,201 @@ import QtQuick.Controls 2.2
 Item {
     id: mainMsg
     FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
-    Component.onCompleted: myClient.makeBusyOFF();
+
+
+    Connections{
+        target: myClient
+
+        onStartReadMsgs: {
+
+            msgModel.clear();
+
+            for (var i = 0; i < myClient.msgMapSize(); ++i)
+            {
+
+
+                msgModel.append({"txt": myClient.giveMsgLine(myClient.giveMsgTime(i)),
+                                    "time": myClient.convertTime(myClient.giveMsgTime(i))});
+            }
+            msgView.model = msgModel
+            myClient.makeBusyOFF();
+            msgView.positionViewAtEnd();
+        }
+
+    }
+
+
 
     Rectangle{
         id: backRect
         anchors.fill: parent
-        color: "#f7f7f7"
-        Flickable{
-            id: msgFlickField
+        color: "#e6f8ff"
+
+        Image {
+            id: backGroundTP
+            source: "qrc:/trustedBack.png"
+            width: backRect.width
+            height: backRect.height
+            opacity: 0.1
+        }
+
+
+
+        ListModel {
+            id: msgModel
+        }
+
+        ListView{
+            id: msgView
             anchors.top: backRect.top
+            anchors.topMargin: 3
+            anchors.bottomMargin: 3
             anchors.bottom: inputLine.top
             anchors.left: backRect.left
             anchors.right: backRect.right
-            contentHeight: 2000
             clip: true
+            maximumFlickVelocity: 1000000
+            spacing: 20
+            delegate: msgDelegate
+
+
+
+
+
+        }
+
+        Component{
+            id: msgDelegate
+
 
             Rectangle{
-                id: msgBody
-                radius: 4
-                width: backRect.width - 50
-                height: 250
-                color: "white"
-                anchors.leftMargin: 5
-                Text {
-                    id: msgTxt
-                    width: parent.width
-                    height: parent.height
-                    //anchors.centerIn: parent
-                    anchors.margins: 5
-                    font.family: gotham_XNarrow.name;
-                    color: "#606470"
-                    minimumPointSize: 8
-                    font.pointSize: 15
-                    fontSizeMode: Text.Fit
-                    text: "В оригинальной версии биографии Бэтмен — <br>
-тайное альтер-эго миллиардера Брю́са Уэ́йна, успешного<br>
-промышленника, филантропа и любимца женщин.<br>
-В детстве, став свидетелем убийства своих родителей,<br>
-Брюс поклялся посвятить свою жизнь <br>
-искоренению преступности и борьбе за справедливость."
+                id: msgUnit
+                radius: 5
+                color: "#f7f7f7"
+                opacity: 0.9
+                height: content.paintedHeight + msgTime.paintedHeight + 50
+                width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 50 : content.paintedWidth + 50
+
+
+                x: content.text[0] === "Y"? 5 : 25
+
+
+                Rectangle{
+                    id: onlyTxtRect
+                    anchors.left: msgUnit.left
+                    anchors.right: msgUnit.right
+                    anchors.top: msgUnit.top
+                    anchors.bottom: msgUnit.border
+                    anchors.margins: {
+                        left: 7
+                        right: 7
+                        top: 7
+                        bottom: 20
+                    }
+
+                    color: "red"
+
+                    Text {
+                        id: content
+                        font.pointSize: 10
+                        width: mainMsg.width - 100
+                        wrapMode: Text.Wrap
+                        anchors.margins: 8
+                        //anchors.centerIn: msgUnit
+                        color: "#323643"
+                        text: txt
+                    }
+
+
                 }
 
+                Text {
+                    id: msgTime
+                    anchors.topMargin: 7
+                    anchors.right: msgUnit.right
+                    anchors.rightMargin: 7
+                    anchors.bottom: msgUnit.bottom
+                    anchors.bottomMargin: 7
+                    wrapMode: Text.Wrap
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 12
+                    fontSizeMode: Text.Fit
+                    color: "#606470"
+                    text: time
+
+                }
             }
+        }
+
+
+
+
+
+
+
+
+
+
+        Rectangle{
+            id: textBack
+            anchors.bottom: inputLine.bottom
+            width: mainMsg.width
+            height: inputLine.height
+            color: "#f7f7f7"
 
         }
+
         TextField{
             id: inputLine
-            width: mainMsg.width
+            width: mainMsg.width - sendButt.width
             height: mainMsg.height * 0.1
             anchors.bottom: backRect.bottom
+            anchors.left: backRect.left
             background: Rectangle{
                 anchors.fill: parent
-                opacity: 0.2
-                color: "#93deff"
+                color: "transparent"
             }
-            color: "#606470"
-            font.pointSize: (inputLine.width  * 0.1) / 2
+            color: "#323643"
+            font.pointSize: 12
             font.family: gotham_XNarrow.name;
-            placeholderText: "Сообщение"
+            placeholderText: "Сообщение... "
+            maximumLength: 300
         }
+        Button{
+            id: sendButt
+            width: inputLine.height
+            height: width
+            anchors.bottom: backRect.bottom
+            anchors.right: backRect.right
+            background: Image {
+                id: sendArrow
+                opacity: 0;
+                source: "qrc:/Menu/right-arrow-icon.png"
+                width: sendButt.width
+                height: sendButt.height
+            }
 
+            OpacityAnimator{
+                id: arrowAnim
+                target: sendArrow
+                from: 0
+                to: 1
+                duration: 400
+                running: inputLine.focus === true? true : false
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -87,7 +87,7 @@ void MyClient::slotReadyRead()
         m_nNextBlockSize = 0;
     }
 
-     qDebug() << m_ptxtInfo;
+    //qDebug() << m_ptxtInfo;
 
     // m_ptxtInfo = m_pTcpSocket->readAll();
 
@@ -97,9 +97,6 @@ void MyClient::slotReadyRead()
     if(m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 11) == "getAllData!")
     {
         //idNumber, balance, state, pay_day, paket;
-
-
-
 
         idNumber.clear();
         balance.clear();
@@ -158,16 +155,25 @@ void MyClient::slotReadyRead()
 
         // тут везде надо оставить только проверку на начальные слоги set, get, ask...
 
-    }else if(m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 12) == "askPayments!"){
+    }
+    else if (m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 12) == "askPayments!")
+    {
         payments = m_ptxtInfo;
-
         showPayments();
 
-    }else if (m_ptxtInfo == "requestTrustedPay!PayDenied")
+    }
+    else if (m_ptxtInfo.mid(0, 11) == "askForMsgs!")
+    {
+        msgs = m_ptxtInfo.mid(11);
+        showMsgs();
+
+    }
+    else if (m_ptxtInfo == "requestTrustedPay!PayDenied")
     {
         emit trustedPayDenied();
 
-    }else if (m_ptxtInfo == "requestTrustedPay!PayOk")
+    }
+    else if (m_ptxtInfo == "requestTrustedPay!PayOk")
     {
         emit trustedPayOk();
     }
@@ -240,9 +246,8 @@ void MyClient::Sender(const QString &msg)
 
 void MyClient::connectToHost()
 {
-    //m_pTcpSocket->connectToHostEncrypted("176.125.152.88", 2323);
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-   // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 }
 
@@ -331,6 +336,12 @@ void MyClient::askForTrustedPay()
            + ")requestTrustedPay!");
 }
 
+void MyClient::askForMsgs()
+{
+    Sender("(" + dataSet.value("id").toString()
+           + "#" + dataSet.value("pass").toString()
+           + ")askForMsgs!");
+}
 
 int MyClient::payTableLength()
 {
@@ -459,6 +470,84 @@ void MyClient::showPayments()
 
 
 
+void MyClient::showMsgs()
+{
+
+    //   Продлил до 08.06.16 01:27~time:1464906536~end()
+
+    //   ... ~time:1472899145~end()~user:МОЖНО ЛИ ЕЩЕ НА...
+
+
+    QString msgUnit;
+
+    bool startUserData = false;
+
+
+
+    QString val;
+
+
+    for (auto &ch:msgs)
+    {
+        if (msgUnit.right(6) == "~user:")
+        {
+            QString tmp = msgUnit;
+            auto len = tmp.length();
+            msgUnit = tmp.mid(0, len - 6);
+            startUserData = true;
+        }
+        msgUnit += ch;
+        if (msgUnit.right(6) == "~time:")
+        {
+            auto len = msgUnit.length();
+            if (startUserData)
+                val = "You:<br>" + msgUnit.mid(0, len - 6);
+            else
+                val = "Operator:<br>" + msgUnit.mid(0, len - 6);
+            msgUnit.clear();
+        }
+        if (msgUnit.right(6) == "~end()")
+        {
+            auto len = msgUnit.length();
+            if (startUserData)
+                msg_lines.insert(msgUnit.mid(0, len - 6).toInt(), val);
+            else
+                msg_lines.insert(msgUnit.mid(0, len - 6).toInt(), val);
+            msgUnit.clear();
+        }
+    }
+
+
+    emit startReadMsgs();
+
+
+
+
+    //qDebug() << "ADMIN DATA: ";
+    //
+    //for (auto &line:adm_vct)
+    //{
+    //    qDebug() << line;
+    //}
+    //
+    //qDebug() << "USER DATA: ";
+    //
+    //for (auto &line:usr_vct)
+    //{
+    //    qDebug() << line;
+    //}
+
+
+}
+
+QString MyClient::convertTime(int val)
+{
+    QDateTime time = QDateTime::fromSecsSinceEpoch(val);
+    return time.toString("dd.MM.yyyy hh:mm");
+}
+
+
+
 
 QString MyClient::givePayTime(int strN)
 {
@@ -504,7 +593,7 @@ QString MyClient::showState()
 }
 
 void MyClient::setAuthOn()
-{      
+{
     dataSet.setValue("access", false);
     //connectToHost();
     Sender("(" + dataSet.value("name").toString()
@@ -520,6 +609,12 @@ void MyClient::setAuthNo()
            + "#" + dataSet.value("pass").toString()
            + ")setAuth:'no'");
 }
+
+void MyClient::copyToBuf()
+{
+    buf->setText(idNumber, QClipboard::Clipboard);
+}
+
 
 
 

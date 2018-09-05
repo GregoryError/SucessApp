@@ -12,14 +12,10 @@ import QtQuick.Dialogs 1.1
 
 
 Item {
-   // anchors.fill: parent
+    // anchors.fill: parent
     id: mainwnd
 
     FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
-
-
-
-
 
 
     Connections{
@@ -44,6 +40,7 @@ Item {
         //color: "#323643"
         //z: 3
         // visible: false
+        //clip: true
 
         Image {
             id: walletPic
@@ -51,7 +48,7 @@ Item {
             width: 70
             height: 60
             source: "qrc:/Wallet.png"
-           // smooth: true
+            // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
             anchors.margins: 40
@@ -61,7 +58,7 @@ Item {
             id: billVal
             anchors.horizontalCenter: infoRect.horizontalCenter
             anchors.top: infoRect.top
-            anchors.topMargin: -15                      /////// controversal <<<<<<<<<<<<<<<<<<<<
+            anchors.topMargin: -15           /////// controversal <<<<<<<<<<<<<<<<<<<<
             font.family: gotham_XNarrow.name;
             font.pointSize: 50
             color: "#f7f7f7"
@@ -126,6 +123,56 @@ Item {
             font.family: gotham_XNarrow.name;
             font.pointSize: 15
             color: "#f7f7f7"
+            z: 2
+            Rectangle{
+                id: countBack
+                anchors.fill: parent
+                radius: 4
+                color: "transparent"
+                Text {
+                    id: copyTxt
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 16
+                    text: "скопированно"
+                    visible: false
+                    color: "white"
+
+                }
+            }
+
+            MouseArea{
+                id: bufArea
+                z: 3
+                anchors.fill: countTxt
+                width: countTxt.width * 2
+                height: countTxt.height * 2
+                onPressed: {
+                    console.log("copyed");
+                    countBack.color = "#95c9e8"
+                    countBack.opacity = 1
+                    copyTxt.visible = true
+                    myClient.copyToBuf();
+                }
+                onReleased: {
+                    countBackDiss.running = true
+                }
+            }
+
+            OpacityAnimator{
+                id: countBackDiss
+                target: countBack
+                from: 1
+                to: 0
+                duration: 2200
+                running: false
+                onStopped: {
+                    countBack.color = "transparent"
+                    copyTxt.visible = false
+                }
+
+            }
+
 
         }
 
@@ -141,6 +188,61 @@ Item {
 
         }
 
+
+        Rectangle {
+            id: infoRectcolorRect
+            height: 0
+            width: 0
+
+            color: "#95c9e8"
+
+            transform: Translate {
+                x: -infoRectcolorRect.width / 2
+                y: -infoRectcolorRect.height / 2
+            }
+        }
+        MouseArea{
+            id: infoArea
+            anchors.fill: infoRect
+            // enabled: false
+            onPressed: {
+
+                infoRectcolorRectcleAnimation.stop();
+                infoRectcolorRectOpacityAnimation.stop();
+
+                infoRectcolorRect.x = mouseX
+                infoRectcolorRect.y = mouseY
+                infoRectcolorRectcleAnimation.start()
+                infoRectcolorRectOpacityAnimation.start()
+
+            }
+        }
+
+        PropertyAnimation {
+            id: infoRectcolorRectcleAnimation
+            target: infoRectcolorRect
+            properties: "width,height,radius"
+            from: 0
+            to: infoRect.width
+            duration: 600
+
+            onStopped: {
+                infoRectcolorRect.width = 0
+                infoRectcolorRect.height = 0
+
+            }
+        }
+
+
+        PropertyAnimation {
+            id: infoRectcolorRectOpacityAnimation
+            target: infoRectcolorRect
+            properties: "opacity"
+            from: 1
+            to: 0
+            duration: 350
+
+        }
 
 
     }
@@ -205,23 +307,23 @@ Item {
         radius: 2
         anchors.top: infoRect.bottom
         anchors.topMargin: -15         // WTF
-       // smooth: true
+        // smooth: true
 
 
 
         DropShadow {
-                id: bigMenuShadow
-                anchors.fill: bigMenu
-                cached: true
-                //horizontalOffset: 3
-                verticalOffset: 2
-                radius: 3.0
-                samples: 6
-                color: "#80000000"
-                smooth: true
-                source: bigMenu
-                opacity: 0.3
-            }
+            id: bigMenuShadow
+            anchors.fill: bigMenu
+            cached: true
+            //horizontalOffset: 3
+            verticalOffset: 2
+            radius: 3.0
+            samples: 6
+            color: "#80000000"
+            smooth: true
+            source: bigMenu
+            opacity: 0.3
+        }
 
         GridView{
             id: cells
@@ -229,7 +331,7 @@ Item {
             opacity: 0
             //visible: false
             anchors.centerIn: parent
-           // smooth: true
+            // smooth: true
 
             width: cellWidth * 2
             height: cellHeight * 3
@@ -247,7 +349,7 @@ Item {
                     id: oneCell
                     width: cells.cellWidth
                     height: cells.cellHeight
-                   // smooth: true
+                    // smooth: true
 
                     MouseArea{
                         id: buttons
@@ -260,7 +362,7 @@ Item {
                         Rectangle{
                             id: backOfCell
                             color: "#f7f7f7"
-                           // smooth: true
+                            // smooth: true
                             anchors.fill: parent
                             radius: 3
                             anchors.margins: 1
@@ -281,11 +383,11 @@ Item {
 
                             Image {
                                 id: buttImg
-                              //  smooth: true
+                                //  smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                               // width: 25
-                               // height: 25
+                                // width: 25
+                                // height: 25
 
                                 sourceSize.height: 25
                                 sourceSize.width: 25
@@ -304,7 +406,7 @@ Item {
                                 font.family: gotham_XNarrow.name;
                                 font.pointSize: 16
                                 text: mtext
-                               // smooth: true
+                                // smooth: true
                             }
 
                         }
@@ -333,7 +435,7 @@ Item {
                             //    stackView.push("payments.qml")
 
 
-                           // console.log(index)
+                            // console.log(index)
 
 
                         }
@@ -360,10 +462,13 @@ Item {
                             interval: 250
                             onTriggered: {
                                 switch (index) {
-                                case 0: myClient.askForPayments(); myClient.makeBusyON(); stackView.push("payments.qml"); break;
+                                case 0: myClient.askForPayments(); myClient.makeBusyON();
+                                    stackView.push("payments.qml"); break;
                                 case 1: myClient.makeBusyON(); break;
                                 case 2: stackView.push("trustedPayPage.qml"); break;
-                                case 3: myClient.makeBusyON(); stackView.push("messagePage.qml"); break;
+                                case 3: myClient.makeBusyON();
+                                    myClient.askForMsgs();
+                                    stackView.push("messagePage.qml"); break;
                                 case 4: BackEnd.callUs(); break;
                                 case 5: BackEnd.goUrl(); break;
                                 }
@@ -443,20 +548,20 @@ Item {
             }
 
 
-             OpacityAnimator{
-                 id: cellAppear
-                 target: cells
-                 running: cells.visible
-                 from: 0
-                 to: 1
-                 duration: 200
-                 easing.type: Easing.InCirc
-                 onStopped: {
-                     // some soundeffects
-                     // game_engine.soundBegin()
-                     //backgroundAppear.start()
-                 }
-             }
+            OpacityAnimator{
+                id: cellAppear
+                target: cells
+                running: cells.visible
+                from: 0
+                to: 1
+                duration: 200
+                easing.type: Easing.InCirc
+                onStopped: {
+                    // some soundeffects
+                    // game_engine.soundBegin()
+                    //backgroundAppear.start()
+                }
+            }
 
 
 

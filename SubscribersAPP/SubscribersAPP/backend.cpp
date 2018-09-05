@@ -107,7 +107,20 @@ void BackEnd::social()
     QUrl myUrl("https://vk.com/arrivanet");
     QDesktopServices::openUrl(myUrl);
 }
+
 //////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -28,5 +28,6 @@
         <file>trustedPayPage.qml</file>
         <file>trustedBack.png</file>
         <file>messagePage.qml</file>
+        <file>Menu/right-arrow-icon.png</file>
     </qresource>
 </RCC>

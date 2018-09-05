@@ -15,10 +15,10 @@
 #include <QSslSocket>
 #include <QString>
 #include <QSettings>
-
-
 #include <QDataStream>
 #include <QByteArray>
+
+#include <QDateTime>
 
 class QTextEdit;
 class QLineEdit;
@@ -37,8 +37,12 @@ public:
     quint16 m_nNextBlockSize;
     QString idNumber, balance, state, pay_day, paket;
     QString payments;
+    QString msgs;
     int Port;
     QVector<QString> times_vct, cashes_vct, comments_vct;
+
+    QMap<int, QString> msg_lines;
+
 
     QSettings dataSet;
     QString enteredName;
@@ -48,6 +52,8 @@ public:
     bool isAuthOk = false;        ///////////////////// ?
     bool isConnect = false;
     bool demo = false;
+
+    QClipboard *buf = QApplication::clipboard();
 
     MyClient(QWidget* pwgt = nullptr);
     void Sender(const QString& msg);
@@ -63,6 +69,9 @@ signals:
     void busyOFF();
     void trustedPayOk();
     void trustedPayDenied();
+    // Messages:
+    void startReadMsgs();  // можно начинать читать вектора с сообщениями
+
 
 
 public slots:
@@ -76,9 +85,9 @@ public slots:
     bool showDemo();
     int payTableLength();        // Возвращает кол-во строк в списке платежей
 
-   // void fillHomePage();
+    // void fillHomePage();
 
-   // void fillPaysPage();
+    // void fillPaysPage();
 
     void switchToMe();
 
@@ -101,6 +110,27 @@ public slots:
     QString showState();
     void setAuthOn();
     void setAuthNo();
+
+    void copyToBuf();
+
+    // msgs:
+
+    void askForMsgs();
+    void showMsgs();
+
+
+    QString giveMsgLine(int index) { return msg_lines.value(index); }
+
+    long giveMsgTime(int i) { auto beg = msg_lines.begin(); return (beg + i).key(); }
+
+    int msgMapSize() { return msg_lines.size(); }
+
+
+    QString convertTime(int val);
+
+
+
+
 
 
 };

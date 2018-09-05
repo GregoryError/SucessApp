@@ -18,6 +18,9 @@
 #include <QDesktopServices>
 #include <QWindow>
 
+#include <QClipboard>
+#include <QGuiApplication>
+
 
 class location
 {
@@ -33,7 +36,7 @@ public:
 
     double ShowDiff(location &first, location &second)
     {
-         return std::abs(pow(pow((second.latitude - first.latitude), 2) + pow((second.longitude - first.longitude), 2), 0.5));
+        return std::abs(pow(pow((second.latitude - first.latitude), 2) + pow((second.longitude - first.longitude), 2), 0.5));
     }
 
     bool operator <(location &obj)
@@ -63,6 +66,8 @@ public:
     QQmlApplicationEngine engine;
 
 
+
+
     location owner;
     QGeoPositionInfoSource *source = QGeoPositionInfoSource::createDefaultSource(this);
     QRect displaySize;
@@ -74,7 +79,7 @@ public:
 public slots:
     void payList();
     void trustedPay();
- QString showATM();
+    QString showATM();
     void callUs();
     void goUrl();
     void social();
