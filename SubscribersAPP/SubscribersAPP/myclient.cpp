@@ -247,7 +247,7 @@ void MyClient::Sender(const QString &msg)
 void MyClient::connectToHost()
 {
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 }
 
@@ -373,6 +373,10 @@ void MyClient::makeBusyOFF()
 //    emit startReadPays();
 //}
 
+
+
+
+
 void MyClient::showPayments()
 {
 
@@ -469,6 +473,15 @@ void MyClient::showPayments()
 }
 
 
+void MyClient::sendMsgs(QString str)
+{
+    // setMsgs
+    Sender("(" + dataSet.value("id").toString()
+           + "#" + dataSet.value("pass").toString()
+           + ")setMsgs:" + str);
+}
+
+
 
 void MyClient::showMsgs()
 {
@@ -539,6 +552,8 @@ void MyClient::showMsgs()
 
 
 }
+
+
 
 QString MyClient::convertTime(int val)
 {

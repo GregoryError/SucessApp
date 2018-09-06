@@ -117,6 +117,7 @@ public slots:
 
     void askForMsgs();
     void showMsgs();
+    void sendMsgs(QString str);
 
 
     QString giveMsgLine(int index) { return msg_lines.value(index); }

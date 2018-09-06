@@ -74,13 +74,13 @@ Item {
             Rectangle{
                 id: msgUnit
                 radius: 5
-                color: "#f7f7f7"
-                opacity: 0.9
+                color: content.text[0] === "Y"? "#f7f7f7" : "#93deff"
+                opacity: 0.8
                 height: content.paintedHeight + msgTime.paintedHeight + 50
                 width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 50 : content.paintedWidth + 50
 
 
-                x: content.text[0] === "Y"? 5 : 25
+                x: content.text[0] === "O"? 5 : mainMsg.width - (width + 5)
 
 
                 Rectangle{
@@ -100,7 +100,7 @@ Item {
 
                     Text {
                         id: content
-                        font.pointSize: 10
+                        font.pointSize: 12
                         width: mainMsg.width - 100
                         wrapMode: Text.Wrap
                         anchors.margins: 8
@@ -121,7 +121,7 @@ Item {
                     anchors.bottomMargin: 7
                     wrapMode: Text.Wrap
                     font.family: gotham_XNarrow.name;
-                    font.pointSize: 12
+                    font.pointSize: 14
                     fontSizeMode: Text.Fit
                     color: "#606470"
                     text: time
@@ -159,32 +159,53 @@ Item {
                 color: "transparent"
             }
             color: "#323643"
-            font.pointSize: 12
+            font.pointSize: 16
             font.family: gotham_XNarrow.name;
             placeholderText: "Сообщение... "
             maximumLength: 300
+
         }
         Button{
             id: sendButt
+            enabled: false
+            opacity: 0
             width: inputLine.height
             height: width
             anchors.bottom: backRect.bottom
-            anchors.right: backRect.right
+            anchors.right: backRect.right  
             background: Image {
                 id: sendArrow
-                opacity: 0;
+                //opacity: 0;
                 source: "qrc:/Menu/right-arrow-icon.png"
                 width: sendButt.width
                 height: sendButt.height
             }
+            onPressed: {
+                myClient.sendMsgs(inputLine.text);
+            }
 
             OpacityAnimator{
                 id: arrowAnim
-                target: sendArrow
+                target: sendButt
                 from: 0
                 to: 1
                 duration: 400
-                running: inputLine.focus === true? true : false
+                onStopped: {
+                    sendButt.enabled = true
+                }
+
+                running: inputLine.text.length === 1? true : false
+            }
+            OpacityAnimator{
+                id: arrowDisAnim
+                target: sendButt
+                from: 1
+                to: 0
+                duration: 400
+                running: inputLine.text.length === 0? true : false
+                onStopped: {
+                    sendButt.enabled = false
+                }
             }
         }
     }
