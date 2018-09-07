@@ -146,7 +146,7 @@ ApplicationWindow {
 
                     background: Rectangle {
                         opacity: 0
-                         anchors.centerIn: parent
+                        anchors.centerIn: parent
 
                     }
                     onAccepted: login()
@@ -430,59 +430,81 @@ ApplicationWindow {
 
 
 
-        Rectangle{                        // Временный фон на период разработки
-            id: tempRect
+     //   Rectangle{                        // Временный фон на период разработки
+     //       id: tempRect
+     //       width: window.width
+     //       height: window.height * 0.3 + 50
+     //       x: 0
+     //       y: 0
+     //       color: "steelblue"
+     //       // layer.enabled: true
+     //       // layer.effect: DropShadow {
+     //       //     id: backhadow
+     //       //     transparentBorder: true
+     //       //     samples: 30
+     //       //     radius: 12
+     //       //     color: "#606470"
+     //       //
+     //       // }
+     //
+     //
+     //       DropShadow {
+     //           id: backhadow
+     //           anchors.fill: tempRect
+     //           cached: true
+     //           //horizontalOffset: 3
+     //           verticalOffset: 2
+     //           radius: 2.0
+     //           samples: 5
+     //           color: "#80000000"
+     //           smooth: true
+     //           source: tempRect
+     //           opacity: 0.4
+     //       }
+     //
+     //   }
+
+
+
+
+        LinearGradient {
+            id: backGrad
             width: window.width
             height: window.height * 0.3 + 50
             x: 0
             y: 0
-            color: "steelblue"
-           // layer.enabled: true
-           // layer.effect: DropShadow {
-           //     id: backhadow
-           //     transparentBorder: true
-           //     samples: 30
-           //     radius: 12
-           //     color: "#606470"
-           //
-           // }
+            //visible: false
+            start: Qt.point(0, 0)
+            end: Qt.point(window.width, window.width)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#93deff" }
+                GradientStop { position: 0.2; color: "#638AA1" }
+                GradientStop { position: 0.4; color: "#4B6072" }
+                GradientStop { position: 0.7; color: "#323643" }
+                GradientStop { position: 1.0; color: "#323643" }
+            }
 
 
             DropShadow {
-                    id: backhadow
-                    anchors.fill: tempRect
-                    cached: true
-                    //horizontalOffset: 3
-                    verticalOffset: 2
-                    radius: 2.0
-                    samples: 5
-                    color: "#80000000"
-                    smooth: true
-                    source: tempRect
-                    opacity: 0.4
-                }
+                id: backhadow
+                anchors.fill: backGrad
+                cached: true
+                //horizontalOffset: 3
+                verticalOffset: 2
+                radius: 2.0
+                samples: 5
+                color: "#80000000"
+                smooth: true
+                source: backGrad
+                opacity: 0.4
+            }
 
         }
 
 
 
-        //
-        // LinearGradient {
-        //     width: window.width
-        //     height: window.height * 0.3 + 50
-        //     x: 0
-        //     y: 0
-        //     //visible: false
-        //     start: Qt.point(0, 0)
-        //     end: Qt.point(window.width, window.width)
-        //     gradient: Gradient {
-        //         GradientStop { position: 0.0; color: "#93deff" }
-        //         GradientStop { position: 0.2; color: "#638AA1" }
-        //         GradientStop { position: 0.4; color: "#4B6072" }
-        //         GradientStop { position: 0.7; color: "#323643" }
-        //         GradientStop { position: 1.0; color: "#323643" }
-        //     }
-        // }
+
+
 
         FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
@@ -662,9 +684,9 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
 
-           // enter:Transition {
-           //     NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
-           // }
+            // enter:Transition {
+            //     NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
+            // }
 
 
             Column {
@@ -723,37 +745,37 @@ ApplicationWindow {
                 initialItem: "homePage.qml"
                 anchors.fill: parent
 
-               // pushEnter: Transition {
-               //     XAnimator {
-               //         from: (stackView.mirrored ? 1 : -1) * stackView.width
-               //         to: 0
-               //         duration: 80
-               //         //easing.type: Easing.InCubic
-               //     }
-               // }
+                // pushEnter: Transition {
+                //     XAnimator {
+                //         from: (stackView.mirrored ? 1 : -1) * stackView.width
+                //         to: 0
+                //         duration: 80
+                //         //easing.type: Easing.InCubic
+                //     }
+                // }
 
 
-               // popEnter: Transition {
-               //     XAnimator {
-               //         from: (stackView.mirrored ? -1 : 1) * -stackView.width
-               //         to: 0
-               //         duration: 50
-               //         //easing.type: Easing.InCubic
-               //     }
-               // }
-              //
-              //
-              //
-               // popExit: Transition {
-               //     XAnimator {
-               //         from: 0
-               //         to: (stackView.mirrored ? -1 : 1) * stackView.width
-               //         duration: 150
-               //         //easing.type: Easing.OutCubic
-               //     }
-               // }
-              //
-              //
+                // popEnter: Transition {
+                //     XAnimator {
+                //         from: (stackView.mirrored ? -1 : 1) * -stackView.width
+                //         to: 0
+                //         duration: 50
+                //         //easing.type: Easing.InCubic
+                //     }
+                // }
+                //
+                //
+                //
+                // popExit: Transition {
+                //     XAnimator {
+                //         from: 0
+                //         to: (stackView.mirrored ? -1 : 1) * stackView.width
+                //         duration: 150
+                //         //easing.type: Easing.OutCubic
+                //     }
+                // }
+                //
+                //
                 // popExit: Transition {
                 //         PropertyAnimation {
                 //             property: "opacity"

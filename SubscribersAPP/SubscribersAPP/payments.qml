@@ -94,7 +94,7 @@ Item {
                         width: 12
                         height: 12
                         radius: 30
-                        color: cash[0] === '-'? "#ff5c5c" : "lightgreen"
+                        color: cash[0] === '-'? "#93deff" : "lightgreen"
                         anchors.left: payUnit.left
                         anchors.leftMargin: 15
                         y: payUnit.y + (payUnit.height / 3) * 0.4

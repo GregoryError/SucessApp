@@ -12,6 +12,7 @@ Item {
         onStartReadMsgs: {
 
             msgModel.clear();
+            inputLine.clear();
 
             for (var i = 0; i < myClient.msgMapSize(); ++i)
             {
@@ -39,7 +40,7 @@ Item {
             source: "qrc:/trustedBack.png"
             width: backRect.width
             height: backRect.height
-            opacity: 0.1
+            opacity: 0.2
         }
 
 
@@ -76,8 +77,8 @@ Item {
                 radius: 5
                 color: content.text[0] === "Y"? "#f7f7f7" : "#93deff"
                 opacity: 0.8
-                height: content.paintedHeight + msgTime.paintedHeight + 50
-                width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 50 : content.paintedWidth + 50
+                height: content.paintedHeight + msgTime.height + 20
+                width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 20 : content.paintedWidth + 20
 
 
                 x: content.text[0] === "O"? 5 : mainMsg.width - (width + 5)
@@ -88,19 +89,17 @@ Item {
                     anchors.left: msgUnit.left
                     anchors.right: msgUnit.right
                     anchors.top: msgUnit.top
-                    anchors.bottom: msgUnit.border
-                    anchors.margins: {
-                        left: 7
-                        right: 7
-                        top: 7
-                        bottom: 20
-                    }
-
-                    color: "red"
+                    anchors.bottom: msgUnit.bottom
+                    anchors.topMargin: 4
+                    anchors.rightMargin: 4
+                    anchors.leftMargin: 4
+                    anchors.bottomMargin: 30
+                    color: "transparent"
+                    // color: "red"
 
                     Text {
                         id: content
-                        font.pointSize: 12
+                        font.pointSize: 14
                         width: mainMsg.width - 100
                         wrapMode: Text.Wrap
                         anchors.margins: 8
@@ -114,6 +113,7 @@ Item {
 
                 Text {
                     id: msgTime
+                    //anchors.top: onlyTxtRect.bottom
                     anchors.topMargin: 7
                     anchors.right: msgUnit.right
                     anchors.rightMargin: 7
@@ -121,7 +121,7 @@ Item {
                     anchors.bottomMargin: 7
                     wrapMode: Text.Wrap
                     font.family: gotham_XNarrow.name;
-                    font.pointSize: 14
+                    font.pointSize: 16
                     fontSizeMode: Text.Fit
                     color: "#606470"
                     text: time
@@ -159,51 +159,70 @@ Item {
                 color: "transparent"
             }
             color: "#323643"
-            font.pointSize: 16
+            font.pointSize: 18
             font.family: gotham_XNarrow.name;
             placeholderText: "Сообщение... "
             maximumLength: 300
+            wrapMode: Text.Wrap
+
+
+            //  onTextChanged: {
+            //      if (!sendButt.opacity > 0)
+            //          arrowAnim.running = true
+            //      if (!inputLine.text.length > 0)
+            //          arrowDisAnim.running = true
+            //  }
+
 
         }
         Button{
             id: sendButt
             enabled: false
             opacity: 0
+            visible: false
             width: inputLine.height
             height: width
             anchors.bottom: backRect.bottom
-            anchors.right: backRect.right  
+            anchors.right: backRect.right
             background: Image {
                 id: sendArrow
-                //opacity: 0;
+                anchors.centerIn: parent
                 source: "qrc:/Menu/right-arrow-icon.png"
-                width: sendButt.width
-                height: sendButt.height
+                width: sendButt.width * 0.8
+                height: sendButt.height * 0.8
             }
             onPressed: {
                 myClient.sendMsgs(inputLine.text);
+                myClient.askForMsgs();
             }
 
             OpacityAnimator{
                 id: arrowAnim
+                running: inputLine.focus? true : false
                 target: sendButt
                 from: 0
                 to: 1
-                duration: 400
+                duration: 500
+                onStarted: {
+                    sendButt.visible = true
+                }
+
                 onStopped: {
                     sendButt.enabled = true
                 }
 
-                running: inputLine.text.length === 1? true : false
+
             }
+
             OpacityAnimator{
                 id: arrowDisAnim
                 target: sendButt
                 from: 1
                 to: 0
                 duration: 400
-                running: inputLine.text.length === 0? true : false
+                running: inputLine.focus? false : true
                 onStopped: {
+                    sendButt.visible = false
                     sendButt.enabled = false
                 }
             }

@@ -45,13 +45,13 @@ Item {
         Image {
             id: walletPic
             scale: mainwnd.height / 1530
-            width: 70
-            height: 60
+            width: 75
+            height: 65
             source: "qrc:/Wallet.png"
             // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
-            anchors.margins: 40
+            anchors.margins: 30
         }
 
         Text{
@@ -106,10 +106,17 @@ Item {
 
         Image {
             id: infoPic
-            y: countTxt.y + 4
+            //y: countTxt.y + 4
+            anchors.verticalCenter: countTxt.bottom
+
+            //anchors.top: infoline.bottom
+            //anchors.topMargin: 8
             anchors.horizontalCenter: walletPic.horizontalCenter
-            width: (walletPic.width - 10) * 0.5
-            height: walletPic.height * 0.5
+            // width: (walletPic.width - 10) * 0.5
+            // height: walletPic.height * 0.5
+
+            width: 30
+            height: 30
             source: "qrc:/infoPic.png"
             //smooth: true
 
@@ -389,8 +396,8 @@ Item {
                                 // width: 25
                                 // height: 25
 
-                                sourceSize.height: 25
-                                sourceSize.width: 25
+                                sourceSize.height: 30
+                                sourceSize.width: 30
 
                                 source: backdata
                                 //scale: 0.3
