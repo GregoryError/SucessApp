@@ -430,39 +430,39 @@ ApplicationWindow {
 
 
 
-     //   Rectangle{                        // Временный фон на период разработки
-     //       id: tempRect
-     //       width: window.width
-     //       height: window.height * 0.3 + 50
-     //       x: 0
-     //       y: 0
-     //       color: "steelblue"
-     //       // layer.enabled: true
-     //       // layer.effect: DropShadow {
-     //       //     id: backhadow
-     //       //     transparentBorder: true
-     //       //     samples: 30
-     //       //     radius: 12
-     //       //     color: "#606470"
-     //       //
-     //       // }
-     //
-     //
-     //       DropShadow {
-     //           id: backhadow
-     //           anchors.fill: tempRect
-     //           cached: true
-     //           //horizontalOffset: 3
-     //           verticalOffset: 2
-     //           radius: 2.0
-     //           samples: 5
-     //           color: "#80000000"
-     //           smooth: true
-     //           source: tempRect
-     //           opacity: 0.4
-     //       }
-     //
-     //   }
+        //   Rectangle{                        // Временный фон на период разработки
+        //       id: tempRect
+        //       width: window.width
+        //       height: window.height * 0.3 + 50
+        //       x: 0
+        //       y: 0
+        //       color: "steelblue"
+        //       // layer.enabled: true
+        //       // layer.effect: DropShadow {
+        //       //     id: backhadow
+        //       //     transparentBorder: true
+        //       //     samples: 30
+        //       //     radius: 12
+        //       //     color: "#606470"
+        //       //
+        //       // }
+        //
+        //
+        //       DropShadow {
+        //           id: backhadow
+        //           anchors.fill: tempRect
+        //           cached: true
+        //           //horizontalOffset: 3
+        //           verticalOffset: 2
+        //           radius: 2.0
+        //           samples: 5
+        //           color: "#80000000"
+        //           smooth: true
+        //           source: tempRect
+        //           opacity: 0.4
+        //       }
+        //
+        //   }
 
 
 
@@ -680,7 +680,7 @@ ApplicationWindow {
 
         Drawer {
             id: drawer
-            width: window.width * 0.66
+            width: window.width * 0.8
             height: window.height
             dragMargin: 40
 
@@ -689,40 +689,99 @@ ApplicationWindow {
             // }
 
 
+            Rectangle{
+                id: drawBack
+                anchors.fill: parent
+                color: "#323643"
+
+
+                Image {
+                    id: drawLogo
+                    source: "qrc:/blurLogo.png"
+                    scale: 0.5
+                    anchors.horizontalCenter: drawBack.horizontalCenter
+                    anchors.top: drawBack.top
+                    anchors.topMargin: -150
+
+
+                }
+
+                Text {
+                    id: quit
+                    anchors.top: drawLogo.bottom
+                    anchors.horizontalCenter: drawBack.horizontalCenter
+                    anchors.topMargin: - 150
+                    color: "white"
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 30
+                    text: "Выход"
+                }
+
+
+
+            }
+
+
             Column {
                 anchors.fill: parent
+                //
+                // Text {
+                //     id: quit
+                //     color: "white"
+                //     font.family: gotham_XNarrow.name;
+                //     font.pointSize: 30
+                //     text: "Выход"
+                // }
 
-                ItemDelegate {
-                    text: qsTr("Выход")
-                    width: parent.width
-                    onClicked: {
 
-                        myClient.quitAndClear()
-                        stackView.push("Page1Form.ui.qml")
-                        drawer.close()
-                    }
-                }
-                ItemDelegate {
-                    text: qsTr("Платежи")
-                    width: parent.width
-                    onClicked: {
-                        myClient.askForPayments();
-                        stackView.push("payments.qml");
-                        bigbusy.running = true;
-                        drawer.close()
 
-                    }
-                }
-                ItemDelegate {
-                    text: qsTr("Busy indicator")
-                    width: parent.width
-                    onClicked: {
-                        bigbusy.running = true;
-                        drawer.close()
-                    }
-                }
+
+                //     ItemDelegate {
+                //         Text {
+                //             id: quit
+                //             color: "white"
+                //             text: qsTr("Выход")
+                //         }
+                //         width: parent.width
+                //
+                //         onClicked: {
+                //
+                //             myClient.quitAndClear()
+                //             stackView.push("Page1Form.ui.qml")
+                //             drawer.close()
+                //         }
+                //     }
+                //     ItemDelegate {
+                //         text: qsTr("Платежи")
+                //         width: parent.width
+                //         onClicked: {
+                //             myClient.askForPayments();
+                //             stackView.push("payments.qml");
+                //             bigbusy.running = true;
+                //             drawer.close()
+                //
+                //         }
+                //     }
+                //     ItemDelegate {
+                //         text: qsTr("Busy indicator")
+                //         width: parent.width
+                //         onClicked: {
+                //             bigbusy.running = true;
+                //             drawer.close()
+                //         }
+                //     }
             }
         }
+
+
+
+
+
+
+
+
+
+
 
 
         Item {

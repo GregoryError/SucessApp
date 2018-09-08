@@ -31,5 +31,6 @@
         <file>Menu/right-arrow-icon.png</file>
         <file>map_item.png</file>
         <file>you_re_here.png</file>
+        <file>blurLogo.png</file>
     </qresource>
 </RCC>

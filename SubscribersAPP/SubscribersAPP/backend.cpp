@@ -67,6 +67,7 @@ BackEnd::BackEnd(QObject *parent) :
     cashpoints.push_back(location(60.533401, 28.665485, "Советский, Советская, 47,<br> Сбербанк", owner.longitude, owner.latitude));
     cashpoints.push_back(location(60.365635, 28.607738, "Приморск, Набережная Лебедева 12,<br> Сбербанк", owner.longitude, owner.latitude));
     cashpoints.push_back(location(60.707622, 28.753213, "пр. Ленина 9/Кутузова,<br> Сбербанк", owner.longitude, owner.latitude));
+    cashpoints.push_back(location(60.700772, 28.783921, "ул. Транспортная 1<br> Сбербанк ATM", owner.longitude, owner.latitude));
 
     std::sort(cashpoints.begin(), cashpoints.end());
 
@@ -98,6 +99,16 @@ QString BackEnd::showATM()
 
     //owner.longitude = 60.706237;  // TEST
     //owner.latitude = 28.769454;   // TEST
+
+    if(source){
+        source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
+        source->startUpdates();
+        source->setUpdateInterval(1000);
+        source->requestUpdate();
+    }else{
+        QMessageBox::information(nullptr, "Message", "Не возможно определить местоположение"
+                                                     "\n на вашем устройстве.");
+    }
 
     QGeoPositionInfo info = source->lastKnownPosition();
     QGeoCoordinate coordinate = info.coordinate();

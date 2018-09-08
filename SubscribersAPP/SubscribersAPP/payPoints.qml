@@ -67,7 +67,7 @@ Item {
             plugin: mapPlugin
             center: QtPositioning.coordinate(BackEnd.p_owner_long(), BackEnd.p_owner_lat()) // Oslo
             Component.onCompleted: myClient.makeBusyOFF();
-            zoomLevel: 16
+            zoomLevel: 14
 
             onZoomLevelChanged: owner_anim.stop()
 
@@ -98,11 +98,12 @@ Item {
                id: owner_anim
                target: owner_image
                properties: "width, height"
-               from: 10
-               to: 70
+               from: 20
+               to: 60
                duration: 300
                loops: Animation.Infinite
                running: true
+               easing.type: Easing.InExpo
                onStopped: {
                    owner_image.width = 45
                    owner_image.height = 45
