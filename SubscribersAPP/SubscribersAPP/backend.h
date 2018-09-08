@@ -65,6 +65,8 @@ public:
     QQmlContext *cont;
     QQmlApplicationEngine engine;
 
+    QVector<location> cashpoints;
+
 
 
 
@@ -77,12 +79,17 @@ public:
     BackEnd(QObject *parent = nullptr);
 
 public slots:
-    void payList();
     void trustedPay();
     QString showATM();
     void callUs();
     void goUrl();
     void social();
+    double p_point_long(int i);
+    double p_point_lat(int i);
+    double p_owner_long();
+    double p_owner_lat();
+
+    int p_count();
 
 };
 

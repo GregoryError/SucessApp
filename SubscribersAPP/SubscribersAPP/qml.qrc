@@ -29,5 +29,7 @@
         <file>trustedBack.png</file>
         <file>messagePage.qml</file>
         <file>Menu/right-arrow-icon.png</file>
+        <file>map_item.png</file>
+        <file>you_re_here.png</file>
     </qresource>
 </RCC>

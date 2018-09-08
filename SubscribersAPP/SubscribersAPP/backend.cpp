@@ -17,48 +17,37 @@ BackEnd::BackEnd(QObject *parent) :
 
     cont->setContextProperty("BackEnd", this);
 
-////////////////////////////////////////////////////////////////////////// GPS_POSITIONING
 
 
-  if(source){
-  source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
-  source->startUpdates();
-  source->setUpdateInterval(1000);
-  source->requestUpdate();
-  }else{
+
+    ////////////////////////////////////////////////////////////////////////// GPS_POSITIONING
+
+
+    if(source){
+        source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
+        source->startUpdates();
+        source->setUpdateInterval(1000);
+        source->requestUpdate();
+    }else{
         QMessageBox::information(nullptr, "Message", "Не возможно определить местоположение"
-                                             "\n на вашем устройстве.");
-  }
-
-}
+                                                     "\n на вашем устройстве.");
+    }
 
 
-void BackEnd::payList()
-{
-    QMessageBox::information(nullptr, "Message", "Вот ваши платежи:");
-
-}
-
-
-void BackEnd::trustedPay()
-{
-    QMessageBox::information(nullptr, "Message", "Вам предоставлен временный платеж!");
-}
-
-QString BackEnd::showATM()
-{
     QGeoPositionInfo info = source->lastKnownPosition();
     QGeoCoordinate coordinate = info.coordinate();
     owner.latitude = coordinate.longitude();
     owner.longitude = coordinate.latitude();
 
-   // owner.longitude = 60.6937;  // TEST
-   // owner.latitude = 28.7680;   // TEST
+    //owner.longitude = 60.706237;  // TEST
+    //owner.latitude = 28.769454;   // TEST
 
     // 60.693797, 28.768012
+    // 60.706980, 28.769203
+    // 60.706237, 28.769454
 
 
-    QVector<location> cashpoints;
+
 
     cashpoints.push_back(location(60.693720, 28.761991, "ул. Приморская д. 1,<br> Сбербанк", owner.longitude, owner.latitude));
     cashpoints.push_back(location(60.693755, 28.772635, "ул. Рубежная 36а,<br> Сбербанк ATM", owner.longitude, owner.latitude));
@@ -82,11 +71,48 @@ QString BackEnd::showATM()
     std::sort(cashpoints.begin(), cashpoints.end());
 
 
-    QString all("<b>1. </b>" + cashpoints[0].address + "<br>"
-                "<b>2. </b>" + cashpoints[1].address + "<br>"
-                "<b>3. </b>" + cashpoints[2].address);
 
-    return all;
+}
+
+
+void BackEnd::trustedPay()
+{
+    QMessageBox::information(nullptr, "Message", "Вам предоставлен временный платеж!");
+}
+
+QString BackEnd::showATM()
+{
+    //   QGeoPositionInfo info = source->lastKnownPosition();
+    //   QGeoCoordinate coordinate = info.coordinate();
+    //   // owner.latitude = coordinate.longitude();
+    //   // owner.longitude = coordinate.latitude();
+    //
+    //   owner.longitude = 60.706980;  // TEST
+    //   owner.latitude = 28.769203;   // TEST
+    //
+    //   // 60.693797, 28.768012
+    //   // 60.706980, 28.769203
+
+
+    //QVector<location> cashpoints;
+
+    //owner.longitude = 60.706237;  // TEST
+    //owner.latitude = 28.769454;   // TEST
+
+    QGeoPositionInfo info = source->lastKnownPosition();
+    QGeoCoordinate coordinate = info.coordinate();
+    owner.latitude = coordinate.longitude();
+    owner.longitude = coordinate.latitude();
+
+    std::sort(cashpoints.begin(), cashpoints.end());
+
+
+
+
+
+    return ("<b>1. </b>" + cashpoints[0].address + "<br>"
+                                                   "<b>2. </b>" + cashpoints[1].address + "<br>"
+            "<b>3. </b>" + cashpoints[2].address);
 
 }
 
@@ -106,6 +132,31 @@ void BackEnd::social()
 {
     QUrl myUrl("https://vk.com/arrivanet");
     QDesktopServices::openUrl(myUrl);
+}
+
+double BackEnd::p_point_long(int i)
+{
+    return cashpoints[i].longitude;
+}
+
+double BackEnd::p_point_lat(int i)
+{
+    return cashpoints[i].latitude;
+}
+
+double BackEnd::p_owner_long()
+{
+    return owner.longitude;
+}
+
+double BackEnd::p_owner_lat()
+{
+    return owner.latitude;
+}
+
+int BackEnd::p_count()
+{
+    return cashpoints.size();
 }
 
 //////////////////////////////////////////////////////////

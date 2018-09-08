@@ -81,7 +81,8 @@ Item {
                 width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 20 : content.paintedWidth + 20
 
 
-                x: content.text[0] === "O"? 5 : mainMsg.width - (width + 5)
+                x: content.text[0] === "O"? 8 : mainMsg.width - (width + 8)
+
 
 
                 Rectangle{
