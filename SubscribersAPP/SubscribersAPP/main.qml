@@ -26,6 +26,8 @@ ApplicationWindow {
 
 
 
+
+
     Rectangle{
         id: startHead
         visible: myClient.isAuth() ? false : true
@@ -701,21 +703,50 @@ ApplicationWindow {
                     scale: 0.5
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     anchors.top: drawBack.top
-                    anchors.topMargin: -150
+                    anchors.topMargin: -180
 
 
                 }
+
+                Rectangle{
+                    id: vLine
+                    anchors.horizontalCenter: drawLogo.horizontalCenter
+                    anchors.top: drawLogo.bottom
+                    anchors.topMargin: -210
+                    width: 1
+                    height: 70
+                    color: "#f7f7f7"
+                }
+
 
                 Text {
-                    id: quit
-                    anchors.top: drawLogo.bottom
-                    anchors.horizontalCenter: drawBack.horizontalCenter
-                    anchors.topMargin: - 150
-                    color: "white"
-                    font.family: gotham_XNarrow.name;
-                    font.pointSize: 30
-                    text: "Выход"
+                    id: services
+                    font.family: gotham_XNarrow
+                    font.pointSize: 8
+                    text: "Интернет<br>Цифровое ТВ<br>Каналы связи"
+                    anchors.right: vLine.right
+                    anchors.rightMargin: 10
+                    anchors.verticalCenter: vLine.verticalCenter
+                    color: "#f7f7f7"
+                    lineHeight: 1.2
                 }
+
+
+                Text {
+                    id: telN
+                    font.family: gotham_XNarrow
+                    font.pointSize: 8
+                    text: "tel: +781378 98098<br>Ленинградское шоссе` 33<br>info@comfort-tv.ru<br>info@arriva.net.ru"
+
+                    color: "#f7f7f7"
+                    anchors.left: vLine.right
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: vLine.verticalCenter
+                    lineHeight: 1.2
+                }
+
+
+
 
 
 

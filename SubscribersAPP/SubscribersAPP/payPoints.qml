@@ -83,8 +83,8 @@ Item {
                     id: owner_image
                     anchors.centerIn: parent
                     source: "qrc:/you_re_here.png"
-                    width: 50
-                    height: 50
+                    width: 60
+                    height: 60
                 }
 
 
@@ -98,10 +98,10 @@ Item {
                id: owner_anim
                target: owner_image
                properties: "width, height"
-               from: 20
-               to: 60
-               duration: 300
-               loops: Animation.Infinite
+               from: 50
+               to: 70
+               duration: 100
+               loops: 15
                running: true
                easing.type: Easing.InExpo
                onStopped: {
