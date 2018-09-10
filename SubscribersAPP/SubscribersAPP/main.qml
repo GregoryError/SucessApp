@@ -576,7 +576,7 @@ ApplicationWindow {
                     scale: 0.5
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     anchors.top: drawBack.top
-                    anchors.topMargin: -180
+                    anchors.topMargin: -190
 
 
                 }
@@ -585,9 +585,9 @@ ApplicationWindow {
                     id: vLine
                     anchors.horizontalCenter: drawLogo.horizontalCenter
                     anchors.top: drawLogo.bottom
-                    anchors.topMargin: -210
+                    anchors.topMargin: -220
                     width: 1
-                    height: 70
+                    height: 60
                     color: "#f7f7f7"
                     opacity: 0.7
                 }
@@ -624,17 +624,10 @@ ApplicationWindow {
 
 
 
-
-
-
-
-
-
-
                 MouseArea{
                     id: paysArea
                     anchors.top: vLine.bottom
-                    anchors.topMargin: 70
+                    anchors.topMargin: 10
                     width: drawer.width
                     height: 50
 
@@ -655,7 +648,7 @@ ApplicationWindow {
                         anchors.leftMargin: 20
                         anchors.verticalCenter: paysImg.verticalCenter
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 16
+                        font.pointSize: window.width / 26
                         text: "Платежи"
                         color: "#f7f7f7"
 
@@ -698,7 +691,7 @@ ApplicationWindow {
                         anchors.leftMargin: 20
                         anchors.verticalCenter: pointsImg.verticalCenter
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 16
+                        font.pointSize: window.width / 26
                         text: "Терминалы"
                         color: "#f7f7f7"
 
@@ -741,7 +734,7 @@ ApplicationWindow {
                         anchors.leftMargin: 20
                         anchors.verticalCenter: trustedImg.verticalCenter
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 16
+                        font.pointSize: window.width / 26
                         text: "Обещанный"
                         color: "#f7f7f7"
 
@@ -784,7 +777,7 @@ ApplicationWindow {
                         anchors.leftMargin: 20
                         anchors.verticalCenter: msgImg.verticalCenter
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 16
+                        font.pointSize: window.width / 26
                         text: "Сообщения"
                         color: "#f7f7f7"
 
@@ -827,7 +820,7 @@ ApplicationWindow {
                         anchors.leftMargin: 20
                         anchors.verticalCenter: callImg.verticalCenter
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 16
+                        font.pointSize: window.width / 26
                         text: "Поддержка"
                         color: "#f7f7f7"
 
@@ -862,7 +855,7 @@ ApplicationWindow {
                     id: bottomLine
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     anchors.top: callArea.bottom
-                    anchors.topMargin: 70
+                    anchors.topMargin: 10
                     width: drawBack.width * 0.8
                     height: 1
                     color: "#f7f7f7"
@@ -873,7 +866,7 @@ ApplicationWindow {
                 MouseArea{
                     id: leftArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 20
+                    anchors.topMargin: 10
                     anchors.right: middleArea.left
                     width: bottomLine.width / 3
                     height: width
@@ -900,7 +893,7 @@ ApplicationWindow {
                 MouseArea{
                     id: middleArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 20
+                    anchors.topMargin: 10
                     anchors.horizontalCenter: bottomLine.horizontalCenter
                     width: bottomLine.width / 3
                     height: width
@@ -929,7 +922,7 @@ ApplicationWindow {
                 MouseArea{
                     id: rightArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 20
+                    anchors.topMargin: 10
                     anchors.left: middleArea.right
                     width: bottomLine.width / 3
                     height: width
@@ -960,10 +953,10 @@ ApplicationWindow {
                 MouseArea{
                     id: quitButton
                     anchors.bottom: drawBack.bottom
-                    anchors.bottomMargin: 40
+                    anchors.bottomMargin: 30
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     width: drawBack.width * 0.8
-                    height: 80
+                    height: 70
                     Rectangle{
                         id: exitBack
                         border.width: 1
@@ -977,7 +970,7 @@ ApplicationWindow {
                             font.family: gotham_XNarrow.name;
                             font.pointSize: 25
                             anchors.centerIn: parent
-                            text: "выйти"
+                            text: "logout"
                             color: "#f7f7f7"
 
                         }
@@ -1036,8 +1029,8 @@ ApplicationWindow {
         id: bigbusy
         opacity: 0
         running: false
-        width: parent.width / 3
-        height: parent.width / 3
+        width: parent.width / 4
+        height: parent.width / 4
         anchors.centerIn: parent
         z: 3
 
@@ -1081,7 +1074,7 @@ ApplicationWindow {
                     implicitHeight: window.width / 22
                     //radius: 50
                     radius: 10
-                    color: "#2284e0"
+                    color: "#93deff"
                     transform: [
                         Translate {
                             id: trans
@@ -1107,8 +1100,8 @@ ApplicationWindow {
                             target: trans
                             property: "y";
                             easing.type: Easing.OutQuart
-                            from: 1
-                            to: -Math.min(item.width, item.height) * 0.8
+                            from: 0.8
+                            to: -Math.min(item.width, item.height) * 0.6
                             duration: 1000
 
                         }
@@ -1117,8 +1110,8 @@ ApplicationWindow {
                             target: trans
                             property: "y";
                             easing.type: Easing.InQuart
-                            to: 1
-                            from: -Math.min(item.width, item.height) * 0.8
+                            to: 0.8
+                            from: -Math.min(item.width, item.height) * 0.6
                             duration: 1000
 
                         }

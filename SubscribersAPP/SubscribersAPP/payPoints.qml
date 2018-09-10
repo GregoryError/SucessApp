@@ -66,10 +66,15 @@ Item {
             anchors.topMargin: 10
             plugin: mapPlugin
             center: QtPositioning.coordinate(BackEnd.p_owner_long(), BackEnd.p_owner_lat()) // Oslo
-            Component.onCompleted: myClient.makeBusyOFF();
+            Component.onCompleted:{
+
+                myClient.makeBusyOFF();
+                ownerPointcircleAnimation.start();
+            }
             zoomLevel: 14
 
-            onZoomLevelChanged: owner_anim.stop()
+            // onZoomLevelChanged: ownerPointcircleAnimation.start()
+
 
 
             MapQuickItem {
@@ -79,38 +84,74 @@ Item {
                 coordinate: QtPositioning.coordinate(BackEnd.p_owner_long(), BackEnd.p_owner_lat());
 
 
-                sourceItem: Image {
-                    id: owner_image
-                    anchors.centerIn: parent
-                    source: "qrc:/you_re_here.png"
-                    width: 60
-                    height: 60
+                sourceItem: Rectangle{
+                    id: ownerPoint
+                    width: 20
+                    height: 20
+                    radius: 50
+                    color: "#0074e4"
+                    transform: Translate {
+                        x: -ownerPoint.width / 2
+                        y: -ownerPoint.height / 2
+                    }
+
+                    Image {
+                        id: owner_image
+                        anchors.centerIn: ownerPoint
+                        anchors.horizontalCenter: ownerPoint.horizontalCenter
+                        source: "qrc:/you_re_here.png"
+                        width: 35
+                        height: 35
+                    }
+                }
+
+
+                ParallelAnimation {
+                    id: ownerPointcircleAnimation
+                    loops: 10
+
+
+                    running: false
+                    NumberAnimation {
+                        id: ownerPointAnimation
+                        target: ownerPoint;
+                        properties: "width,height,radius";
+                        from: ownerPoint.width;
+                        to: ownerPoint.width * 12;
+                        duration: 800;
+                        easing.type: Easing.OutExpo
+
+                    }
+
+
+                    NumberAnimation {
+                        id: ownerPointOpacityAnimation
+                        target: ownerPoint;
+                        //easing.type: Easing.InExpo;
+                        properties: "opacity";
+                        from: 0.6;
+                        to: 0;
+                        duration: 750;
+
+
+
+                    }
+
+                    onStopped: {
+                        ownerPoint.width = 20
+                        ownerPoint.height = 20
+                        ownerPoint.radius = 50
+                        ownerPoint.opacity = 1
+                    }
+
                 }
 
 
 
+
+
+
             }
-
-
-
-
-           PropertyAnimation{
-               id: owner_anim
-               target: owner_image
-               properties: "width, height"
-               from: 50
-               to: 70
-               duration: 100
-               loops: 15
-               running: true
-               easing.type: Easing.InExpo
-               onStopped: {
-                   owner_image.width = 45
-                   owner_image.height = 45
-               }
-           }
-
-
 
 
 
