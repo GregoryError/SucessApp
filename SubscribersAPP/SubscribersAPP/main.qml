@@ -631,6 +631,13 @@ ApplicationWindow {
                     width: drawer.width
                     height: 50
 
+                    onClicked: {
+                        drawer.close()
+                        myClient.askForPayments();
+                        myClient.makeBusyON();
+                        stackView.push("payments.qml");
+                    }
+
                     Image {
                         id: paysImg
                         source: "qrc:/Menu/circled-menu.png"
@@ -673,6 +680,12 @@ ApplicationWindow {
                     anchors.top: paysArea.bottom
                     width: drawer.width
                     height: 50
+
+                    onClicked: {
+                        drawer.close()
+                        myClient.makeBusyON();
+                        stackView.push("payPoints.qml");
+                    }
 
 
                     Image {
@@ -718,6 +731,11 @@ ApplicationWindow {
                     width: drawer.width
                     height: 50
 
+                    onClicked: {
+                        drawer.close()
+                        stackView.push("trustedPayPage.qml");
+                    }
+
                     Image {
                         id: trustedImg
                         source: "qrc:/Menu/hand.png"
@@ -760,6 +778,13 @@ ApplicationWindow {
                     anchors.top: trustedArea.bottom
                     width: drawer.width
                     height: 50
+
+                    onClicked: {
+                        drawer.close()
+                        myClient.makeBusyON();
+                        myClient.askForMsgs();
+                        stackView.push("messagePage.qml");
+                    }
 
                     Image {
                         id: msgImg
@@ -804,6 +829,11 @@ ApplicationWindow {
                     width: drawer.width
                     height: 50
 
+                    onClicked: {
+                        drawer.close()
+                        BackEnd.callUs();
+                    }
+
                     Image {
                         id: callImg
                         source: "qrc:/Menu/ringer-volume.png"
@@ -843,14 +873,6 @@ ApplicationWindow {
 
 
 
-
-
-
-
-
-
-
-
                 Rectangle{
                     id: bottomLine
                     anchors.horizontalCenter: drawBack.horizontalCenter
@@ -870,6 +892,12 @@ ApplicationWindow {
                     anchors.right: middleArea.left
                     width: bottomLine.width / 3
                     height: width
+                    onClicked: {
+                        drawer.close()
+                        BackEnd.goUrl();
+                    }
+
+
                     Image {
                         id: leftImg
                         source: "qrc:/Menu/home.png"
@@ -897,6 +925,12 @@ ApplicationWindow {
                     anchors.horizontalCenter: bottomLine.horizontalCenter
                     width: bottomLine.width / 3
                     height: width
+
+                    onClicked: {
+                        drawer.close()
+                        BackEnd.social();
+                    }
+
                     Image {
                         id: middleImg
                         source: "qrc:/Menu/social_md.png"

@@ -36,11 +36,11 @@ BackEnd::BackEnd(QObject *parent) :
 
     QGeoPositionInfo info = source->lastKnownPosition();
     QGeoCoordinate coordinate = info.coordinate();
-    //owner.latitude = coordinate.longitude();
-    //owner.longitude = coordinate.latitude();
+    owner.latitude = coordinate.longitude();
+    owner.longitude = coordinate.latitude();
 
-    owner.longitude = 60.706237;  // TEST
-    owner.latitude = 28.769454;   // TEST
+    //owner.longitude = 60.706237;  // TEST
+    //owner.latitude = 28.769454;   // TEST
 
     // 60.693797, 28.768012
     // 60.706980, 28.769203
@@ -83,22 +83,7 @@ void BackEnd::trustedPay()
 
 QString BackEnd::showATM()
 {
-    //   QGeoPositionInfo info = source->lastKnownPosition();
-    //   QGeoCoordinate coordinate = info.coordinate();
-    //   // owner.latitude = coordinate.longitude();
-    //   // owner.longitude = coordinate.latitude();
-    //
-    //   owner.longitude = 60.706980;  // TEST
-    //   owner.latitude = 28.769203;   // TEST
-    //
-    //   // 60.693797, 28.768012
-    //   // 60.706980, 28.769203
 
-
-    //QVector<location> cashpoints;
-
-    owner.longitude = 60.706237;  // TEST
-    owner.latitude = 28.769454;   // TEST
 
     if(source){
         source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -112,8 +97,8 @@ QString BackEnd::showATM()
 
     QGeoPositionInfo info = source->lastKnownPosition();
     QGeoCoordinate coordinate = info.coordinate();
-    //owner.latitude = coordinate.longitude();
-    //owner.longitude = coordinate.latitude();
+    owner.latitude = coordinate.longitude();
+    owner.longitude = coordinate.latitude();
 
     std::sort(cashpoints.begin(), cashpoints.end());
 

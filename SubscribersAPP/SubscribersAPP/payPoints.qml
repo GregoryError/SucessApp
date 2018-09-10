@@ -23,37 +23,49 @@ Item {
         id: mapItem
         anchors.fill: parent
         color: "#f7f7f7"
-        Text {
-            id: header
-            anchors.top: mapItem.top
-            anchors.topMargin: 10
-            anchors.horizontalCenter: mapItem.horizontalCenter
-            font.family: gotham_XNarrow.name;
-            font.pointSize: 16
-            color: "#0074e4"
-            text: "Сейчас ближайшие точки оплаты: ";
-        }
 
-        Image {
-            id: markerImg
-            source: "qrc:/map_item.png"
-            //anchors.verticalCenter: pointsList_1.verticalCenter
-            anchors.top: pointsList_1.top
-            anchors.left: mapItem.left
-            anchors.leftMargin: 10
-            height: pointsList_1.paintedHeight
-            width: height
-        }
 
-        Text {
-            id: pointsList_1
-            anchors.top: header.bottom
-            anchors.topMargin: 8
-            anchors.horizontalCenter: mapItem.horizontalCenter
-            font.family: gotham_XNarrow.name;
-            font.pointSize: 14
-            text: BackEnd.showATM();
-        }
+
+
+
+            Text {
+                id: header
+                anchors.top: mapItem.top
+                anchors.topMargin: 10
+                anchors.horizontalCenter: mapItem.horizontalCenter
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 16
+                color: "#0074e4"
+                text: "Сейчас ближайшие точки оплаты: ";
+
+
+            }
+
+            Image {
+                id: markerImg
+                source: "qrc:/map_item.png"
+                //anchors.verticalCenter: pointsList_1.verticalCenter
+                anchors.top: pointsList_1.top
+                anchors.left: mapItem.left
+                anchors.leftMargin: 10
+                height: pointsList_1.paintedHeight - 10
+                width: height
+
+
+            }
+
+            Text {
+                id: pointsList_1
+                anchors.top: header.bottom
+                anchors.topMargin: 8
+                anchors.horizontalCenter: mapItem.horizontalCenter
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 14
+                text: BackEnd.showATM();
+
+            }
+
+
 
 
 
@@ -63,6 +75,7 @@ Item {
             //height: mapItem.height * 0.8
             anchors.bottom: mapItem.bottom
             anchors.top: pointsList_1.bottom
+
             anchors.topMargin: 10
             plugin: mapPlugin
             center: QtPositioning.coordinate(BackEnd.p_owner_long(), BackEnd.p_owner_lat()) // Oslo
