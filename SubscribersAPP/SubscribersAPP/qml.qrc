@@ -13,7 +13,6 @@
         <file>Menu/payhistory.png</file>
         <file>Menu/quit.png</file>
         <file>Menu/skin.png</file>
-        <file>Menu/social.png</file>
         <file>Menu/trusted.png</file>
         <file>arrow-left.png</file>
         <file>toolPic.png</file>
@@ -32,5 +31,14 @@
         <file>map_item.png</file>
         <file>you_re_here.png</file>
         <file>blurLogo.png</file>
+        <file>Menu/address.png</file>
+        <file>Menu/circled-menu.png</file>
+        <file>Menu/group-message.png</file>
+        <file>Menu/hand.png</file>
+        <file>Menu/home.png</file>
+        <file>Menu/ringer-volume.png</file>
+        <file>Menu/arrow_forward.png</file>
+        <file>Menu/info-popup.png</file>
+        <file>Menu/social_md.png</file>
     </qresource>
 </RCC>

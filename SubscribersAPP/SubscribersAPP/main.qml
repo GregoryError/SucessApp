@@ -11,8 +11,11 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.1
 
 
+
 ApplicationWindow {
     id: window
+
+
 
     visible: true
     // width: 540
@@ -36,6 +39,8 @@ ApplicationWindow {
         x: 0
         y: 0
         color: "#93deff"
+
+        FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
 
         Image {
@@ -387,35 +392,6 @@ ApplicationWindow {
     }
 
 
-    //  Timer {
-    //      id: firsttimer
-    //      interval: 2000;
-    //
-    //      running: (myClient.isAuth()) ? true : false
-    //
-    //
-    //      onTriggered:{
-    //
-    //          if(myClient.isAuthRight()){
-    //
-    //              bigbusy.running = false
-    //
-    //              disappearStartForm.running = true
-    //
-    //              myClient.fillHomePage()    // this emit signal to QML to update info
-    //
-    //          }else{
-    //              messageDialog.text = myClient.authResult();
-    //              bigbusy.running = false
-    //              messageDialog.visible = true;
-    //              infoRect.visible = false
-    //          }
-    //
-    //
-    //      }
-    //  }
-    //
-    //
 
 
     //////////////////////////////////////////// END OF START-FORM ///////////////////////////////////////////////
@@ -428,43 +404,6 @@ ApplicationWindow {
         anchors.fill: parent
         visible: startform.visible? false : true
         enabled: startform.visible? false : true
-
-
-
-
-        //   Rectangle{                        // Временный фон на период разработки
-        //       id: tempRect
-        //       width: window.width
-        //       height: window.height * 0.3 + 50
-        //       x: 0
-        //       y: 0
-        //       color: "steelblue"
-        //       // layer.enabled: true
-        //       // layer.effect: DropShadow {
-        //       //     id: backhadow
-        //       //     transparentBorder: true
-        //       //     samples: 30
-        //       //     radius: 12
-        //       //     color: "#606470"
-        //       //
-        //       // }
-        //
-        //
-        //       DropShadow {
-        //           id: backhadow
-        //           anchors.fill: tempRect
-        //           cached: true
-        //           //horizontalOffset: 3
-        //           verticalOffset: 2
-        //           radius: 2.0
-        //           samples: 5
-        //           color: "#80000000"
-        //           smooth: true
-        //           source: tempRect
-        //           opacity: 0.4
-        //       }
-        //
-        //   }
 
 
 
@@ -502,68 +441,6 @@ ApplicationWindow {
             }
 
         }
-
-
-
-
-
-
-        FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
-
-        //   header:
-
-        //     Item{
-        //         x: 0
-        //         y: 0
-        //         id: bar
-        //         width: window.width
-        //         height: 50
-        //         ToolBar {
-        //             contentHeight: toolButton.implicitHeight
-        //             anchors.fill: parent
-        //
-        //
-        //             background: Rectangle {
-        //                 //color: "transparent"
-        //                  color: "green"
-        //             }
-        //
-        //
-        //             ToolButton {
-        //                 id: toolButton
-        //                 ////text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-        //                 ////font.pixelSize: Qt.application.font.pixelSize * 1.6
-        //                 anchors.verticalCenter: bar.verticalCenter
-        //                 background: Rectangle {
-        //                     anchors.fill: parent
-        //                     //color: "transparent"
-        //                     color: "red"
-        //                    // Image {
-        //                    //     id: toolImg
-        //                    //     width: 20
-        //                    //     height: 15
-        //                    //     source: stackView.depth > 1 ? "qrc:/arrow_left.png" : "qrc:/toolPic.png"
-        //                    //     anchors.centerIn: parent
-        //                    // }
-        //                 }
-        //
-        //                 onClicked: {
-        //                     if (stackView.depth > 1) {
-        //                         stackView.pop()
-        //                     } else {
-        //                         drawer.open()
-        //                     }
-        //                 }
-        //             }
-        //
-        //             Label {
-        //                 text: stackView.currentItem.title
-        //                 anchors.centerIn: parent
-        //             }
-        //         }
-        //
-        //     }
-
 
 
 
@@ -686,10 +563,6 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
 
-            // enter:Transition {
-            //     NumberAnimation { property: "position"; easing.type: Easing.OutSine /*from: 0.0; to:1; duration: 70 */}
-            // }
-
 
             Rectangle{
                 id: drawBack
@@ -716,13 +589,14 @@ ApplicationWindow {
                     width: 1
                     height: 70
                     color: "#f7f7f7"
+                    opacity: 0.7
                 }
 
 
                 Text {
                     id: services
-                    font.family: gotham_XNarrow
-                    font.pointSize: 8
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 10
                     text: "Интернет<br>Цифровое ТВ<br>Каналы связи"
                     anchors.right: vLine.right
                     anchors.rightMargin: 10
@@ -734,8 +608,8 @@ ApplicationWindow {
 
                 Text {
                     id: telN
-                    font.family: gotham_XNarrow
-                    font.pointSize: 8
+                    font.family: gotham_XNarrow.name;
+                    font.pointSize: 10
                     text: "tel: +781378 98098<br>Ленинградское шоссе` 33<br>info@comfort-tv.ru<br>info@arriva.net.ru"
 
                     color: "#f7f7f7"
@@ -750,58 +624,371 @@ ApplicationWindow {
 
 
 
+
+
+
+
+
+
+
+                MouseArea{
+                    id: paysArea
+                    anchors.top: vLine.bottom
+                    anchors.topMargin: 70
+                    width: drawer.width
+                    height: 50
+
+                    Image {
+                        id: paysImg
+                        source: "qrc:/Menu/circled-menu.png"
+                        anchors.left: paysArea.left
+                        anchors.leftMargin: 40
+                        anchors.verticalCenter: paysArea.verticalCenter
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+                    }
+
+                    Text {
+                        id: pays_name
+                        anchors.left: paysImg.right
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: paysImg.verticalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 16
+                        text: "Платежи"
+                        color: "#f7f7f7"
+
+                    }
+
+                    Image {
+                        id: ps_arr
+                        source: "qrc:/Menu/arrow_forward.png"
+                        anchors.verticalCenter: pays_name.verticalCenter
+                        anchors.right: paysArea.right
+                        anchors.rightMargin: 60
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+
+                    }
+
+                }
+
+                MouseArea{
+                    id: p_paysArea
+                    anchors.top: paysArea.bottom
+                    width: drawer.width
+                    height: 50
+
+
+                    Image {
+                        id: pointsImg
+                        source: "qrc:/Menu/address.png"
+                        anchors.left: p_paysArea.left
+                        anchors.leftMargin: 40
+                        anchors.verticalCenter: p_paysArea.verticalCenter
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+                    }
+
+                    Text {
+                        id: points_name
+                        anchors.left: pointsImg.right
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: pointsImg.verticalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 16
+                        text: "Терминалы"
+                        color: "#f7f7f7"
+
+                    }
+
+                    Image {
+                        id: pnts_arr
+                        source: "qrc:/Menu/arrow_forward.png"
+                        anchors.verticalCenter: points_name.verticalCenter
+                        anchors.right: p_paysArea.right
+                        anchors.rightMargin: 60
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+
+                    }
+
+
+                }
+
+                MouseArea{
+                    id: trustedArea
+                    anchors.top: p_paysArea.bottom
+                    width: drawer.width
+                    height: 50
+
+                    Image {
+                        id: trustedImg
+                        source: "qrc:/Menu/hand.png"
+                        anchors.left: trustedArea.left
+                        anchors.leftMargin: 40
+                        anchors.verticalCenter: trustedArea.verticalCenter
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+                    }
+
+                    Text {
+                        id: trusted_name
+                        anchors.left: trustedImg.right
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: trustedImg.verticalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 16
+                        text: "Обещанный"
+                        color: "#f7f7f7"
+
+                    }
+
+                    Image {
+                        id: tr_arr
+                        source: "qrc:/Menu/arrow_forward.png"
+                        anchors.verticalCenter: trusted_name.verticalCenter
+                        anchors.right: trustedArea.right
+                        anchors.rightMargin: 60
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+
+                    }
+
+
+                }
+
+                MouseArea{
+                    id: msgArea
+                    anchors.top: trustedArea.bottom
+                    width: drawer.width
+                    height: 50
+
+                    Image {
+                        id: msgImg
+                        source: "qrc:/Menu/group-message.png"
+                        anchors.left: msgArea.left
+                        anchors.leftMargin: 40
+                        anchors.verticalCenter: msgArea.verticalCenter
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+                    }
+
+                    Text {
+                        id: msgs_name
+                        anchors.left: msgImg.right
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: msgImg.verticalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 16
+                        text: "Сообщения"
+                        color: "#f7f7f7"
+
+                    }
+
+                    Image {
+                        id: msg_arr
+                        source: "qrc:/Menu/arrow_forward.png"
+                        anchors.verticalCenter: msgs_name.verticalCenter
+                        anchors.right: msgArea.right
+                        anchors.rightMargin: 60
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+
+                    }
+
+
+                }
+
+                MouseArea{
+                    id: callArea
+                    anchors.top: msgArea.bottom
+                    width: drawer.width
+                    height: 50
+
+                    Image {
+                        id: callImg
+                        source: "qrc:/Menu/ringer-volume.png"
+                        anchors.left: callArea.left
+                        anchors.leftMargin: 40
+                        anchors.verticalCenter: callArea.verticalCenter
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+                    }
+
+                    Text {
+                        id: call_name
+                        anchors.left: callImg.right
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: callImg.verticalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 16
+                        text: "Поддержка"
+                        color: "#f7f7f7"
+
+                    }
+
+                    Image {
+                        id: call_arr
+                        source: "qrc:/Menu/arrow_forward.png"
+                        anchors.verticalCenter: call_name.verticalCenter
+                        anchors.right: callArea.right
+                        anchors.rightMargin: 60
+                        sourceSize.height: 25
+                        sourceSize.width: 25
+
+
+                    }
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+                Rectangle{
+                    id: bottomLine
+                    anchors.horizontalCenter: drawBack.horizontalCenter
+                    anchors.top: callArea.bottom
+                    anchors.topMargin: 70
+                    width: drawBack.width * 0.8
+                    height: 1
+                    color: "#f7f7f7"
+                    opacity: 0.7
+                }
+
+
+                MouseArea{
+                    id: leftArea
+                    anchors.top: bottomLine.bottom
+                    anchors.topMargin: 20
+                    anchors.right: middleArea.left
+                    width: bottomLine.width / 3
+                    height: width
+                    Image {
+                        id: leftImg
+                        source: "qrc:/Menu/home.png"
+                        anchors.centerIn: parent
+                        sourceSize.height: 30
+                        sourceSize.width: 30
+                    }
+                    Text {
+                        id: webTxt
+                        anchors.horizontalCenter: leftImg.horizontalCenter
+                        anchors.top: leftImg.bottom
+                        anchors.topMargin: 10
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 12
+                        color: "#f7f7f7"
+                        text: "Web page"
+
+                    }
+
+                }
+                MouseArea{
+                    id: middleArea
+                    anchors.top: bottomLine.bottom
+                    anchors.topMargin: 20
+                    anchors.horizontalCenter: bottomLine.horizontalCenter
+                    width: bottomLine.width / 3
+                    height: width
+                    Image {
+                        id: middleImg
+                        source: "qrc:/Menu/social_md.png"
+                        anchors.centerIn: parent
+                        sourceSize.height: 30
+                        sourceSize.width: 30
+                    }
+                    Text {
+                        id: socialTxt
+                        anchors.horizontalCenter: middleImg.horizontalCenter
+                        anchors.top: middleImg.bottom
+                        anchors.topMargin: 10
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 12
+                        color: "#f7f7f7"
+                        text: "Social"
+
+                    }
+
+
+
+                }
+                MouseArea{
+                    id: rightArea
+                    anchors.top: bottomLine.bottom
+                    anchors.topMargin: 20
+                    anchors.left: middleArea.right
+                    width: bottomLine.width / 3
+                    height: width
+                    Image {
+                        id: rightImg
+                        source: "qrc:/Menu/info-popup.png"
+                        anchors.centerIn: parent
+                        sourceSize.height: 30
+                        sourceSize.width: 30
+                    }
+                    Text {
+                        id: aboutTxt
+                        anchors.horizontalCenter: rightImg.horizontalCenter
+                        anchors.top: rightImg.bottom
+                        anchors.topMargin: 10
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 12
+                        color: "#f7f7f7"
+                        text: "About"
+
+                    }
+
+
+                }
+
+
+
+                MouseArea{
+                    id: quitButton
+                    anchors.bottom: drawBack.bottom
+                    anchors.bottomMargin: 40
+                    anchors.horizontalCenter: drawBack.horizontalCenter
+                    width: drawBack.width * 0.8
+                    height: 80
+                    Rectangle{
+                        id: exitBack
+                        border.width: 1
+                        border.color: "#f7f7f7"
+                        color: "transparent"
+                        radius: 6
+                        anchors.fill: parent
+
+                        Text {
+                            id: quitTxt
+                            font.family: gotham_XNarrow.name;
+                            font.pointSize: 25
+                            anchors.centerIn: parent
+                            text: "выйти"
+                            color: "#f7f7f7"
+
+                        }
+                    }
+                }
+
+
+
             }
 
 
-            Column {
-                anchors.fill: parent
-                //
-                // Text {
-                //     id: quit
-                //     color: "white"
-                //     font.family: gotham_XNarrow.name;
-                //     font.pointSize: 30
-                //     text: "Выход"
-                // }
-
-
-
-
-                //     ItemDelegate {
-                //         Text {
-                //             id: quit
-                //             color: "white"
-                //             text: qsTr("Выход")
-                //         }
-                //         width: parent.width
-                //
-                //         onClicked: {
-                //
-                //             myClient.quitAndClear()
-                //             stackView.push("Page1Form.ui.qml")
-                //             drawer.close()
-                //         }
-                //     }
-                //     ItemDelegate {
-                //         text: qsTr("Платежи")
-                //         width: parent.width
-                //         onClicked: {
-                //             myClient.askForPayments();
-                //             stackView.push("payments.qml");
-                //             bigbusy.running = true;
-                //             drawer.close()
-                //
-                //         }
-                //     }
-                //     ItemDelegate {
-                //         text: qsTr("Busy indicator")
-                //         width: parent.width
-                //         onClicked: {
-                //             bigbusy.running = true;
-                //             drawer.close()
-                //         }
-                //     }
-            }
         }
 
 
@@ -835,46 +1022,7 @@ ApplicationWindow {
                 initialItem: "homePage.qml"
                 anchors.fill: parent
 
-                // pushEnter: Transition {
-                //     XAnimator {
-                //         from: (stackView.mirrored ? 1 : -1) * stackView.width
-                //         to: 0
-                //         duration: 80
-                //         //easing.type: Easing.InCubic
-                //     }
-                // }
 
-
-                // popEnter: Transition {
-                //     XAnimator {
-                //         from: (stackView.mirrored ? -1 : 1) * -stackView.width
-                //         to: 0
-                //         duration: 50
-                //         //easing.type: Easing.InCubic
-                //     }
-                // }
-                //
-                //
-                //
-                // popExit: Transition {
-                //     XAnimator {
-                //         from: 0
-                //         to: (stackView.mirrored ? -1 : 1) * stackView.width
-                //         duration: 150
-                //         //easing.type: Easing.OutCubic
-                //     }
-                // }
-                //
-                //
-                // popExit: Transition {
-                //         PropertyAnimation {
-                //             property: "opacity"
-                //             from: 1
-                //             to:0
-                //             duration: 150
-                //         }
-                //     }
-                //
 
             }
         }
