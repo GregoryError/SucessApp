@@ -72,7 +72,7 @@ Item {
             id: bill
             // y: billVal.y + billVal.height
             anchors.top: billVal.bottom
-            anchors.topMargin: 4
+            //anchors.topMargin:
             anchors.horizontalCenter: infoRect.horizontalCenter
             color: "#f7f7f7"
             font.family: gotham_XNarrow.name;
@@ -94,7 +94,7 @@ Item {
 
         Rectangle{
             id: infoline
-            opacity: 0.7
+            opacity: 0.6
             width: bigMenu.width
             height: 1
             anchors.horizontalCenter: infoRect.horizontalCenter
@@ -396,8 +396,8 @@ Item {
                                 // width: 25
                                 // height: 25
 
-                                sourceSize.height: 30
-                                sourceSize.width: 30
+                                sourceSize.height: 32
+                                sourceSize.width: 32
 
                                 source: backdata
                                 //scale: 0.3
