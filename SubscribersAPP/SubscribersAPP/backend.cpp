@@ -120,7 +120,7 @@ void BackEnd::callUs()
 
 void BackEnd::goUrl()
 {
-    QUrl myUrl("http://vbg.arriva.net.ru/");
+    QUrl myUrl("http://www.comfort-tv.ru/");
     QDesktopServices::openUrl(myUrl);
 }
 

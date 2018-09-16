@@ -269,6 +269,7 @@ void MyClient::setAuthData(QString name, QString pass)
         isAuthOk = false;
         loginResult = "Необходимо ввести\n"
                       "логин и пароль.";
+        switchToMe();
     }else{
         enteredName = name;
         enteredPass = pass;

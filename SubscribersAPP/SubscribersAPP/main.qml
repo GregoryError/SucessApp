@@ -558,7 +558,7 @@ ApplicationWindow {
 
 
         Drawer {
-            id: drawer
+            id: drawer  
             width: window.width * 0.8
             height: window.height
             dragMargin: 40
@@ -626,10 +626,12 @@ ApplicationWindow {
 
                 MouseArea{
                     id: paysArea
+                    enabled: workItem.visible ? true : false
                     anchors.top: vLine.bottom
                     anchors.topMargin: 10
                     width: drawer.width
                     height: 50
+
 
                     onClicked: {
                         drawer.close()
@@ -677,6 +679,7 @@ ApplicationWindow {
 
                 MouseArea{
                     id: p_paysArea
+                    enabled: workItem.visible ? true : false
                     anchors.top: paysArea.bottom
                     width: drawer.width
                     height: 50
@@ -727,6 +730,7 @@ ApplicationWindow {
 
                 MouseArea{
                     id: trustedArea
+                    enabled: workItem.visible ? true : false
                     anchors.top: p_paysArea.bottom
                     width: drawer.width
                     height: 50
@@ -775,6 +779,7 @@ ApplicationWindow {
 
                 MouseArea{
                     id: msgArea
+                    enabled: workItem.visible ? true : false
                     anchors.top: trustedArea.bottom
                     width: drawer.width
                     height: 50
@@ -913,7 +918,7 @@ ApplicationWindow {
                         font.family: gotham_XNarrow.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
-                        text: "Web page"
+                        text: "Сайт"
 
                     }
 
@@ -946,7 +951,7 @@ ApplicationWindow {
                         font.family: gotham_XNarrow.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
-                        text: "Social"
+                        text: "Сообщество"
 
                     }
 
@@ -975,7 +980,7 @@ ApplicationWindow {
                         font.family: gotham_XNarrow.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
-                        text: "About"
+                        text: "Инфо"
 
                     }
 
@@ -986,6 +991,7 @@ ApplicationWindow {
 
                 MouseArea{
                     id: quitButton
+                    enabled: workItem.visible ? true : false
                     anchors.bottom: drawBack.bottom
                     anchors.bottomMargin: 30
                     anchors.horizontalCenter: drawBack.horizontalCenter
@@ -1004,11 +1010,22 @@ ApplicationWindow {
                             font.family: gotham_XNarrow.name;
                             font.pointSize: 25
                             anchors.centerIn: parent
-                            text: "logout"
+                            text: "выйти"
                             color: "#f7f7f7"
 
                         }
                     }
+
+                    onClicked: {
+                        myClient.quitAndClear();
+                        startHead.visible = true;
+                        startform.visible = true;
+
+                        workItem.visible = false;
+
+                    }
+
+
                 }
 
 
