@@ -558,7 +558,7 @@ ApplicationWindow {
 
 
         Drawer {
-            id: drawer  
+            id: drawer
             width: window.width * 0.8
             height: window.height
             dragMargin: 40

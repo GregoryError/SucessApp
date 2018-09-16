@@ -16,10 +16,18 @@ MyClient::MyClient(QWidget* pwgt) : QWidget(pwgt), m_nNextBlockSize(0)
 
     m_pTcpSocket = new QSslSocket(this);
 
+
     const QString rootCAPath(":/new/prefix1/rootCA.pem");
     auto rootCACert = QSslCertificate::fromPath(rootCAPath);
     Q_ASSERT(!rootCACert.isEmpty());
-    m_pTcpSocket->setCaCertificates(rootCACert);
+
+
+    //m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
+
+    QSslConfiguration config = m_pTcpSocket->sslConfiguration();
+    config.setCaCertificates(rootCACert);
+
+
 
 
     QList<QSslError> errorsToIgnore;
@@ -64,6 +72,7 @@ void MyClient::slotReadyRead()
 
     //m_pTcpSocket->waitForReadyRead();
 
+
     QDataStream in(m_pTcpSocket);
 
     in.setVersion(QDataStream::Qt_5_9);
@@ -105,7 +114,7 @@ void MyClient::slotReadyRead()
         paket.clear();
         isAuthOk = true;
 
-        if(!dataSet.value("isEntered").toBool()){
+        if (!dataSet.value("isEntered").toBool()){
             dataSet.setValue("isEntered", true);
             dataSet.setValue("name", enteredName);
             dataSet.setValue("pass", enteredPass);
@@ -117,38 +126,36 @@ void MyClient::slotReadyRead()
         for(auto& c:temp)
         {
 
-            if(space == 0 && c != ' ')
+            if (space == 0 && c != ' ')
             {
                 idNumber+= c;
             }
 
-            if(space == 1 && c != ' ')
+            if (space == 1 && c != ' ')
             {
                 balance += c;
             }
 
-            if(space == 2 && c != ' ')
+            if (space == 2 && c != ' ')
             {
                 state += c;
             }
 
-            if(space == 3 && c != ' ')
+            if (space == 3 && c != ' ')
             {
                 pay_day += c;
             }
 
-            if(space >= 4)
+            if (space >= 4)
             {
                 paket += c;
             }
 
-            if(c == ' ')
+            if (c == ' ')
                 ++space;
         }
 
         dataSet.setValue("id", idNumber);
-
-
 
         emit startReadInfo();
 
@@ -199,14 +206,12 @@ void MyClient::slotReadyRead()
 
     // Saving user settings
 
-
-
-
     // qDebug() << idNumber;
     // qDebug() << balance;
     // qDebug() << state;
     // qDebug() << pay_day;
     // qDebug() << paket;
+
 
 
 }
@@ -246,8 +251,22 @@ void MyClient::Sender(const QString &msg)
 
 void MyClient::connectToHost()
 {
+
+
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-   // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+
+
+   // if (!m_pTcpSocket->waitForConnected(9000))
+   // {
+   //     loginResult = m_pTcpSocket->errorString() + "<br>"
+   //                                                 "Для работы приложения<br>"
+   //                                                 "необходимо подключение<br>"
+   //                                                 "к интернет, либо к сети<br>"
+   //                                                 "Аррива. Проверьте подключение,<br>"
+   //                                                 "либо обратитесь в тех. поддержку.";
+   //     switchToMe();
+   // }
 
 }
 
