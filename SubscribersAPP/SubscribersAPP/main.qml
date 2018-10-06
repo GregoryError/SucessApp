@@ -605,7 +605,7 @@ ApplicationWindow {
                     id: vLine
                     anchors.horizontalCenter: drawLogo.horizontalCenter
                     anchors.top: drawLogo.bottom
-                    anchors.topMargin: -220
+                    anchors.topMargin: -210
                     width: 1
                     height: 60
                     color: "#f7f7f7"
@@ -671,7 +671,7 @@ ApplicationWindow {
                     id: paysArea
                     enabled: workItem.visible ? true : false
                     anchors.top: vLine.bottom
-                    anchors.topMargin: 10
+                    anchors.topMargin: 15
                     width: drawer.width
                     height: 50
                   //  x: - Screen.width
@@ -926,7 +926,7 @@ ApplicationWindow {
                     id: bottomLine
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     anchors.top: callArea.bottom
-                    anchors.topMargin: 10
+                    anchors.topMargin: 15
                     width: drawBack.width * 0.8
                     height: 1
                     color: "#f7f7f7"
@@ -937,7 +937,7 @@ ApplicationWindow {
                 MouseArea{
                     id: leftArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 10
+                    anchors.topMargin: 15
                     anchors.right: middleArea.left
                     width: bottomLine.width / 3
                     height: width
@@ -970,7 +970,7 @@ ApplicationWindow {
                 MouseArea{
                     id: middleArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 10
+                    anchors.topMargin: 15
                     anchors.horizontalCenter: bottomLine.horizontalCenter
                     width: bottomLine.width / 3
                     height: width
@@ -1005,7 +1005,7 @@ ApplicationWindow {
                 MouseArea{
                     id: rightArea
                     anchors.top: bottomLine.bottom
-                    anchors.topMargin: 10
+                    anchors.topMargin: 15
                     anchors.left: middleArea.right
                     width: bottomLine.width / 3
                     height: width
@@ -1039,8 +1039,8 @@ ApplicationWindow {
                     anchors.bottom: drawBack.bottom
                     anchors.bottomMargin: 30
                     anchors.horizontalCenter: drawBack.horizontalCenter
-                    width: drawBack.width * 0.8
-                    height: 70
+                    width: drawBack.width * 0.75
+                    height: 65
                     Rectangle{
                         id: exitBack
                         border.width: 1

@@ -123,6 +123,13 @@ void MyClient::slotReadyRead()
         }
 
 
+        // здесь возможная точка для взятия текущей даты от сервера <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        //
+        //
+        //
+        //
+
+
         QString temp(m_ptxtInfo.mid(11));
         short space(0);
         for(auto& c:temp)
@@ -195,6 +202,7 @@ void MyClient::slotReadyRead()
     else if(m_ptxtInfo == "denied"){
         isAuthOk = false;
         loginResult = "Неверная авторизация";
+        switchToMe();
 
     }else{
         isAuthOk = false;
@@ -203,6 +211,7 @@ void MyClient::slotReadyRead()
                       "к интернет, либо к сети<br>"
                       "Аррива. Проверьте подключение,<br>"
                       "либо обратитесь в тех. поддержку.";
+        switchToMe();
 
     }
 
@@ -257,7 +266,7 @@ void MyClient::connectToHost()
 
 
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-   //  m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    //  m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 
     if (!m_pTcpSocket->waitForConnected(9000))

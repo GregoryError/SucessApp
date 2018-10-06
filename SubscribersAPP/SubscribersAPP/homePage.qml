@@ -21,10 +21,10 @@ Item {
     Connections{
         target: myClient
         onStartReadInfo: {
-            billVal.text = myClient.showBill() + "₽"
+            billVal.text = myClient.showBill()
             planName.text = myClient.showPlan()
-            countTxt.text = "Ваш номер счета: " + myClient.showId()
-            dateTxt.text = "Ваш день платежа: " + myClient.showPay_day()
+            countTxt.text = "Личный счет для оплаты: " + myClient.showId()
+            dateTxt.text = "Расчетная дата: " + myClient.showPay_day()
             myClient.switchToMe();
         }
     }
@@ -51,7 +51,7 @@ Item {
             // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
-            anchors.margins: 30
+            anchors.margins: 35
         }
 
         Text{
@@ -63,9 +63,19 @@ Item {
             font.pointSize: 50
             color: "#f7f7f7"
             //text: "550 ₽"
-            text: myClient.showBill() + "₽"
+            text: myClient.showBill()
             //wrapMode: Text.WordWrap
 
+        }
+
+        Image {
+            id: rubPic
+            width: billVal.height * 0.7
+            height: billVal.height * 0.7
+            source: "qrc:/Menu/rub.png"
+            anchors.verticalCenter: billVal.verticalCenter
+            anchors.left: billVal.right
+            anchors.margins: 5
         }
 
         Text{
@@ -76,7 +86,7 @@ Item {
             anchors.horizontalCenter: infoRect.horizontalCenter
             color: "#f7f7f7"
             font.family: gotham_XNarrow.name;
-            font.pointSize: 15
+            font.pointSize: 14
             text: "Баланс на сегодня"
         }
 
@@ -140,7 +150,7 @@ Item {
                     id: copyTxt
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.family: gotham_XNarrow.name;
-                    font.pointSize: 16
+                    font.pointSize: 15
                     text: "скопированно"
                     visible: false
                     color: "white"

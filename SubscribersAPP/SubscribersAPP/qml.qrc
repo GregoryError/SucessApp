@@ -34,5 +34,6 @@
         <file>Menu/arrow_forward.png</file>
         <file>Menu/info-popup.png</file>
         <file>Menu/social_md.png</file>
+        <file>Menu/rub.png</file>
     </qresource>
 </RCC>
