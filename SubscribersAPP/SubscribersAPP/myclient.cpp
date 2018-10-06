@@ -22,10 +22,11 @@ MyClient::MyClient(QWidget* pwgt) : QWidget(pwgt), m_nNextBlockSize(0)
     Q_ASSERT(!rootCACert.isEmpty());
 
 
-    //m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
+    m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
 
-    QSslConfiguration config = m_pTcpSocket->sslConfiguration();
-    config.setCaCertificates(rootCACert);
+    //QSslConfiguration config = m_pTcpSocket->sslConfiguration();
+    //config.setCaCertificates(rootCACert);
+
 
 
 
@@ -114,7 +115,8 @@ void MyClient::slotReadyRead()
         paket.clear();
         isAuthOk = true;
 
-        if (!dataSet.value("isEntered").toBool()){
+        if (!dataSet.value("isEntered").toBool())
+        {
             dataSet.setValue("isEntered", true);
             dataSet.setValue("name", enteredName);
             dataSet.setValue("pass", enteredPass);
@@ -158,6 +160,7 @@ void MyClient::slotReadyRead()
         dataSet.setValue("id", idNumber);
 
         emit startReadInfo();
+
 
 
         // тут везде надо оставить только проверку на начальные слоги set, get, ask...
@@ -254,19 +257,19 @@ void MyClient::connectToHost()
 
 
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+   //  m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 
-   // if (!m_pTcpSocket->waitForConnected(9000))
-   // {
-   //     loginResult = m_pTcpSocket->errorString() + "<br>"
-   //                                                 "Для работы приложения<br>"
-   //                                                 "необходимо подключение<br>"
-   //                                                 "к интернет, либо к сети<br>"
-   //                                                 "Аррива. Проверьте подключение,<br>"
-   //                                                 "либо обратитесь в тех. поддержку.";
-   //     switchToMe();
-   // }
+    if (!m_pTcpSocket->waitForConnected(9000))
+    {
+        loginResult = m_pTcpSocket->errorString() + "<br>"
+                                                    "Для работы приложения<br>"
+                                                    "необходимо подключение<br>"
+                                                    "к интернет, либо к сети<br>"
+                                                    "Аррива. Проверьте подключение,<br>"
+                                                    "либо обратитесь в тех. поддержку.";
+        switchToMe();
+    }
 
 }
 
@@ -284,7 +287,7 @@ bool MyClient::isAuthRight()
 
 void MyClient::setAuthData(QString name, QString pass)
 {
-    if(name.isEmpty() || pass.isEmpty()){
+    if (name.isEmpty() || pass.isEmpty()){
         isAuthOk = false;
         loginResult = "Необходимо ввести\n"
                       "логин и пароль.";

@@ -371,13 +371,14 @@ ApplicationWindow {
         target: myClient
         onSwitchToHomePage: {
             if(myClient.isAuthRight()){
-
+                workItem.visible = true;
                 bigbusy.running = false
                 disappearStartForm.running = true
             }else{
                 messageDialog.text = myClient.authResult();
                 bigbusy.running = false
                 messageDialog.visible = true;
+
             }
 
         }
@@ -562,6 +563,13 @@ ApplicationWindow {
             width: window.width * 0.8
             height: window.height
             dragMargin: 40
+            clip: true
+            onClosed: {
+                drawLogo.opacity = 0;
+            }
+            onAboutToShow: logoAnim.running = true
+
+
 
 
             Rectangle{
@@ -573,13 +581,25 @@ ApplicationWindow {
                 Image {
                     id: drawLogo
                     source: "qrc:/blurLogo.png"
+                    opacity: 0
                     scale: 0.5
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     anchors.top: drawBack.top
                     anchors.topMargin: -190
 
+                    OpacityAnimator{
+                        id: logoAnim
+                        target: drawLogo
+                        from: 0
+                        to: 1
+                        duration: 1000
+                    }
+
 
                 }
+
+
+
 
                 Rectangle{
                     id: vLine
@@ -622,6 +642,29 @@ ApplicationWindow {
 
 
 
+                // paysArea
+                // p_paysArea
+                // trustedArea
+                // msgArea
+                // callArea
+
+
+             //
+             //
+             //   PropertyAnimation{
+             //       property: "x"
+             //       easing.amplitude: 0.1
+             //       easing.type: Easing.OutBack
+             //       from: - Screen.width
+             //       to: 0
+             //       duration: 500
+             //       running: drawer.opened? true : false
+             //       target: paysArea
+             //
+             //   }
+
+
+
 
 
                 MouseArea{
@@ -631,6 +674,7 @@ ApplicationWindow {
                     anchors.topMargin: 10
                     width: drawer.width
                     height: 50
+                  //  x: - Screen.width
 
 
                     onClicked: {
@@ -1023,25 +1067,21 @@ ApplicationWindow {
 
                         workItem.visible = false;
 
-                    }
 
+                        drawer.close();
+
+                        appearstartform.running = true;
+                        nameInput.clear();
+                        passwordInput.clear();
+                        startform.enabled = true;
+
+                    }
 
                 }
 
-
-
             }
 
-
         }
-
-
-
-
-
-
-
-
 
 
 
@@ -1065,9 +1105,6 @@ ApplicationWindow {
 
                 initialItem: "homePage.qml"
                 anchors.fill: parent
-
-
-
             }
         }
 
@@ -1082,7 +1119,9 @@ ApplicationWindow {
         running: false
         width: parent.width / 4
         height: parent.width / 4
-        anchors.centerIn: parent
+        anchors.horizontalCenter: workItem.horizontalCenter
+        anchors.bottom: workItem.bottom
+        anchors.bottomMargin: 150
         z: 3
 
         OpacityAnimator {
