@@ -126,11 +126,18 @@ void MyClient::slotReadyRead()
         // здесь возможная точка для взятия текущей даты от сервера <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         //
         //
-        //
-        //
+        //  07.10.2018 22:17
+        //  16
 
 
-        QString temp(m_ptxtInfo.mid(11));
+
+
+        QString temp(m_ptxtInfo.mid(27));
+        serverDateTime = m_ptxtInfo.mid(11, 16);
+
+
+        qDebug() << "In serverDateTime: " << serverDateTime;
+
         short space(0);
         for(auto& c:temp)
         {
@@ -591,6 +598,55 @@ QString MyClient::convertTime(int val)
 {
     QDateTime time = QDateTime::fromSecsSinceEpoch(val);
     return time.toString("dd.MM.yyyy hh:mm");
+}
+
+QString MyClient::serverDate()
+{
+    return serverDateTime.mid(0, 10);
+}
+
+QString MyClient::serverTime()
+{
+    return serverDateTime.mid(11, 16);
+}
+
+QString MyClient::nextPayDay()
+{
+    // PSUDOCODE:
+    // if (dd < pd)
+    //     result = pd.mm.yyyy
+    //             else result = pd.mm + 1.yyyy
+
+    QString currentDate = serverDateTime.mid(0, 10);
+    QString dd = currentDate.mid(0, 2);
+
+    int int_dd;
+
+    if (dd.mid(0) == "0")
+        int_dd = dd.mid(1).toInt();
+    else int_dd = dd.toInt();
+
+    QString result;
+
+    if (int_dd < pay_day.toInt())
+        result = pay_day + "." + currentDate.mid(3, 8);
+    else
+    {
+        int int_mm = currentDate.mid(4, 2).toInt();
+        if (int_mm != 12)
+            ++int_mm;
+        if (int_mm == 12)
+        {
+            return pay_day + ".01" + currentDate.mid(6, 5);
+        }
+
+        result = pay_day + "." + QString::number(int_mm) + currentDate.mid(6, 5);
+    }
+
+
+    //qDebug() << result << " - RESULT";
+
+    return result;
 }
 
 

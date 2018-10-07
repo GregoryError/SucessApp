@@ -21,10 +21,14 @@ Item {
     Connections{
         target: myClient
         onStartReadInfo: {
-            billVal.text = myClient.showBill()
-            planName.text = myClient.showPlan()
-            countTxt.text = "Личный счет для оплаты: " + myClient.showId()
-            dateTxt.text = "Расчетная дата: " + myClient.showPay_day()
+            billVal.text = myClient.showBill();
+            planName.text = myClient.showPlan();
+            countTxt.text = "Лицевой счет: " + myClient.showId();
+            dateTxt.text = "Расчетный день: " + myClient.showPay_day() + "  (" + myClient.nextPayDay() + ")";
+            bill.text = "Баланс на сегодня " + myClient.serverTime();
+
+            //console.log(myClient.nextPayDay() + " - NEXT DATE FOR PAY");
+
             myClient.switchToMe();
         }
     }
@@ -51,7 +55,7 @@ Item {
             // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
-            anchors.margins: 35
+            anchors.margins: 50
         }
 
         Text{
@@ -87,7 +91,7 @@ Item {
             color: "#f7f7f7"
             font.family: gotham_XNarrow.name;
             font.pointSize: 14
-            text: "Баланс на сегодня"
+           // text: "Баланс на сегодня " + myClient.serverTime();
         }
 
         Text{

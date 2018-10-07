@@ -40,6 +40,7 @@ public:
     QString msgs;
     int Port;
     QVector<QString> times_vct, cashes_vct, comments_vct;
+    QString serverDateTime;
 
     QMap<int, QString> msg_lines;
 
@@ -128,6 +129,10 @@ public slots:
 
 
     QString convertTime(int val);
+
+    QString serverDate();
+    QString serverTime();
+    QString nextPayDay();
 
 
 
