@@ -649,19 +649,19 @@ ApplicationWindow {
                 // callArea
 
 
-             //
-             //
-             //   PropertyAnimation{
-             //       property: "x"
-             //       easing.amplitude: 0.1
-             //       easing.type: Easing.OutBack
-             //       from: - Screen.width
-             //       to: 0
-             //       duration: 500
-             //       running: drawer.opened? true : false
-             //       target: paysArea
-             //
-             //   }
+                //
+                //
+                //   PropertyAnimation{
+                //       property: "x"
+                //       easing.amplitude: 0.1
+                //       easing.type: Easing.OutBack
+                //       from: - Screen.width
+                //       to: 0
+                //       duration: 500
+                //       running: drawer.opened? true : false
+                //       target: paysArea
+                //
+                //   }
 
 
 
@@ -674,7 +674,7 @@ ApplicationWindow {
                     anchors.topMargin: 15
                     width: drawer.width
                     height: 50
-                  //  x: - Screen.width
+                    //  x: - Screen.width
 
 
                     onClicked: {
@@ -1096,6 +1096,14 @@ ApplicationWindow {
             StackView {
                 id: stackView
                 //antialiasing: true
+                onDepthChanged: {
+                    if (stackView.depth == 1)
+                    {
+                        console.log("NOW")
+
+                        myClient.fillHomePage();
+                    }
+                }
 
                 focus: true
                 Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {

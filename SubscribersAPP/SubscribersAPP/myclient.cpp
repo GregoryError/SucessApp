@@ -272,8 +272,8 @@ void MyClient::connectToHost()
 {
 
 
-    m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    //  m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+      m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+     // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 
     if (!m_pTcpSocket->waitForConnected(9000))
@@ -402,10 +402,11 @@ void MyClient::makeBusyOFF()
     emit busyOFF();
 }
 
-//void MyClient::fillHomePage()
-//{
-//    emit startReadInfo();
-//}
+void MyClient::fillHomePage()
+{
+    Sender("(" + dataSet.value("id").toString() + "#" + dataSet.value("pass").toString() + ")getAllData!");
+   // emit startReadInfo();
+}
 
 //void MyClient::fillPaysPage()
 //{

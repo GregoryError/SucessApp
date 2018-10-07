@@ -134,6 +134,8 @@ public slots:
     QString serverTime();
     QString nextPayDay();
 
+    void fillHomePage();
+
 
 
 
