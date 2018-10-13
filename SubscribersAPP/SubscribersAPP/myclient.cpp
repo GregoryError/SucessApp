@@ -9,7 +9,7 @@
 
 
 
-MyClient::MyClient(QWidget* pwgt) : QWidget(pwgt), m_nNextBlockSize(0)
+MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBlockSize(0)
 {
 
     //dataSet.setValue("isEntered", false);
@@ -273,7 +273,7 @@ void MyClient::connectToHost()
 
 
       m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-     // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+      //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 
     if (!m_pTcpSocket->waitForConnected(9000))
@@ -405,8 +405,10 @@ void MyClient::makeBusyOFF()
 void MyClient::fillHomePage()
 {
     Sender("(" + dataSet.value("id").toString() + "#" + dataSet.value("pass").toString() + ")getAllData!");
-   // emit startReadInfo();
+    // emit startReadInfo();
 }
+
+
 
 //void MyClient::fillPaysPage()
 //{
@@ -554,9 +556,9 @@ void MyClient::showMsgs()
         {
             auto len = msgUnit.length();
             if (startUserData)
-                val = "You:<br>" + msgUnit.mid(0, len - 6);
+                val = "Вы:<br>" + msgUnit.mid(0, len - 6);
             else
-                val = "Operator:<br>" + msgUnit.mid(0, len - 6);
+                val = "Оператор:<br>" + msgUnit.mid(0, len - 6);
             msgUnit.clear();
         }
         if (msgUnit.right(6) == "~end()")
@@ -718,7 +720,6 @@ void MyClient::copyToBuf()
 {
     buf->setText(idNumber, QClipboard::Clipboard);
 }
-
 
 
 

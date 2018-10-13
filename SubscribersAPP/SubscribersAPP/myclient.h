@@ -24,7 +24,7 @@ class QTextEdit;
 class QLineEdit;
 
 // ======================================================================
-class MyClient : public QWidget {
+class MyClient : public QObject { //QWidget {
     Q_OBJECT
 public:
     // Q_PROPERTY(QString input WRITE setInputValue
@@ -136,7 +136,7 @@ public slots:
 
     void fillHomePage();
 
-
+    //~MyClient() { m_pTcpSocket->deleteLater(); }
 
 
 

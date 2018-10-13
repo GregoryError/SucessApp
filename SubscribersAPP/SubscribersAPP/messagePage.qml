@@ -75,13 +75,13 @@ Item {
             Rectangle{
                 id: msgUnit
                 radius: 5
-                color: content.text[0] === "Y"? "#f7f7f7" : "#93deff"
+                color: content.text[0] === "В"? "#f7f7f7" : "#93deff"
                 opacity: 0.8
                 height: content.paintedHeight + msgTime.height + 20
                 width:  msgTime.paintedWidth > content.paintedWidth? msgTime.paintedWidth + 20 : content.paintedWidth + 20
 
 
-                x: content.text[0] === "O"? 8 : mainMsg.width - (width + 8)
+                x: content.text[0] === "О"? 8 : mainMsg.width - (width + 8)
 
 
 
