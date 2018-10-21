@@ -35,5 +35,6 @@
         <file>Menu/info-popup.png</file>
         <file>Menu/social_md.png</file>
         <file>Menu/rub.png</file>
+        <file>payDescribe.qml</file>
     </qresource>
 </RCC>

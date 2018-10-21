@@ -1,74 +1,111 @@
-import QtQuick 2.9
-import QtGraphicalEffects 1.0
+import QtQuick 2.0
 
 Item {
-    //anchors.fill: parent
     id: mainwnd
 
     FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
-
     Rectangle{
-        anchors.fill: parent
         id: backRect
-        color: "#f8f8ff"
-        //color: "#606470"
-        Component.onCompleted: focus = true;
+        anchors.fill: parent
+        color: "#e6f8ff"
 
-
-        Connections{
-            target: myClient
-            onStartReadPays: {
-                //paytimer.start()
-
-                payModel.clear()
-
-                //myClient.showPayments();
-
-                for(var i = 0; i < myClient.payTableLength(); ++i)
-                {
-                    if (myClient.givePayCash(i)[0] !== '0')
-                        payModel.append({"date": myClient.givePayTime(i),
-                                            "cash": myClient.givePayCash(i),
-                                            "comment": myClient.givePayComm(i)})
-                }
-
-
-                payListView.model = payModel;
-
-                myClient.makeBusyOFF();
-
-
-            }
+        Component.onCompleted:
+        {
+            myClient.makeBusyOFF();
+            focus = true;
         }
+
+
+
+
+
+
+
+
+
+        Image {
+            id: backGroundTP
+            source: "qrc:/trustedBack.png"
+            width: backRect.width
+            height: backRect.height
+            opacity: 0.3
+        }
+
+        Text {
+            id: payTxt
+            anchors.top: parent.top
+            anchors.topMargin: 40
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.family: gotham_XNarrow.name;
+            font.pointSize: 40
+            color: "#f7f7f7"
+            text: "Оплата"
+        }
+
+
+
+
+
+
+
 
 
         ListModel {
-            id: payModel
+            id: payWayModel
+            ListElement {
+                date: "Как оплатить?"
+                cash: ""
+                comment: "Узнайте способы оплаты услуг"
+            }
+
+            ListElement {
+
+                date: "Точки оплаты"
+                cash: ""
+                comment: "Найдите терминал поблизости"
+            }
+
+            ListElement {
+
+                date: "Временный платеж"
+                cash: ""
+                comment: "Воспользуйтесь, если не успеваете оплатить услуги."
+            }
+
         }
 
         ListView{
-            id: payListView
+            id: payWayListView
             visible: true
-            anchors.fill: parent
-            width: mainwnd.width
-            height: mainwnd.height
+            interactive: false
             smooth: true
-            //focus: true
-            maximumFlickVelocity: 1000000
-            //headerPositioning: ListView.PullBackHeader
-            clip: true
+            width: mainwnd.width
+            height: mainwnd.height// - payTxt.height
+            anchors.top: payTxt.bottom
+            anchors.topMargin: 40
+            anchors.bottom: parent.bottom
+
             spacing: 20
-            anchors.topMargin: 20
-            anchors.bottomMargin: 20
-            delegate: paydelegate
+
+            delegate: payWaydelegate
+            model: payWayModel
 
         }
 
 
         Component{
-            id: paydelegate
+            id: payWaydelegate
             Item {
+
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: console.log("IT WORKS");
+                }
+
+
+
                 width: mainwnd.width
                 height: mainwnd.height / 5
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -95,7 +132,7 @@ Item {
                         width: 12
                         height: 12
                         radius: 30
-                        color: cash[0] === '-'? "#93deff" : "lightgreen"
+                        color: "#93deff"  //cash[0] === '-'? "#93deff" : "lightgreen"
                         anchors.left: payUnit.left
                         anchors.leftMargin: 15
                         y: payUnit.y + (payUnit.height / 3) * 0.4
@@ -107,8 +144,7 @@ Item {
                         font.family: gotham_XNarrow.name;
                         font.pointSize: 22
                         color: "#0074e4"
-                        anchors.right: payUnit.right
-                        anchors.rightMargin: 20
+                        anchors.horizontalCenter: payUnit.horizontalCenter
                         anchors.verticalCenter: kindOfPay.verticalCenter
                     }
 
@@ -141,7 +177,7 @@ Item {
                             font.family: gotham_XNarrow.name;
                             //font.pointSize: 8
                             minimumPointSize: 7
-                            font.pointSize: 12
+                            font.pointSize: 15
                             fontSizeMode: Text.Fit
                             width: parent.width
                             height: parent.height
@@ -163,26 +199,7 @@ Item {
             }
         }
 
+
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

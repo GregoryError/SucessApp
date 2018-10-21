@@ -616,7 +616,7 @@ ApplicationWindow {
                 Text {
                     id: services
                     font.family: gotham_XNarrow.name;
-                    font.pointSize: 10
+                    font.pointSize: 12
                     text: "Интернет<br>Цифровое ТВ<br>Каналы связи"
                     anchors.right: vLine.right
                     anchors.rightMargin: 10
@@ -629,7 +629,7 @@ ApplicationWindow {
                 Text {
                     id: telN
                     font.family: gotham_XNarrow.name;
-                    font.pointSize: 10
+                    font.pointSize: 12
                     text: "tel: +781378 98098<br>Ленинградское шоссе` 33<br>info@comfort-tv.ru<br>info@arriva.net.ru"
 
                     color: "#f7f7f7"
@@ -1040,7 +1040,7 @@ ApplicationWindow {
                     anchors.bottomMargin: 30
                     anchors.horizontalCenter: drawBack.horizontalCenter
                     width: drawBack.width * 0.75
-                    height: 65
+                    height: 50
                     Rectangle{
                         id: exitBack
                         border.width: 1

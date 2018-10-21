@@ -51,6 +51,8 @@ Item {
         anchors.fill: parent
         color: "#f7f7f7"
 
+        Component.onCompleted: focus = true;
+
         Flickable{
             id: trustedFlick
             width: backRect.width
@@ -78,7 +80,6 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 50
                 anchors.leftMargin: 50
-
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 15

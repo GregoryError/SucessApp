@@ -83,6 +83,7 @@ Item {
 
                 myClient.makeBusyOFF();
                 ownerPointcircleAnimation.start();
+                focus = true;
             }
             zoomLevel: 14
 

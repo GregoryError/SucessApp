@@ -35,6 +35,8 @@ Item {
         anchors.fill: parent
         color: "#e6f8ff"
 
+        Component.onCompleted: focus = true;
+
         Image {
             id: backGroundTP
             source: "qrc:/trustedBack.png"

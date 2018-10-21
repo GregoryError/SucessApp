@@ -46,6 +46,8 @@ Item {
         // visible: false
         //clip: true
 
+        Component.onCompleted: focus = true
+
         Image {
             id: walletPic
             scale: mainwnd.height / 1530
@@ -250,7 +252,6 @@ Item {
             onStopped: {
                 infoRectcolorRect.width = 0
                 infoRectcolorRect.height = 0
-
             }
         }
 
@@ -268,9 +269,7 @@ Item {
 
     }
 
-    /////////////////////////////////// BUTTONS /////////////////////////////////////////////////////
-
-
+    /////////////////////////////////// BUTTONS ////////////////////////////////////////////
 
 
     ListModel {
@@ -286,7 +285,7 @@ Item {
             mycolor: "#2cbaf1"
             backdata: "qrc:/Menu/gps.png"
             active: true
-            mtext: "Точки оплаты"
+            mtext: "Оплата"
         }
 
         ListElement {
@@ -485,7 +484,7 @@ Item {
                                 switch (index) {
                                 case 0: myClient.askForPayments(); myClient.makeBusyON();
                                     stackView.push("payments.qml"); break;
-                                case 1: myClient.makeBusyON(); break;
+                                case 1: myClient.makeBusyON(); stackView.push("qrc:/payDescribe.qml"); break;
                                 case 2: stackView.push("trustedPayPage.qml"); break;
                                 case 3: myClient.makeBusyON();
                                     myClient.askForMsgs();
@@ -552,7 +551,7 @@ Item {
                                 bigMenucolorRect.height = 0
                                 bigMenucolorRect.visible = false
 
-                                if (index === 1) { stackView.push("payPoints.qml"); }
+                               // if (index === 1) { stackView.push("payPoints.qml"); }
 
 
 
