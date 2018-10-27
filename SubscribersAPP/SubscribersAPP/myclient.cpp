@@ -19,9 +19,14 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
     const QString rootCAPath(":/new/prefix1/rootCA.pem");
     auto rootCACert = QSslCertificate::fromPath(rootCAPath);
-    Q_ASSERT(!rootCACert.isEmpty());
+
+    //Q_ASSERT(!rootCACert.isEmpty());
+
+    if (rootCACert.isEmpty())
+        qDebug() << "rootCACert is empty!";
 
 
+    if (!rootCACert.isEmpty())
     m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
 
     //QSslConfiguration config = m_pTcpSocket->sslConfiguration();
@@ -34,7 +39,12 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
     QList<QSslError> errorsToIgnore;
     const QString serverCertPath(":/new/prefix1/client1.pem");
     auto serverCert = QSslCertificate::fromPath(serverCertPath);
-    Q_ASSERT(!serverCert.isEmpty());
+
+    //Q_ASSERT(!serverCert.isEmpty());
+    if (serverCert.isEmpty())
+        qDebug() << "serverCert is empty!";
+
+    if (!serverCert.isEmpty())
     errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
     m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
 
