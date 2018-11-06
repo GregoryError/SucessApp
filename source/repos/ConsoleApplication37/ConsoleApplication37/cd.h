@@ -10,10 +10,11 @@ private:
 	int selections;
 	double playtime;
 public:
-	cd(const char *s1, const char *s2, int n, double x);
+	cd(const char *s1, const char *s2, int n,
+		double x);
 	cd(const cd &d);
 	cd();
-	~cd();
+	virtual ~cd();
 	virtual void Report() const;
 	virtual cd &operator=(const cd &d);
 };

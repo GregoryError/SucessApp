@@ -6,7 +6,7 @@ cd::cd()
 {
 	selections = playtime = 0;
 	strcpy_s(performers, 50, "none");
-	strcpy_s(label, 50, performers);
+	strcpy_s(label, 20, performers);
 }
 
 cd::cd(const char *s1, const char *s2, int n, double x)
@@ -16,7 +16,8 @@ cd::cd(const char *s1, const char *s2, int n, double x)
 	strcpy_s(label, 20, s2);
 }
 
-cd::cd(const cd &d) : selections(d.selections), playtime(d.playtime)
+cd::cd(const cd &d)
+	: selections(d.selections), playtime(d.playtime)
 {
 	strcpy_s(performers, 50, d.performers);
 	strcpy_s(label, 20, d.label);
@@ -24,6 +25,8 @@ cd::cd(const cd &d) : selections(d.selections), playtime(d.playtime)
 
 cd& cd::operator=(const cd &d)
 {
+	if (&d == this)
+		return *this;
 	selections = d.selections;
 	playtime = d.playtime;
 	strcpy_s(performers, 50, d.performers);
