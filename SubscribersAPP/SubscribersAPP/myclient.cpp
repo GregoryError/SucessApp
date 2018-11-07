@@ -9,10 +9,106 @@
 
 
 
+
+
+
+sslClient::sslClient(QString& answer, QObject* prnt)
+    : QObject(prnt), sslNextBlock(0)
+{
+    pSslSocket = new QTcpSocket(this);
+    //pSslSocket->connectToHost(strHost, nsPort); // ??
+    connect(pSslSocket, SIGNAL(connected()), SLOT(slotConnectedToServ()));
+    connect(pSslSocket, SIGNAL(readyRead()), SLOT(slotReadyToRead()));
+    connect(pSslSocket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(slotErrorSsl(QAbstractSocket::SocketError)));
+
+
+
+}
+
+void sslClient::connectionToSrv(const QString& strHost, quint16 nsPort)
+{
+    pSslSocket->connectToHost(strHost, nsPort);
+}
+
+void sslClient::slotReadyToRead()
+{
+    QDataStream in(pSslSocket);
+
+    in.setVersion(QDataStream::Qt_5_9);
+
+    for(;;)
+    {
+        if (!sslNextBlock)
+        {
+            if (pSslSocket->bytesAvailable() < sizeof(quint16))
+            {
+                break;
+            }
+            in >> sslNextBlock;
+        }
+        if (pSslSocket->bytesAvailable() < sslNextBlock)
+        {
+            break;
+        }
+        in >> sslContent;
+        sslNextBlock = 0;
+    }
+
+    if (sslContent != "denied")
+    {
+
+       // out << sslContent;
+       // qDebug() << "Reading SSL done!" << sslContent;
+
+    }
+
+    sslContent.clear();
+}
+
+void sslClient::slotErrorSsl(QAbstractSocket::SocketError err)
+{
+    QString strError=
+            "Error: " + (err == QAbstractSocket::HostNotFoundError ?
+                             "The host was not faund." :
+                             err == QAbstractSocket::RemoteHostClosedError ?
+                                 "The remote host is closed." :
+                                 err == QAbstractSocket::ConnectionRefusedError ?
+                                     "The connection was refused." :
+                                     QString(pSslSocket->errorString()));
+    qDebug() << strError;
+    sslContent = strError;
+}
+
+
+
+void sslClient::slotSender(const QString& msg)
+{
+    pSslSocket->write(msg.toUtf8());
+}
+
+
+
+void sslClient::slotConnectedToServ()
+{
+    qDebug() << "Connected for getting the cert!";
+}
+
+
+
+
+////////////////////////////////////// Secure connection:
+
+
+
+
+
 MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBlockSize(0)
 {
 
     //dataSet.setValue("isEntered", false);
+
+
 
     m_pTcpSocket = new QSslSocket(this);
 
@@ -27,7 +123,7 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
 
     if (!rootCACert.isEmpty())
-    m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
+        m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
 
     //QSslConfiguration config = m_pTcpSocket->sslConfiguration();
     //config.setCaCertificates(rootCACert);
@@ -42,10 +138,14 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
     //Q_ASSERT(!serverCert.isEmpty());
     if (serverCert.isEmpty())
+    {
+        noCert = true;
         qDebug() << "serverCert is empty!";
+    }
+
 
     if (!serverCert.isEmpty())
-    errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
+        errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
     m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
 
     connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
@@ -215,13 +315,13 @@ void MyClient::slotReadyRead()
 
     // Put here some other option
 
-
     else if(m_ptxtInfo == "denied"){
         isAuthOk = false;
         loginResult = "Неверная авторизация";
         switchToMe();
-
-    }else{
+    }
+    else
+    {
         isAuthOk = false;
         loginResult = "Для работы приложения<br>"
                       "необходимо подключение<br>"
@@ -255,6 +355,8 @@ void MyClient::Sender(const QString &msg)
 {
 
 
+
+
     if(!m_pTcpSocket->waitForEncrypted()){
 
         //qDebug() << m_pTcpSocket->errorString();
@@ -282,8 +384,8 @@ void MyClient::connectToHost()
 {
 
 
-      m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-      //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+    //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
 
 
     if (!m_pTcpSocket->waitForConnected(9000))
@@ -313,12 +415,32 @@ bool MyClient::isAuthRight()
 
 void MyClient::setAuthData(QString name, QString pass)
 {
+    //if (noCert)
+    //{
+    //    m_pTcpSocket->close();
+    //    noCert = false;
+    //    loginResult = "В целях безопасности,<br>"
+    //                  "авторизуйтесь первый раз<br>"
+    //                  "в пределах сети Успех!<br>"
+    //                  "Например Ваша WiFi сеть.";
+    //    isAuthOk = false;
+    //    switchToMe();
+    //    // qDebug() << "serverCert is empty!";
+    //}
+
     if (name.isEmpty() || pass.isEmpty()){
         isAuthOk = false;
         loginResult = "Необходимо ввести\n"
                       "логин и пароль.";
         switchToMe();
-    }else{
+    }
+    else if(!dataSet.value("isEntered").toBool())
+    {
+        sslGetter.connectionToSrv("10.4.43.99", 4444);
+        sslGetter.slotSender("(" + name + "#" + pass + ")");
+    }
+    else
+    {
         enteredName = name;
         enteredPass = pass;
         Sender("(" + enteredName + "#" + enteredPass + ")getAllData!");

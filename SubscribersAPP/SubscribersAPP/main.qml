@@ -378,7 +378,6 @@ ApplicationWindow {
                 messageDialog.text = myClient.authResult();
                 bigbusy.running = false
                 messageDialog.visible = true;
-
             }
 
         }
@@ -564,6 +563,7 @@ ApplicationWindow {
             height: window.height
             dragMargin: 40
             clip: true
+            interactive: true
             onClosed: {
                 drawLogo.opacity = 0;
             }

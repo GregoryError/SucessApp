@@ -1,5 +1,6 @@
-#ifndef _MyClient_h_
-#define _MyClient_h_
+//#ifndef _MyClient_h_
+//#define _MyClient_h_
+#pragma once
 
 
 #include "backend.h"
@@ -19,13 +20,41 @@
 #include <QByteArray>
 
 #include <QDateTime>
+#include <QTextStream>
+
 
 class QTextEdit;
 class QLineEdit;
 
 // ======================================================================
+
+
+
+class sslClient : public QObject
+{
+    Q_OBJECT
+private:
+    QString sslContent;
+    QTcpSocket* pSslSocket;
+    quint16 sslNextBlock;
+public:
+    sslClient(QString& answer, QObject* prnt = nullptr);
+    QString sslTxt();
+    void connectionToSrv(const QString& strHost, quint16 nsPort);
+public slots:
+    void slotReadyToRead();
+    void slotErrorSsl(QAbstractSocket::SocketError);
+    void slotSender(const QString& msg);
+    void slotConnectedToServ();
+};
+
+
+
 class MyClient : public QObject { //QWidget {
     Q_OBJECT
+
+private:
+    sslClient sslGetter;
 public:
     // Q_PROPERTY(QString input WRITE setInputValue
     //                          READ inputValue
@@ -53,6 +82,7 @@ public:
     bool isAuthOk = false;        ///////////////////// ?
     bool isConnect = false;
     bool demo = false;
+    bool noCert = false;
 
     QClipboard *buf = QApplication::clipboard();
 
@@ -142,7 +172,9 @@ public slots:
 
 
 };
-#endif  //_MyClient_h_
+
+
+//#endif  //_MyClient_h_
 
 
 
