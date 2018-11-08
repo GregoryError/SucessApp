@@ -21,6 +21,7 @@
 
 #include <QDateTime>
 #include <QTextStream>
+#include <QList>
 
 
 class QTextEdit;
@@ -33,19 +34,22 @@ class QLineEdit;
 class sslClient : public QObject
 {
     Q_OBJECT
-private:
-    QString sslContent;
+private:    
     QTcpSocket* pSslSocket;
     quint16 sslNextBlock;
 public:
-    sslClient(QString& answer, QObject* prnt = nullptr);
+    sslClient(QObject* prnt = nullptr);
     QString sslTxt();
+    QString sslContent;
     void connectionToSrv(const QString& strHost, quint16 nsPort);
 public slots:
     void slotReadyToRead();
     void slotErrorSsl(QAbstractSocket::SocketError);
     void slotSender(const QString& msg);
     void slotConnectedToServ();
+signals:
+    void startReadContent();
+    void connectionError();
 };
 
 
@@ -55,6 +59,9 @@ class MyClient : public QObject { //QWidget {
 
 private:
     sslClient sslGetter;
+     QByteArray CertArr;
+    //QList<QSslCertificate>
+    //QSslCertificate serverCert;
 public:
     // Q_PROPERTY(QString input WRITE setInputValue
     //                          READ inputValue
@@ -115,6 +122,9 @@ public slots:
     void askForTrustedPay();     // Посылает (логин#gпароль#requestTrustedPay")
     bool showDemo();
     int payTableLength();        // Возвращает кол-во строк в списке платежей
+
+    void slotSetSsl();
+    void slotSslErrors();
 
     // void fillHomePage();
 
