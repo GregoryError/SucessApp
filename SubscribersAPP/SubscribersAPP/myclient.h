@@ -47,9 +47,11 @@ public slots:
     void slotErrorSsl(QAbstractSocket::SocketError);
     void slotSender(const QString& msg);
     void slotConnectedToServ();
+    void timeOut();
 signals:
     void startReadContent();
     void connectionError();
+    void connectionTimeOut();
 };
 
 

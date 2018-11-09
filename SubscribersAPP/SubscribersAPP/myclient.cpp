@@ -29,6 +29,7 @@ sslClient::sslClient(QObject* prnt)
 void sslClient::connectionToSrv(const QString& strHost, quint16 nsPort)
 {
     pSslSocket->connectToHost(strHost, nsPort);
+    QTimer::singleShot(4000, this, SLOT(timeOut()));
 }
 
 void sslClient::slotReadyToRead()
@@ -108,6 +109,19 @@ void sslClient::slotConnectedToServ()
     qDebug() << "Connected for getting the cert!";
 }
 
+void sslClient::timeOut()
+{
+    if (pSslSocket->state() == QAbstractSocket::ConnectingState)
+    {
+       pSslSocket->abort();
+       pSslSocket->close();
+       emit connectionTimeOut();
+       qDebug() << "SIGNAL WOKS";
+    }
+
+
+}
+
 
 
 
@@ -179,6 +193,7 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
     connect(&sslGetter, SIGNAL(startReadContent()), this, SLOT(slotSetSsl()));   //////// ????????? <<<
     connect(&sslGetter, SIGNAL(connectionError()), this, SLOT(slotSslErrors()));
+    connect(&sslGetter, SIGNAL(connectionTimeOut()), this, SLOT(slotSslErrors()));
 
     if(dataSet.value("isEntered").toBool()){
         Sender("(" + dataSet.value("name").toString()
@@ -465,8 +480,9 @@ void MyClient::slotSslErrors()
             "В целях безопасности,<br>"
             "Ваш первый вход в систему<br>"
             "должен быть произведен<br>"
-            "в пределах сети Успех.<br>"
-            "Например Ваша домашняя сеть WiFi.<br>"
+            "в пределах сети Успех!<br>"
+            "Например используйте Вашу<br>"
+            " домашнюю WiFi сеть.<br>"
             "Проверьте подключение,<br>"
             "либо обратитесь в тех. поддержку.<br>"+
             sslGetter.sslContent;
