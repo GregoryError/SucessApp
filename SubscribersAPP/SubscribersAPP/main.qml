@@ -1009,6 +1009,13 @@ ApplicationWindow {
                     anchors.left: middleArea.right
                     width: bottomLine.width / 3
                     height: width
+
+                    onClicked: {
+                        drawer.close()
+                        stackView.push("infoPage.qml");
+                    }
+
+
                     Image {
                         id: rightImg
                         source: "qrc:/Menu/info-popup.png"
@@ -1027,7 +1034,6 @@ ApplicationWindow {
                         text: "Инфо"
 
                     }
-
 
                 }
 

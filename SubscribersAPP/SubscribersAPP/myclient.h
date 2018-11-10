@@ -52,6 +52,7 @@ signals:
     void startReadContent();
     void connectionError();
     void connectionTimeOut();
+    void connectionEstablished();
 };
 
 
@@ -62,6 +63,7 @@ class MyClient : public QObject { //QWidget {
 private:
     sslClient sslGetter;
      QByteArray CertArr;
+     QString msgToSend;
     //QList<QSslCertificate>
     //QSslCertificate serverCert;
 public:
@@ -127,6 +129,8 @@ public slots:
 
     void slotSetSsl();
     void slotSslErrors();
+    void slotAskForSsl();
+    void slotLongConnection();
 
     // void fillHomePage();
 

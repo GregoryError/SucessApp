@@ -65,20 +65,20 @@ void MyClient::slotSetSsl()
     if (sslGetter.sslContent == "denied")
     {
         isAuthOk = false;
-        loginResult = "Неверная авторизация";
+        loginResult = "Неверная авторизация.<br>"
+                      "Проверьте правильность<br>"
+                      "имени и пароля.";
+        quitAndClear();
         switchToMe();
     }
     else
     {
         dataSet.setValue("SSL_CONTENT", sslGetter.sslContent);
+        //CertArr.fromStdString(sslGetter.sslContent.toStdString());
         CertArr = dataSet.value("SSL_CONTENT").toByteArray();
         Sender("(" + enteredName + "#" + enteredPass + ")getAllData!");
     }
-    qDebug() << "IT WORKS!" << dataSet.value("SSL_CONTENT").toString();
 }
-
-
-
 
 void sslClient::slotErrorSsl(QAbstractSocket::SocketError err)
 {
@@ -95,28 +95,24 @@ void sslClient::slotErrorSsl(QAbstractSocket::SocketError err)
     emit connectionError();
 }
 
-
-
 void sslClient::slotSender(const QString& msg)
 {
     pSslSocket->write(msg.toUtf8());
 }
 
-
-
 void sslClient::slotConnectedToServ()
 {
-    qDebug() << "Connected for getting the cert!";
+    emit connectionEstablished();
 }
 
 void sslClient::timeOut()
 {
     if (pSslSocket->state() == QAbstractSocket::ConnectingState)
     {
-       pSslSocket->abort();
-       pSslSocket->close();
-       emit connectionTimeOut();
-       qDebug() << "SIGNAL WOKS";
+        pSslSocket->abort();
+        pSslSocket->close();
+        emit connectionTimeOut();
+        qDebug() << "SIGNAL WOKS";
     }
 
 
@@ -156,31 +152,27 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
     //QSslConfiguration config = m_pTcpSocket->sslConfiguration();
     //config.setCaCertificates(rootCACert);
 
-
-
-
-
-    QList<QSslError> errorsToIgnore;
-
-
+    // QList<QSslError> errorsToIgnore;
+    //
     CertArr = dataSet.value("SSL_CONTENT").toByteArray();
+    //
+    // const QString serverCertPath(":/new/prefix1/client1.pem");
+    // //auto serverCert = QSslCertificate::fromPath(serverCertPath);
+    // auto serverCert = QSslCertificate::fromData(CertArr);
+    //
+    // //Q_ASSERT(!serverCert.isEmpty());
+    // if (serverCert.isEmpty())
+    // {
+    //     noCert = true;
+    //     qDebug() << "serverCert is empty!";
+    // }
+    //
+    //
+    // if (!serverCert.isEmpty())
+    //     errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
+    // m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
+    //
 
-
-    const QString serverCertPath(":/new/prefix1/client1.pem");
-    //auto serverCert = QSslCertificate::fromPath(serverCertPath);
-    auto serverCert = QSslCertificate::fromData(CertArr);
-
-    //Q_ASSERT(!serverCert.isEmpty());
-    if (serverCert.isEmpty())
-    {
-        noCert = true;
-        qDebug() << "serverCert is empty!";
-    }
-
-
-    if (!serverCert.isEmpty())
-        errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
-    m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
 
     connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
@@ -194,6 +186,8 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
     connect(&sslGetter, SIGNAL(startReadContent()), this, SLOT(slotSetSsl()));   //////// ????????? <<<
     connect(&sslGetter, SIGNAL(connectionError()), this, SLOT(slotSslErrors()));
     connect(&sslGetter, SIGNAL(connectionTimeOut()), this, SLOT(slotSslErrors()));
+    connect(&sslGetter, SIGNAL(connectionEstablished()), this, SLOT(slotAskForSsl()));
+
 
     if(dataSet.value("isEntered").toBool()){
         Sender("(" + dataSet.value("name").toString()
@@ -384,50 +378,54 @@ void MyClient::slotReadyRead()
 
 }
 
-void MyClient::slotConnected()
-{
-    isConnect = true;
-}
 
 // ----------------------------------------------------------------------
 void MyClient::Sender(const QString &msg)
 {
+    msgToSend = msg;
 
 
+    QList<QSslError> errorsToIgnore;
+
+    //CertArr = dataSet.value("SSL_CONTENT").toByteArray();
+
+
+
+
+
+
+    //const QString serverCertPath(":/new/prefix1/client1.pem");
+    //auto serverCert = QSslCertificate::fromPath(serverCertPath);
+    auto serverCert = QSslCertificate::fromData(CertArr);
+
+    //Q_ASSERT(!serverCert.isEmpty());
+    if (serverCert.isEmpty())
+    {
+        noCert = true;
+        qDebug() << "serverCert is empty!";
+    }
+
+    if (!serverCert.isEmpty())
+        errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
+    m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
 
 
     if(!m_pTcpSocket->waitForEncrypted()){
-
         //qDebug() << m_pTcpSocket->errorString();
     }
+
     connectToHost();
 
-
-    //
-    //
-    //    QByteArray arrBlock;
-    //    QDataStream out(&arrBlock, QIODevice::WriteOnly);
-    //    out.setVersion(QDataStream::Qt_5_9);
-    //    out << quint16(0) << msg;
-    //    out.device()->seek(0);
-    //    out << quint16(arrBlock.size() - sizeof(quint16));
-    //    m_pTcpSocket->write(arrBlock);
-    //
-
-
-    m_pTcpSocket->write(msg.toUtf8());
-
+    // m_pTcpSocket->write(msg.toUtf8());
 }
 
 void MyClient::connectToHost()
 {
-
-
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
     //m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    QTimer::singleShot(6000, this, SLOT(slotLongConnection()));
 
-
-    if (!m_pTcpSocket->waitForConnected(9000))
+    if (!m_pTcpSocket->waitForConnected(6000))
     {
         loginResult = m_pTcpSocket->errorString() + "<br>"
                                                     "Для работы приложения<br>"
@@ -435,10 +433,19 @@ void MyClient::connectToHost()
                                                     "к интернет, либо к сети<br>"
                                                     "Аррива. Проверьте подключение,<br>"
                                                     "либо обратитесь в тех. поддержку.";
+        isAuthOk = false;
         switchToMe();
     }
 
 }
+
+
+void MyClient::slotConnected()
+{
+    isConnect = true;
+    m_pTcpSocket->write(msgToSend.toUtf8());
+}
+
 
 
 QString MyClient::authResult()
@@ -462,16 +469,37 @@ void MyClient::setAuthData(QString name, QString pass)
     }
     else
     {
-        sslGetter.connectionToSrv("10.4.43.99", 4444);
-        sslGetter.slotSender("(" + name + "#" + pass + ")");
         enteredName = name;
         enteredPass = pass;
-        //Sender("(" + enteredName + "#" + enteredPass + ")getAllData!");
+        sslGetter.connectionToSrv("10.4.43.99", 4444);
     }
-
 }
 
 
+
+void MyClient::slotAskForSsl()
+{
+    sslGetter.slotSender("(" + enteredName + "#" + enteredPass + ")");
+}
+
+
+void MyClient::slotLongConnection()
+{
+    if (m_pTcpSocket->state() == QAbstractSocket::ConnectingState)
+    {
+        m_pTcpSocket->abort();
+        m_pTcpSocket->close();
+        isAuthOk = false;
+        loginResult =
+                "<br>Для работы приложения<br>"
+                "необходимо подключение<br>"
+                "к интернет, либо к сети<br>"
+                "Аррива. Проверьте подключение,<br>"
+                "либо обратитесь в тех. поддержку.";
+        isAuthOk = false;
+        switchToMe();
+    }
+}
 
 void MyClient::slotSslErrors()
 {
@@ -482,9 +510,9 @@ void MyClient::slotSslErrors()
             "должен быть произведен<br>"
             "в пределах сети Успех!<br>"
             "Например используйте Вашу<br>"
-            " домашнюю WiFi сеть.<br>"
+            "домашнюю WiFi сеть.<br>"
             "Проверьте подключение,<br>"
-            "либо обратитесь в тех. поддержку.<br>"+
+            "или обратитесь в тех. поддержку.<br>"+
             sslGetter.sslContent;
     switchToMe();
 }
@@ -500,8 +528,8 @@ void MyClient::quitAndClear()
     dataSet.remove("pass");
     dataSet.setValue("isEntered", false);
     dataSet.remove("SSL_CONTENT");
-    sslGetter.sslContent.clear();
 
+    sslGetter.sslContent.clear();
     idNumber.clear();
     balance.clear();
     state.clear();
@@ -585,7 +613,8 @@ void MyClient::makeBusyOFF()
 
 void MyClient::fillHomePage()
 {
-    Sender("(" + dataSet.value("id").toString() + "#" + dataSet.value("pass").toString() + ")getAllData!");
+    Sender("(" + dataSet.value("id").toString() + "#" + dataSet.value("pass").toString()
+           + ")getAllData!");
     // emit startReadInfo();
 }
 

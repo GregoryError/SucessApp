@@ -100,10 +100,14 @@ Item {
             id: planName
             anchors.top: bill.bottom
             anchors.topMargin: 4
-            anchors.horizontalCenter: infoRect.horizontalCenter
+            anchors.horizontalCenter: infoline.horizontalCenter
             font.family: gotham_XNarrow.name;
-            font.pointSize: 24
+            font.pointSize: 24  
+            minimumPointSize: 10
+            width: infoline.width - 10
             color: "#f7f7f7"
+            fontSizeMode: Text.Fit
+
             //text: "Комплекс 550"
 
         }
@@ -321,12 +325,12 @@ Item {
 
     Rectangle{
         id: bigMenu
-        width: infoRect.width - 30
+        width: infoRect.width - 40
         height: mainwnd.height - infoRect.height
         anchors.horizontalCenter: infoRect.horizontalCenter
         radius: 2
         anchors.top: infoRect.bottom
-        anchors.topMargin: -15         // WTF
+        anchors.topMargin: -20         // WTF
         // smooth: true
 
 
