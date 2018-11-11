@@ -3,7 +3,5 @@
         <file>client1.pem</file>
         <file>rootCA.pem</file>
     </qresource>
-    <qresource prefix="/">
-        <file>testtxt.txt</file>
-    </qresource>
+    <qresource prefix="/"/>
 </RCC>

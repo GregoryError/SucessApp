@@ -11,8 +11,8 @@ BackEnd::BackEnd(QObject *parent) :
 
     cont = engine.rootContext();
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    engine.load(QUrl(QStringLiteral("qrc:/homePage.qml")));
-    engine.load(QUrl(QStringLiteral("qrc:/payments.qml")));
+    //engine.load(QUrl(QStringLiteral("qrc:/homePage.qml")));
+    //engine.load(QUrl(QStringLiteral("qrc:/payments.qml")));
 
 
     cont->setContextProperty("BackEnd", this);

@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     app.setApplicationName("Success");
 
 
-
+    //
     // QPixmap lg(":/logo.png");
     //
     //

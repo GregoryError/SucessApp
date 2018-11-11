@@ -825,39 +825,43 @@ QString MyClient::serverTime()
 
 QString MyClient::nextPayDay()
 {
-    // PSUDOCODE:
-    // if (dd < pd)
-    //     result = pd.mm.yyyy
-    //             else result = pd.mm + 1.yyyy
-
     QString currentDate = serverDateTime.mid(0, 10);
+
+    int yearArr[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (currentDate.mid(6, 4).toInt() % 4 == 0)
+        yearArr[1] = 29;
+
     QString dd = currentDate.mid(0, 2);
 
-    int int_dd;
+    int int_dd = 0;
+    int int_mm = 0;
 
     if (dd.mid(0) == "0")
         int_dd = dd.mid(1).toInt();
     else int_dd = dd.toInt();
 
+    QString str_mm = currentDate.mid(3, 2);
+    if (str_mm.mid(0) == "0")
+        int_mm = str_mm.mid(1).toInt();
+    else int_mm = str_mm.toInt();
+
     QString result;
 
     if (int_dd < pay_day.toInt())
-        result = pay_day + "." + currentDate.mid(3, 8);
+        result = pay_day + currentDate.mid(2, 8);
     else
     {
-        int int_mm = currentDate.mid(4, 2).toInt();
         if (int_mm != 12)
             ++int_mm;
-        if (int_mm == 12)
-        {
-            return pay_day + ".01" + currentDate.mid(6, 5);
-        }
-
-        result = pay_day + "." + QString::number(int_mm) + currentDate.mid(6, 5);
+        else int_mm = 1;
     }
 
+    if (pay_day.toInt() > yearArr[int_mm - 1])
+        pay_day = QString::number(yearArr[int_mm - 1]);
 
-    //qDebug() << result << " - RESULT";
+    if (int_mm >= 10)
+        result = pay_day + "." + QString::number(int_mm) + currentDate.mid(5, 5);
+    else result = pay_day + ".0" + QString::number(int_mm) + currentDate.mid(5, 5);
 
     return result;
 }
