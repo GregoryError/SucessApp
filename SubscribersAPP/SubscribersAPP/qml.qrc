@@ -37,5 +37,11 @@
         <file>Menu/rub.png</file>
         <file>payDescribe.qml</file>
         <file>infoPage.qml</file>
+        <file>PaySystems/logo-sberbank-online.png</file>
+        <file>PaySystems/SbTerminal.png</file>
+        <file>PaySystems/qiwi_logo_rgb.png</file>
+        <file>PaySystems/yandex.dengi_horizontal_rgb-01.png</file>
+        <file>PaySystems/tinkoff-bank-general-logo-2.png</file>
+        <file>PaySystems/PayPoints.png</file>
     </qresource>
 </RCC>

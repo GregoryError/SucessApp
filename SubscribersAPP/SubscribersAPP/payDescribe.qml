@@ -18,12 +18,6 @@ Item {
 
 
 
-
-
-
-
-
-
         Image {
             id: backGroundTP
             source: "qrc:/trustedBack.png"
@@ -32,66 +26,119 @@ Item {
             opacity: 0.3
         }
 
-        Text {
-            id: payTxt
-            anchors.top: parent.top
-            anchors.topMargin: 40
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.family: gotham_XNarrow.name;
-            font.pointSize: 40
-            color: "#f7f7f7"
-            text: "Оплата"
+
+
+        Flickable{
+            id: payListFlick
+            anchors.top: backRect.top
+            anchors.topMargin: 15
+            anchors.horizontalCenter: backRect.horizontalCenter
+            clip: true
+            width: backRect.width
+            height: backRect.height
+            contentHeight: payWayListView.height * 1.2
+            contentWidth: backRect.width
+
+
+            Text {
+                id: payTxt
+                // anchors.top: parent.top
+                anchors.top: payListFlick.top
+                anchors.topMargin: 30
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 30
+                color: "#f7f7f7"
+                text: "Способы оплаты:"
+            }
+
+
+
+            ListModel {
+                id: payWayModel
+                ListElement {
+                    date: "Через Сбербанк-онлайн"
+                    cash: ""
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/logo-sberbank-online.png"
+                }
+
+                ListElement {
+
+                    date: "Через терминал"
+                    cash: ""
+                    comment: ""
+                    commentImg:"qrc:/PaySystems/SbTerminal.png"
+                }
+
+                ListElement {
+
+                    date: "Через Яндекс-деньги"
+                    cash: ""
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/yandex.dengi_horizontal_rgb-01.png"
+                }
+
+                ListElement {
+
+                    date: "Платежная система QIWI"
+                    cash: ""
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/qiwi_logo_rgb.png"
+                }
+
+                ListElement {
+
+                    date: "Через Тинькофф"
+                    cash: ""
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/tinkoff-bank-general-logo-2.png"
+                }
+
+                ListElement {
+
+                    date: ""
+                    cash: "Найти точку оплаты"
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/PayPoints.png"
+                }
+
+                ListElement {
+
+                    date: ""
+                    cash: "Подключить доверительный платеж"
+                    comment: ""
+                    commentImg: "qrc:/Menu/trusted.png"
+                }
+
+
+
+            }
+
+            ListView{
+                id: payWayListView
+                visible: true
+                interactive: false
+                //clip: true
+                // smooth: true
+                width: mainwnd.width
+                height: payWayModel.count * (mainwnd.height / 5) //mainwnd.height * 5// - payTxt.heigh
+                anchors.top: payTxt.bottom
+                anchors.topMargin: 15
+                anchors.horizontalCenter: payListFlick.horizontalCenter
+                //anchors.bottom: parent.bottom
+
+                spacing: 10
+
+                delegate: payWaydelegate
+                model: payWayModel
+
+            }
+
+
         }
 
 
-
-
-
-
-
-
-
-        ListModel {
-            id: payWayModel
-            ListElement {
-                date: "Как оплатить?"
-                cash: ""
-                comment: "Узнайте способы оплаты услуг"
-            }
-
-            ListElement {
-
-                date: "Точки оплаты"
-                cash: ""
-                comment: "Найдите терминал поблизости"
-            }
-
-            ListElement {
-
-                date: "Временный платеж"
-                cash: ""
-                comment: "Воспользуйтесь, если не успеваете оплатить услуги."
-            }
-
-        }
-
-        ListView{
-            id: payWayListView
-            visible: true
-            interactive: false
-            smooth: true
-            width: mainwnd.width
-            height: mainwnd.height// - payTxt.height
-            anchors.top: payTxt.bottom
-            anchors.topMargin: 40
-            anchors.bottom: parent.bottom
-
-            spacing: 20
-
-            delegate: payWaydelegate
-            model: payWayModel
-
-        }
 
 
         Component{
@@ -101,7 +148,7 @@ Item {
                 MouseArea{
                     anchors.fill: parent
 
-                    onClicked: console.log("IT WORKS");
+                    onClicked: console.log("IT WORKS" + index);
                 }
 
 
@@ -142,9 +189,13 @@ Item {
                         id: payDate
                         text: date
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 22
+                        minimumPointSize: 7
+                        font.pointSize: 16
+                        fontSizeMode: Text.Fit
+                        width: payUnit.width - 15
                         color: "#0074e4"
-                        anchors.horizontalCenter: payUnit.horizontalCenter
+                        anchors.left: kindOfPay.right
+                        anchors.leftMargin: 10
                         anchors.verticalCenter: kindOfPay.verticalCenter
                     }
 
@@ -152,8 +203,11 @@ Item {
                         id: payCash
                         text: cash
                         font.family: gotham_XNarrow.name;
-                        font.pointSize: 20
-                        color: "gray"
+                        minimumPointSize: 7
+                        font.pointSize: 16
+                        fontSizeMode: Text.Fit
+                        width: payUnit.width - 15
+                        color: "#264e86"
                         anchors.left: payUnit.left
                         anchors.leftMargin: 40
                         anchors.verticalCenter: kindOfPay.verticalCenter
@@ -164,27 +218,24 @@ Item {
                         id: commentItem
                         anchors.horizontalCenter: payUnit.horizontalCenter
                         anchors.top: payUnitLine.bottom
-                        anchors.topMargin: 6
-                        anchors.bottomMargin: 6
-                        width: payUnit.width - 45
+                        anchors.topMargin: 4
+                        anchors.bottomMargin: 4
+                        width: payUnit.width - 30
                         height: (payUnit.height - payUnit.height / 3) - 20
                         color: "transparent"
                         //color: "gray"
 
-                        Text {
-                            id: payComment
-                            text: comment
-                            font.family: gotham_XNarrow.name;
-                            //font.pointSize: 8
-                            minimumPointSize: 7
-                            font.pointSize: 15
-                            fontSizeMode: Text.Fit
-                            width: parent.width
-                            height: parent.height
-                            color: "black"
-                            anchors.topMargin: 5
-                            anchors.horizontalCenter: commentItem.horizontalCenter
+                        Image {
+                            id: commentImage
+                            source: commentImg
+                            anchors.centerIn: parent
+                            width: commentItem.width * 0.8
+                            height: commentItem.height  * 0.8
+                            fillMode: Image.PreserveAspectFit
+                            //height: width
+
                         }
+
 
                     }
 
