@@ -825,7 +825,8 @@ QString MyClient::serverTime()
 
 QString MyClient::nextPayDay()
 {
-    QString currentDate = serverDateTime.mid(0, 10);
+    QString currentDate = "12.12.2018";//= serverDateTime.mid(0, 10);
+    int currentYear = serverDateTime.mid(6, 4).toInt();
 
     int yearArr[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (currentDate.mid(6, 4).toInt() % 4 == 0)
@@ -853,15 +854,19 @@ QString MyClient::nextPayDay()
     {
         if (int_mm != 12)
             ++int_mm;
-        else int_mm = 1;
+        else
+        {
+            int_mm = 1;
+            ++currentYear;
+        }
     }
 
     if (pay_day.toInt() > yearArr[int_mm - 1])
         pay_day = QString::number(yearArr[int_mm - 1]);
 
     if (int_mm >= 10)
-        result = pay_day + "." + QString::number(int_mm) + currentDate.mid(5, 5);
-    else result = pay_day + ".0" + QString::number(int_mm) + currentDate.mid(5, 5);
+        result = pay_day + "." + QString::number(int_mm) + "." + QString::number(currentYear);
+    else result = pay_day + ".0" + QString::number(int_mm) + "." + QString::number(currentYear);
 
     return result;
 }
