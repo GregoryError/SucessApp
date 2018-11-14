@@ -23,7 +23,7 @@ Item {
             source: "qrc:/trustedBack.png"
             width: backRect.width
             height: backRect.height
-            opacity: 0.3
+            opacity: 0.6
         }
 
 
@@ -95,6 +95,16 @@ Item {
                     commentImg: "qrc:/PaySystems/tinkoff-bank-general-logo-2.png"
                 }
 
+
+                ListElement {
+
+                    date: ""
+                    cash: "Точки оплаты"
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/icons8-about-96.png"
+                }
+
+
                 ListElement {
 
                     date: ""
@@ -108,7 +118,7 @@ Item {
                     date: ""
                     cash: "Подключить доверительный платеж"
                     comment: ""
-                    commentImg: "qrc:/Menu/trusted.png"
+                    commentImg: "qrc:/PaySystems/PromisePay.png"
                 }
 
 
@@ -148,7 +158,11 @@ Item {
                 MouseArea{
                     anchors.fill: parent
 
-                    onClicked: console.log("IT WORKS" + index);
+                    onClicked:{
+                        if (index === 0) stackView.push("sb_discription.qml");
+                        if (index === 5) stackView.push("payList.qml");
+                        console.log("IT WORKS" + index);
+                    }
                 }
 
 
@@ -169,7 +183,7 @@ Item {
                         anchors.topMargin: payUnit.height / 3
                         height: 3
                         width: payUnit.width - 20
-                        color: backRect.color
+                        color: "#0d7377"
                         border.width: 1
                         border.color: "#E3EAEA"
                     }
@@ -227,6 +241,7 @@ Item {
 
                         Image {
                             id: commentImage
+                            opacity: 0.8
                             source: commentImg
                             anchors.centerIn: parent
                             width: commentItem.width * 0.8

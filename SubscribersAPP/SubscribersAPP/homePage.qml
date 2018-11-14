@@ -41,7 +41,6 @@ Item {
         anchors.top: mainwnd.top
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: 0
-        //color: "#323643"
         //z: 3
         // visible: false
         //clip: true

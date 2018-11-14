@@ -43,5 +43,11 @@
         <file>PaySystems/yandex.dengi_horizontal_rgb-01.png</file>
         <file>PaySystems/tinkoff-bank-general-logo-2.png</file>
         <file>PaySystems/PayPoints.png</file>
+        <file>PaySystems/materials/PayPointsList.jpg</file>
+        <file>PaySystems/icons8-about-96.png</file>
+        <file>PaySystems/PromisePay.png</file>
+        <file>payList.qml</file>
+        <file>sb_discription.qml</file>
+        <file>PaySystems/materials/sb_instruction.png</file>
     </qresource>
 </RCC>
