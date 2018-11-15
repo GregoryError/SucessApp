@@ -419,10 +419,10 @@ ApplicationWindow {
             end: Qt.point(window.width, window.width)
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#93deff" }
-                GradientStop { position: 0.2; color: "#638AA1" }
+                GradientStop { position: 0.3; color: "#638AA1" }
                 GradientStop { position: 0.4; color: "#4B6072" }
-                GradientStop { position: 0.7; color: "#323643" }
-                GradientStop { position: 1.0; color: "#323643" }
+                GradientStop { position: 0.6; color: "#323643" }
+                GradientStop { position: 1.0; color: "#212121" }
             }
 
 

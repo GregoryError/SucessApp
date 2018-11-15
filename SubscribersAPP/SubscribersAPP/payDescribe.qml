@@ -65,22 +65,6 @@ Item {
 
                 ListElement {
 
-                    date: "Через терминал"
-                    cash: ""
-                    comment: ""
-                    commentImg:"qrc:/PaySystems/SbTerminal.png"
-                }
-
-                ListElement {
-
-                    date: "Через Яндекс-деньги"
-                    cash: ""
-                    comment: ""
-                    commentImg: "qrc:/PaySystems/yandex.dengi_horizontal_rgb-01.png"
-                }
-
-                ListElement {
-
                     date: "Платежная система QIWI"
                     cash: ""
                     comment: ""
@@ -93,6 +77,22 @@ Item {
                     cash: ""
                     comment: ""
                     commentImg: "qrc:/PaySystems/tinkoff-bank-general-logo-2.png"
+                }
+
+                ListElement {
+
+                    date: "Через WEB money"
+                    cash: ""
+                    comment: ""
+                    commentImg: "qrc:/PaySystems/web_mn.png"
+                }
+
+                ListElement {
+
+                    date: "Через терминал"
+                    cash: ""
+                    comment: ""
+                    commentImg:"qrc:/PaySystems/SbTerminal.png"
                 }
 
 
@@ -159,8 +159,16 @@ Item {
                     anchors.fill: parent
 
                     onClicked:{
-                        if (index === 0) stackView.push("sb_discription.qml");
+                        if (index === 0) stackView.push("sb_description.qml");
+                        if (index === 1) stackView.push("qw_description.qml");
+                        if (index === 2) stackView.push("tnk_description.qml");
+                        if (index === 3) stackView.push("web_money_desc.qml");
+                        if (index === 4) stackView.push("terminal_desc.qml");
+
                         if (index === 5) stackView.push("payList.qml");
+                        if (index === 6) stackView.push("payPoints.qml");
+                        if (index === 7) stackView.push("trustedPayPage.qml");
+
                         console.log("IT WORKS" + index);
                     }
                 }
@@ -185,7 +193,7 @@ Item {
                         width: payUnit.width - 20
                         color: "#0d7377"
                         border.width: 1
-                        border.color: "#E3EAEA"
+                        border.color: "#93deff"
                     }
 
                     Rectangle{
