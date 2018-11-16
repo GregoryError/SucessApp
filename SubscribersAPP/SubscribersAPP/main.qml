@@ -38,7 +38,8 @@ ApplicationWindow {
         height: 66
         x: 0
         y: 0
-        color: "#93deff"
+        color: "#112d4e"
+        //color: "#212121"
 
         FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
@@ -47,7 +48,7 @@ ApplicationWindow {
             id: startlogo
             source: "qrc:/RotatingLogo.png"
             smooth: true
-            scale: 0.3
+            scale: 0.4
             anchors.horizontalCenter: startHead.horizontalCenter
             anchors.verticalCenter: startHead.verticalCenter
 
@@ -55,15 +56,38 @@ ApplicationWindow {
     }
 
 
-    Rectangle {
+    Image {
+        id: start_back
+        visible: myClient.isAuth() ? false : true
+        anchors.top: startHead.bottom
+        anchors.horizontalCenter: startHead.horizontalCenter
+        height: window.height - startHead.height
+        fillMode: Image.PreserveAspectFit
+        source: "qrc:/Menu/start_back.png"
+        opacity: 0.4
+    }
+
+    Text {
+        id: noticeTxt
+        //font.family: gotham_XNarrow.name;
+        anchors.top: startHead.bottom
+        anchors.topMargin: 20
+        anchors.horizontalCenter: startHead.horizontalCenter
+        font.pointSize: 12
+        text: "Внимание, в целях безопасности,<br>
+               первый вход должен быть выполнен<br>
+               в пределах локальной сети Успех!";
+    }
+
+    Item {
         id: startform
-        opacity: 0
+        // opacity: 0
         visible: myClient.isAuth() ? false : true
         width: window.width * 0.6
         height: window.height * 0.5
-        anchors.top: startHead.bottom
+        anchors.top: noticeTxt.bottom
         anchors.horizontalCenter: startHead.horizontalCenter
-        //anchors.topMargin: 15
+        anchors.topMargin: -5
         //y:
 
         // color: "orange"
@@ -97,12 +121,12 @@ ApplicationWindow {
 
         Column {
             //anchors.centerIn: parent
-
             //anchors.topMargin: 50
             anchors.horizontalCenter: startform.horizontalCenter
-            spacing: 10
+            //spacing: 5
             Column {
-                spacing: 4
+                id: nameField
+                //spacing: -10
                 TextField{
                     id: nameInput
                     maximumLength: 20
@@ -123,7 +147,7 @@ ApplicationWindow {
                     color: "#606470"
                     font.pointSize: nameInput.width  * 0.1
                     font.family: gotham_XNarrow.name;
-                    placeholderText: "Имя"
+                    placeholderText: "Имя /или л.счет"
                     KeyNavigation.tab: passwordInput
 
                     Rectangle{
@@ -137,13 +161,14 @@ ApplicationWindow {
 
                 }
 
-            }
+                //  }
 
 
-            Column {
-                spacing: 4
                 TextField {
                     id: passwordInput
+                    anchors.top: nameLine.bottom
+                    anchors.horizontalCenter: nameLine.horizontalCenter
+                    anchors.topMargin: -10
                     implicitWidth: startform.width - 20
                     implicitHeight: startform.height / 5
                     maximumLength: 20
@@ -174,6 +199,7 @@ ApplicationWindow {
                     }
 
                 }
+
             }
 
 
@@ -183,13 +209,13 @@ ApplicationWindow {
 
                 Rectangle {
                     id: loginButton
-                    color: "#93deff"
+                    color: "#112d4e"
                     radius: 5
 
                     clip: true
 
                     implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5
+                    implicitHeight: startform.height / 5 - 15
                     Text{
                         anchors.centerIn: parent
                         color: "white"
@@ -228,7 +254,6 @@ ApplicationWindow {
                             myClient.setAuthData(nameInput.text, passwordInput.text);
 
                             console.log(nameInput.text, passwordInput.text)
-
 
                             //firsttimer.running = true
 
@@ -270,11 +295,11 @@ ApplicationWindow {
                     id: order
                     radius: 5
                     clip: true
-                    color: "#93deff"
+                    color: "#112d4e"
 
 
                     implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5
+                    implicitHeight: startform.height / 5 - 15
 
                     Text{
 
@@ -371,6 +396,7 @@ ApplicationWindow {
         target: myClient
         onSwitchToHomePage: {
             if(myClient.isAuthRight()){
+                start_back.visible = false;
                 workItem.visible = true;
                 bigbusy.running = false
                 disappearStartForm.running = true
@@ -1070,6 +1096,7 @@ ApplicationWindow {
                         myClient.quitAndClear();
                         startHead.visible = true;
                         startform.visible = true;
+                        start_back.visible = true;
 
                         workItem.visible = false;
 

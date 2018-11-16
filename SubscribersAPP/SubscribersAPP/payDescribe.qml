@@ -163,7 +163,7 @@ Item {
                         if (index === 1) stackView.push("qw_description.qml");
                         if (index === 2) stackView.push("tnk_description.qml");
                         if (index === 3) stackView.push("web_money_desc.qml");
-                        if (index === 4) stackView.push("terminal_desc.qml");
+                        //if (index === 4) stackView.push("terminal_desc.qml");
 
                         if (index === 5) stackView.push("payList.qml");
                         if (index === 6) stackView.push("payPoints.qml");

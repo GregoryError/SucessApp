@@ -57,5 +57,6 @@
         <file>PaySystems/materials/qiwi_desc.png</file>
         <file>qw_description.qml</file>
         <file>terminal_desc.qml</file>
+        <file>Menu/start_back.png</file>
     </qresource>
 </RCC>
