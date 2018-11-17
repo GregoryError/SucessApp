@@ -4,6 +4,7 @@ QT += core gui
 QT += core gui sql
 QT += positioning
 QT += network
+
 #QT += quick qml network positioning
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

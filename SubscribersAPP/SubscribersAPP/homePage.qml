@@ -412,8 +412,8 @@ Item {
                                 // width: 25
                                 // height: 25
 
-                                sourceSize.height: 32
-                                sourceSize.width: 32
+                                //sourceSize.height: 32
+                                //sourceSize.width: 32
 
                                 source: backdata
                                 //scale: 0.3

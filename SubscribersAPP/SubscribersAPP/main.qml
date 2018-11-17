@@ -14,9 +14,6 @@ import QtQuick.Dialogs 1.1
 
 ApplicationWindow {
     id: window
-
-
-
     visible: true
     // width: 540
     // height: 960
@@ -28,8 +25,7 @@ ApplicationWindow {
     //height: Screen.height
 
 
-
-
+    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
 
     Rectangle{
         id: startHead
@@ -40,10 +36,6 @@ ApplicationWindow {
         y: 0
         color: "#112d4e"
         //color: "#212121"
-
-        FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
-
-
         Image {
             id: startlogo
             source: "qrc:/RotatingLogo.png"
@@ -56,321 +48,335 @@ ApplicationWindow {
     }
 
 
-    Image {
-        id: start_back
-        visible: myClient.isAuth() ? false : true
+
+
+    Rectangle{
+        id: mainStartForm
         anchors.top: startHead.bottom
-        anchors.horizontalCenter: startHead.horizontalCenter
+        anchors.horizontalCenter: window.horizontalCenter
+        width: window.width
         height: window.height - startHead.height
-        fillMode: Image.PreserveAspectFit
-        source: "qrc:/Menu/start_back.png"
-        opacity: 0.4
-    }
+        visible: myClient.isAuth()? false : true
+        opacity: 0
 
-    Text {
-        id: noticeTxt
-        //font.family: gotham_XNarrow.name;
-        anchors.top: startHead.bottom
-        anchors.topMargin: 20
-        anchors.horizontalCenter: startHead.horizontalCenter
-        font.pointSize: 12
-        text: "Внимание, в целях безопасности,<br>
+
+
+        Image {
+            id: start_back
+            anchors.top: mainStartForm.top
+            anchors.horizontalCenter: mainStartForm.horizontalCenter
+            height: mainStartForm.height
+            fillMode: Image.PreserveAspectFit
+            source: "qrc:/Menu/start_back.png"
+            opacity: 0.4
+        }
+
+        Text {
+            id: noticeTxt
+            //font.family: gotham_XNarrow.name;
+            anchors.top: mainStartForm.top
+            anchors.topMargin: 20
+            anchors.horizontalCenter: mainStartForm.horizontalCenter
+            font.pointSize: 14
+            text: "Внимание, в целях безопасности,<br>
                первый вход должен быть выполнен<br>
-               в пределах локальной сети Успех!";
-    }
-
-    Item {
-        id: startform
-        // opacity: 0
-        visible: myClient.isAuth() ? false : true
-        width: window.width * 0.6
-        height: window.height * 0.5
-        anchors.top: noticeTxt.bottom
-        anchors.horizontalCenter: startHead.horizontalCenter
-        anchors.topMargin: -5
-        //y:
-
-        // color: "orange"
-
-
-        OpacityAnimator {
-            id: appearstartform
-            target: startform;
-            from: 0;
-            to: 1;
-            duration: 1500
-            running: true
-            easing.type: Easing.InOutExpo
+               в пределах локальной сети Успех!<br>
+               Например используйте домашний WiFi.";
         }
 
-        OpacityAnimator {
-            id: disappearStartForm
-            target: startform;
-            from: 1;
-            to: 0;
-            duration: 1000
-            running: false
-            easing.type: Easing.InOutExpo
+        Rectangle {
+            id: startform
+            color: "transparent"
+            width: window.width * 0.6
+            height: window.height * 0.5
+            anchors.top: noticeTxt.bottom
+            anchors.horizontalCenter: mainStartForm.horizontalCenter
+            anchors.topMargin: -5
+            //y:
 
-            onStopped: {
-                startform.visible = false
-                startform.enabled = false
+            // color: "orange"
+
+
+            OpacityAnimator {
+                id: appearstartform
+                target: mainStartForm;
+                from: 0;
+                to: 1;
+                duration: 1500
+                running: myClient.isAuth()? false : true
+                easing.type: Easing.InOutExpo
             }
-        }
 
+            OpacityAnimator {
+                id: disappearStartForm
+                target: mainStartForm;
+                from: 1;
+                to: 0;
+                duration: 1000
+                running: false
+                easing.type: Easing.InOutExpo
 
-        Column {
-            //anchors.centerIn: parent
-            //anchors.topMargin: 50
-            anchors.horizontalCenter: startform.horizontalCenter
-            //spacing: 5
-            Column {
-                id: nameField
-                //spacing: -10
-                TextField{
-                    id: nameInput
-                    maximumLength: 20
-                    implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5
-                    inputMethodHints: Qt.ImhPreferLowercase |
-                                      Qt.ImhNoAutoUppercase |
-                                      Qt.ImhNoPredictiveText
-
-
-                    background: Rectangle {
-                        opacity: 0
-                        anchors.centerIn: parent
-
-
-                    }
-                    onAccepted: passwordInput.forceActiveFocus()
-                    color: "#606470"
-                    font.pointSize: nameInput.width  * 0.1
-                    font.family: gotham_XNarrow.name;
-                    placeholderText: "Имя /или л.счет"
-                    KeyNavigation.tab: passwordInput
-
-                    Rectangle{
-                        id: nameLine
-                        height: 1
-                        width: nameInput.width
-                        anchors.top: nameInput.bottom
-                        anchors.topMargin: -nameInput.height / 4
-                        color: "#606470"
-                    }
-
+                onStopped: {
+                    mainStartForm.visible = false
                 }
-
-                //  }
-
-
-                TextField {
-                    id: passwordInput
-                    anchors.top: nameLine.bottom
-                    anchors.horizontalCenter: nameLine.horizontalCenter
-                    anchors.topMargin: -10
-                    implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5
-                    maximumLength: 20
-                    inputMethodHints: Qt.ImhPreferLowercase |
-                                      Qt.ImhNoAutoUppercase |
-                                      Qt.ImhNoPredictiveText
-
-                    background: Rectangle {
-                        opacity: 0
-                        anchors.centerIn: parent
-
-                    }
-                    onAccepted: login()
-                    color: "#606470"
-                    font.pointSize: nameInput.width  * 0.1
-                    font.family: gotham_XNarrow.name;
-                    placeholderText: "Пароль"
-                    echoMode: TextInput.PasswordEchoOnEdit
-                    KeyNavigation.tab: loginButton
-
-                    Rectangle{
-                        id: passLine
-                        height: 1
-                        width: passwordInput.width
-                        anchors.top: passwordInput.bottom
-                        anchors.topMargin: -nameInput.height / 4
-                        color: "#606470"
-                    }
-
-                }
-
             }
 
 
             Column {
-                spacing: 14
-                anchors.horizontalCenter: parent.horizontalCenter
+                //anchors.centerIn: parent
+                //anchors.topMargin: 50
+                anchors.horizontalCenter: startform.horizontalCenter
+                //spacing: 5
+                Column {
+                    id: nameField
+                    //spacing: -10
+                    TextField{
+                        id: nameInput
+                        maximumLength: 20
+                        implicitWidth: startform.width - 20
+                        implicitHeight: startform.height / 5
+                        inputMethodHints: Qt.ImhPreferLowercase |
+                                          Qt.ImhNoAutoUppercase |
+                                          Qt.ImhNoPredictiveText
 
-                Rectangle {
-                    id: loginButton
-                    color: "#112d4e"
-                    radius: 5
 
-                    clip: true
+                        background: Rectangle {
+                            opacity: 0
+                            anchors.centerIn: parent
 
-                    implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5 - 15
-                    Text{
-                        anchors.centerIn: parent
-                        color: "white"
-                        font.pointSize: loginButton.width  * 0.1
+
+                        }
+                        onAccepted: passwordInput.forceActiveFocus()
+                        color: "#606470"
+                        font.pointSize: nameInput.width  * 0.1
                         font.family: gotham_XNarrow.name;
-                        text: "Войти";
+                        placeholderText: "Имя /или л.счет"
+                        KeyNavigation.tab: passwordInput
+
+                        Rectangle{
+                            id: nameLine
+                            height: 1
+                            width: nameInput.width
+                            anchors.top: nameInput.bottom
+                            anchors.topMargin: -nameInput.height / 4
+                            color: "#606470"
+                        }
+
                     }
 
+                }
+
+                Column {
+                    spacing: 4
+
+                    TextField {
+                        id: passwordInput
+                        anchors.top: nameLine.bottom
+                        anchors.horizontalCenter: nameLine.horizontalCenter
+                        anchors.topMargin: -10
+                        implicitWidth: startform.width - 20
+                        implicitHeight: startform.height / 5
+                        maximumLength: 20
+                        inputMethodHints: Qt.ImhPreferLowercase |
+                                          Qt.ImhNoAutoUppercase |
+                                          Qt.ImhNoPredictiveText
+
+                        background: Rectangle {
+                            opacity: 0
+                            anchors.centerIn: parent
+
+                        }
+                        onAccepted: login()
+                        color: "#606470"
+                        font.pointSize: nameInput.width  * 0.1
+                        font.family: gotham_XNarrow.name;
+                        placeholderText: "Пароль"
+                        echoMode: TextInput.PasswordEchoOnEdit
+                        KeyNavigation.tab: loginButton
+
+                        Rectangle{
+                            id: passLine
+                            height: 1
+                            width: passwordInput.width
+                            anchors.top: passwordInput.bottom
+                            anchors.topMargin: -nameInput.height / 4
+                            color: "#606470"
+                        }
+
+                    }
+
+                }
+
+
+                Column {
+                    spacing: 14
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     Rectangle {
-                        id: loginButtoncolorRect
-                        height: 10
-                        width: 10
-                        visible: false
-                        color: "#f7f7f7"
+                        id: loginButton
+                        color: "#112d4e"
+                        radius: 5
 
-                        transform: Translate {
-                            x: -loginButtoncolorRect.width / 2
-                            y: -loginButtoncolorRect.height  / 2
+                        clip: true
+
+                        implicitWidth: startform.width - 20
+                        implicitHeight: startform.height / 5 - 15
+                        Text{
+                            anchors.centerIn: parent
+                            color: "white"
+                            font.pointSize: loginButton.width  * 0.1
+                            font.family: gotham_XNarrow.name;
+                            text: "Войти";
+                        }
+
+
+                        Rectangle {
+                            id: loginButtoncolorRect
+                            height: 10
+                            width: 10
+                            visible: false
+                            color: "#f7f7f7"
+
+                            transform: Translate {
+                                x: -loginButtoncolorRect.width / 2
+                                y: -loginButtoncolorRect.height  / 2
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+
+                                Qt.inputMethod.hide();
+
+                                bigbusy.running = true
+
+                                loginButtoncolorRect.x = mouseX
+                                loginButtoncolorRect.y = mouseY
+                                loginButtoncircleAnimation.start()
+                                loginButtonOpacityAnimation.start()
+
+                                myClient.setAuthData(nameInput.text, passwordInput.text);
+
+                                console.log(nameInput.text, passwordInput.text)
+
+                                //firsttimer.running = true
+
+                            }
+                        }
+
+                        PropertyAnimation {
+                            id: loginButtoncircleAnimation
+                            target: loginButtoncolorRect
+                            properties: "width,height,radius"
+                            from: loginButtoncolorRect.width
+                            to: order.width * 2
+                            duration: 600
+
+                            onStarted: {
+                                loginButtoncolorRect.visible = true
+                            }
+
+                            onStopped: {
+                                loginButtoncolorRect.width = 10
+                                loginButtoncolorRect.height = 10
+                                loginButtoncolorRect.visible = false
+                            }
+                        }
+
+
+                        PropertyAnimation {
+                            id: loginButtonOpacityAnimation
+                            target: loginButtoncolorRect
+                            properties: "opacity"
+                            from: 1
+                            to: 0
+                            duration: 300
+
                         }
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
+                    Rectangle{
+                        id: order
+                        radius: 5
+                        clip: true
+                        color: "#112d4e"
 
-                            Qt.inputMethod.hide();
 
-                            bigbusy.running = true
+                        implicitWidth: startform.width - 20
+                        implicitHeight: startform.height / 5 - 15
 
-                            loginButtoncolorRect.x = mouseX
-                            loginButtoncolorRect.y = mouseY
-                            loginButtoncircleAnimation.start()
-                            loginButtonOpacityAnimation.start()
+                        Text{
 
-                            myClient.setAuthData(nameInput.text, passwordInput.text);
+                            anchors.centerIn: parent
+                            color: "white"
+                            font.pointSize: order.width  * 0.1
+                            font.family: gotham_XNarrow.name;
+                            text: "Подключиться";
+                        }
 
-                            console.log(nameInput.text, passwordInput.text)
+                        Rectangle {
+                            id: ordercolorRect
+                            height: 10
+                            width: 10
+                            visible: false
+                            color: "#f7f7f7"
 
-                            //firsttimer.running = true
+                            transform: Translate {
+                                x: -ordercolorRect.width / 2
+                                y: -ordercolorRect.height / 2
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onPressed: {
+
+                                Qt.inputMethod.hide();
+
+                                ordercolorRect.x = mouseX
+                                ordercolorRect.y = mouseY
+                                orderButtonCircleAnimation.start()
+                            }
+
+
+                            onClicked:{
+                                //circleAnimation.stop()
+                                console.log("guest")
+                            }
 
                         }
                     }
 
                     PropertyAnimation {
-                        id: loginButtoncircleAnimation
-                        target: loginButtoncolorRect
+                        id: orderButtonCircleAnimation
+                        target: ordercolorRect
                         properties: "width,height,radius"
-                        from: loginButtoncolorRect.width
+                        from: ordercolorRect.width
                         to: order.width * 2
-                        duration: 250
+                        duration: 600
+                        easing.type: Easing.OutExpo
 
                         onStarted: {
-                            loginButtoncolorRect.visible = true
+                            ordercolorRect.visible = true
+                            orderButtonOpacityAnimation.start()
                         }
 
                         onStopped: {
-                            loginButtoncolorRect.width = 10
-                            loginButtoncolorRect.height = 10
-                            loginButtoncolorRect.visible = false
+                            ordercolorRect.width = 10
+                            ordercolorRect.height = 10
+                            ordercolorRect.visible = false
                         }
                     }
-
-
                     PropertyAnimation {
-                        id: loginButtonOpacityAnimation
-                        target: loginButtoncolorRect
+                        id: orderButtonOpacityAnimation
+                        target: ordercolorRect
                         properties: "opacity"
                         from: 1
                         to: 0
                         duration: 300
 
                     }
-                }
-
-                Rectangle{
-                    id: order
-                    radius: 5
-                    clip: true
-                    color: "#112d4e"
-
-
-                    implicitWidth: startform.width - 20
-                    implicitHeight: startform.height / 5 - 15
-
-                    Text{
-
-                        anchors.centerIn: parent
-                        color: "white"
-                        font.pointSize: order.width  * 0.1
-                        font.family: gotham_XNarrow.name;
-                        text: "Подключиться";
-                    }
-
-                    Rectangle {
-                        id: ordercolorRect
-                        height: 10
-                        width: 10
-                        visible: false
-                        color: "#f7f7f7"
-
-                        transform: Translate {
-                            x: -ordercolorRect.width / 2
-                            y: -ordercolorRect.height / 2
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onPressed: {
-
-                            Qt.inputMethod.hide();
-
-                            ordercolorRect.x = mouseX
-                            ordercolorRect.y = mouseY
-                            orderButtonCircleAnimation.start()
-                        }
-
-
-                        onClicked:{
-                            //circleAnimation.stop()
-                            console.log("guest")
-                        }
-
-                    }
-                }
-
-                PropertyAnimation {
-                    id: orderButtonCircleAnimation
-                    target: ordercolorRect
-                    properties: "width,height,radius"
-                    from: ordercolorRect.width
-                    to: order.width * 2
-                    duration: 250
-                    easing.type: Easing.OutExpo
-
-                    onStarted: {
-                        ordercolorRect.visible = true
-                        orderButtonOpacityAnimation.start()
-                    }
-
-                    onStopped: {
-                        ordercolorRect.width = 10
-                        ordercolorRect.height = 10
-                        ordercolorRect.visible = false
-                    }
-                }
-                PropertyAnimation {
-                    id: orderButtonOpacityAnimation
-                    target: ordercolorRect
-                    properties: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 300
-
                 }
             }
         }
@@ -396,7 +402,6 @@ ApplicationWindow {
         target: myClient
         onSwitchToHomePage: {
             if(myClient.isAuthRight()){
-                start_back.visible = false;
                 workItem.visible = true;
                 bigbusy.running = false
                 disappearStartForm.running = true
@@ -1095,18 +1100,16 @@ ApplicationWindow {
                     onClicked: {
                         myClient.quitAndClear();
                         startHead.visible = true;
-                        startform.visible = true;
-                        start_back.visible = true;
+                        mainStartForm.visible = true;
+                        appearstartform.running = true;
 
                         workItem.visible = false;
-
-
-                        drawer.close();
-
-                        appearstartform.running = true;
                         nameInput.clear();
                         passwordInput.clear();
-                        startform.enabled = true;
+                        drawer.close();
+
+
+
 
                     }
 
@@ -1128,6 +1131,8 @@ ApplicationWindow {
 
             StackView {
                 id: stackView
+                Component.onCompleted: event.accepted = false;
+
                 //antialiasing: true
                 onDepthChanged: {
                     if (stackView.depth == 1)

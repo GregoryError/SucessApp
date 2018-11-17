@@ -314,6 +314,14 @@ void MyClient::slotReadyRead()
                 ++space;
         }
 
+
+        if(pay_day.toInt() == 0)
+        {
+            int day_tmp = pay_day.toInt();
+            ++day_tmp;
+            pay_day = QString::number(day_tmp);
+        }
+
         dataSet.setValue("id", idNumber);
 
         emit startReadInfo();
@@ -362,7 +370,6 @@ void MyClient::slotReadyRead()
                       "Аррива. Проверьте подключение,<br>"
                       "либо обратитесь в тех. поддержку.";
         switchToMe();
-
     }
 
 
@@ -421,8 +428,8 @@ void MyClient::Sender(const QString &msg)
 
 void MyClient::connectToHost()
 {
-    //m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
     QTimer::singleShot(6000, this, SLOT(slotLongConnection()));
 
     if (!m_pTcpSocket->waitForConnected(6000))
@@ -471,8 +478,8 @@ void MyClient::setAuthData(QString name, QString pass)
     {
         enteredName = name;
         enteredPass = pass;
-        sslGetter.connectionToSrv("192.168.7.128", 4444);
-       // sslGetter.connectionToSrv("10.4.43.99", 4444);
+        //sslGetter.connectionToSrv("192.168.7.128", 4444);
+        sslGetter.connectionToSrv("10.4.43.99", 4444);
     }
 }
 
@@ -540,9 +547,7 @@ void MyClient::quitAndClear()
 
 bool MyClient::isAuth()
 {
-    if(dataSet.value("isEntered").toBool())
-        return true;
-    else return false;
+    return dataSet.value("isEntered").toBool();
 }
 
 // ----------------------------------------------------------------------
@@ -826,7 +831,7 @@ QString MyClient::serverTime()
 
 QString MyClient::nextPayDay()
 {
-    QString currentDate = "12.12.2018";//= serverDateTime.mid(0, 10);
+    QString currentDate = serverDateTime.mid(0, 10);
     int currentYear = serverDateTime.mid(6, 4).toInt();
 
     int yearArr[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
