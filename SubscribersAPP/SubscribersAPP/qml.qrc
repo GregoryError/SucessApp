@@ -58,5 +58,6 @@
         <file>qw_description.qml</file>
         <file>terminal_desc.qml</file>
         <file>Menu/start_back.png</file>
+        <file>Menu/copyimg.png</file>
     </qresource>
 </RCC>

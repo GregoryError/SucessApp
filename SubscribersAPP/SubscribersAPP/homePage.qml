@@ -49,6 +49,7 @@ Item {
 
         Image {
             id: walletPic
+            z: 4
             scale: mainwnd.height / 1530
             width: 75
             height: 65
@@ -56,7 +57,15 @@ Item {
             // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
             anchors.right: billVal.left
-            anchors.margins: 50
+            anchors.margins: 40
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    myClient.makeBusyON(); stackView.push("qrc:/payDescribe.qml");
+
+                }
+            }
+
         }
 
         Text{
@@ -92,7 +101,7 @@ Item {
             color: "#f7f7f7"
             font.family: gotham_XNarrow.name;
             font.pointSize: 14
-           // text: "Баланс на сегодня " + myClient.serverTime();
+            // text: "Баланс на сегодня " + myClient.serverTime();
         }
 
         Text{
@@ -101,7 +110,7 @@ Item {
             anchors.topMargin: 4
             anchors.horizontalCenter: infoline.horizontalCenter
             font.family: gotham_XNarrow.name;
-            font.pointSize: 24  
+            font.pointSize: 24
             color: "#f7f7f7"
             width: infoline.width
             horizontalAlignment: Text.AlignHCenter
@@ -126,7 +135,7 @@ Item {
         Image {
             id: infoPic
             //y: countTxt.y + 4
-            anchors.verticalCenter: countTxt.bottom
+            anchors.verticalCenter: countItem.bottom
 
             //anchors.top: infoline.bottom
             //anchors.topMargin: 8
@@ -141,38 +150,26 @@ Item {
 
         }
 
-        Text {
-            id: countTxt
-            anchors.top: infoline.bottom
-            anchors.topMargin: 8
-            anchors.horizontalCenter: infoRect.horizontalCenter
-            font.family: gotham_XNarrow.name;
-            font.pointSize: 15
-            color: "#f7f7f7"
-            z: 2
-            Rectangle{
-                id: countBack
-                anchors.fill: parent
-                radius: 4
-                color: "transparent"
-                Text {
-                    id: copyTxt
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.family: gotham_XNarrow.name;
-                    font.pointSize: 15
-                    text: "скопированно"
-                    visible: false
-                    color: "white"
 
-                }
-            }
+
+
+
+
+        Item {
+            id: countItem
+           // anchors.horizontalCenter: infoline.horizontalCenter
+            x: dateTxt.x
+            anchors.top: infoline.bottom
+            anchors.topMargin: 10
+            height: countTxt.height
+            width: infoline.width
+            z: 4
+
 
             MouseArea{
                 id: bufArea
-                z: 3
-                anchors.fill: countTxt
-                width: countTxt.width * 2
-                height: countTxt.height * 2
+                z: 4
+                anchors.fill: parent
                 onPressed: {
                     console.log("copyed");
                     countBack.color = "#95c9e8"
@@ -183,29 +180,92 @@ Item {
                 onReleased: {
                     countBackDiss.running = true
                 }
+
+
+                OpacityAnimator{
+                    id: countBackDiss
+                    target: countBack
+                    from: 1
+                    to: 0
+                    duration: 2500
+                    running: false
+                    onStopped: {
+                        countBack.color = "transparent"
+                        copyTxt.visible = false
+                    }
+
+                }
             }
 
-            OpacityAnimator{
-                id: countBackDiss
-                target: countBack
-                from: 1
-                to: 0
-                duration: 2200
-                running: false
-                onStopped: {
-                    countBack.color = "transparent"
-                    copyTxt.visible = false
+
+
+            Text {
+                id: countTxt
+                anchors.top: countItem.top
+               // anchors.top: infoline.bottom
+               // anchors.topMargin: 10
+               // anchors.horizontalCenter: countItem.horizontalCenter
+                anchors.left: countItem.left
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 15
+                color: "#f7f7f7"
+
+                Rectangle{
+                    id: countBack
+                    anchors.fill: parent
+                    radius: 4
+                    color: "transparent"
+                    Text {
+                        id: copyTxt
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.family: gotham_XNarrow.name;
+                        font.pointSize: 15
+                        text: "скопированно"
+                        visible: false
+                        color: "white"
+
+                    }
                 }
 
+            }
+
+            Image {
+                id: copyImg
+                source: "qrc:/Menu/copyimg.png"
+                anchors.left: countTxt.right
+                anchors.leftMargin: 8
+                width: 16
+                height: 16
+                anchors.verticalCenter: countTxt.verticalCenter
+            }
+
+            Text {
+                id: copyComment
+                anchors.left: copyImg.right
+                anchors.verticalCenter: copyImg.verticalCenter
+                anchors.leftMargin: 4
+                font.family: gotham_XNarrow.name;
+                font.pointSize: 10
+                color: "#f7f7f7"
+                text: "копировать"
             }
 
 
         }
 
+
+
+
+
+
+
+
+
+
         Text{
             id: dateTxt
-            anchors.top: countTxt.bottom
-            anchors.topMargin: 8
+            anchors.top: countItem.bottom
+            anchors.topMargin: 10
             anchors.horizontalCenter: infoRect.horizontalCenter
             font.family: gotham_XNarrow.name;
             font.pointSize: 15
@@ -229,6 +289,7 @@ Item {
         }
         MouseArea{
             id: infoArea
+            z: 2
             anchors.fill: infoRect
             // enabled: false
             onPressed: {
@@ -409,8 +470,8 @@ Item {
                                 //  smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                // width: 25
-                                // height: 25
+                                width: 32
+                                height: 30
 
                                 //sourceSize.height: 32
                                 //sourceSize.width: 32
@@ -554,7 +615,7 @@ Item {
                                 bigMenucolorRect.height = 0
                                 bigMenucolorRect.visible = false
 
-                               // if (index === 1) { stackView.push("payPoints.qml"); }
+                                // if (index === 1) { stackView.push("payPoints.qml"); }
 
 
 
