@@ -56,8 +56,9 @@ Item {
             source: "qrc:/Wallet.png"
             // smooth: true
             anchors.verticalCenter: billVal.verticalCenter
-            anchors.right: billVal.left
-            anchors.margins: 40
+            anchors.horizontalCenter: infoPic.horizontalCenter
+            //anchors.right: billVal.left
+            //anchors.margins: 40
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
@@ -137,11 +138,10 @@ Item {
             //y: countTxt.y + 4
             anchors.verticalCenter: countItem.bottom
 
-            //anchors.top: infoline.bottom
-            //anchors.topMargin: 8
-            anchors.horizontalCenter: walletPic.horizontalCenter
-            // width: (walletPic.width - 10) * 0.5
-            // height: walletPic.height * 0.5
+            anchors.right: countItem.left
+            anchors.rightMargin: 12
+
+
 
             width: 30
             height: 30
@@ -470,8 +470,8 @@ Item {
                                 //  smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                width: 32
-                                height: 30
+                                width: 30
+                                height: 28
 
                                 //sourceSize.height: 32
                                 //sourceSize.width: 32
