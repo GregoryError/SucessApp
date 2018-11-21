@@ -76,7 +76,8 @@ Item {
             anchors.topMargin: -15           /////// controversal <<<<<<<<<<<<<<<<<<<<
             font.family: gotham_XNarrow.name;
             font.pointSize: 50
-            color: "#f7f7f7"
+            //color: "#f7f7f7"
+            color: "#9ab5d5"
             //text: "550 ₽"
             text: myClient.showBill()
             //wrapMode: Text.WordWrap
@@ -99,7 +100,8 @@ Item {
             anchors.top: billVal.bottom
             //anchors.topMargin:
             anchors.horizontalCenter: infoRect.horizontalCenter
-            color: "#f7f7f7"
+            //color: "#f7f7f7"
+            color: "#9ab5d5"
             font.family: gotham_XNarrow.name;
             font.pointSize: 14
             // text: "Баланс на сегодня " + myClient.serverTime();
@@ -208,7 +210,8 @@ Item {
                 anchors.left: countItem.left
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 15
-                color: "#f7f7f7"
+               // color: "#f7f7f7"
+                color: "#70859e"
 
                 Rectangle{
                     id: countBack
@@ -246,7 +249,8 @@ Item {
                 anchors.leftMargin: 4
                 font.family: gotham_XNarrow.name;
                 font.pointSize: 10
-                color: "#f7f7f7"
+                //color: "#f7f7f7"
+                color: "#70859e"
                 text: "копировать"
             }
 

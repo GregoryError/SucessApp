@@ -439,22 +439,36 @@ ApplicationWindow {
 
 
 
-        LinearGradient {
+       // LinearGradient {
+       //     id: backGrad
+       //     width: window.width
+       //     height: window.height * 0.3 + 50
+       //     x: 0
+       //     y: 0
+       //     //visible: false
+       //     start: Qt.point(0, 0)
+       //     end: Qt.point(window.width, window.width)
+       //     gradient: Gradient {
+       //         GradientStop { position: 0.0; color: "#93deff" }
+       //         GradientStop { position: 0.3; color: "#638AA1" }
+       //         GradientStop { position: 0.4; color: "#4B6072" }
+       //         GradientStop { position: 0.6; color: "#323643" }
+       //         GradientStop { position: 1.0; color: "#212121" }
+       //     }
+
+
+        Image {
             id: backGrad
+            source: "qrc:/Menu/backGradImg.png"
             width: window.width
             height: window.height * 0.3 + 50
             x: 0
             y: 0
-            //visible: false
-            start: Qt.point(0, 0)
-            end: Qt.point(window.width, window.width)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#93deff" }
-                GradientStop { position: 0.3; color: "#638AA1" }
-                GradientStop { position: 0.4; color: "#4B6072" }
-                GradientStop { position: 0.6; color: "#323643" }
-                GradientStop { position: 1.0; color: "#212121" }
-            }
+
+
+        }
+
+
 
 
             DropShadow {
@@ -471,7 +485,7 @@ ApplicationWindow {
                 opacity: 0.4
             }
 
-        }
+
 
 
 
@@ -1132,6 +1146,21 @@ ApplicationWindow {
             StackView {
                 id: stackView
                 Component.onCompleted: event.accepted = false;
+
+
+
+             //   pushEnter: Transition {
+             //             PropertyAnimation {
+             //                 property: "opacity"
+             //                 from: 0
+             //                 to:1
+             //                 duration: 100
+             //             }
+             //   }
+
+
+
+
 
                 //antialiasing: true
                 onDepthChanged: {

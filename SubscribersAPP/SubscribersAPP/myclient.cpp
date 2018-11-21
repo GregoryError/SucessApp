@@ -428,8 +428,8 @@ void MyClient::Sender(const QString &msg)
 
 void MyClient::connectToHost()
 {
-   // m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-    m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
+   // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
     QTimer::singleShot(6000, this, SLOT(slotLongConnection()));
 
     if (!m_pTcpSocket->waitForConnected(6000))
@@ -478,8 +478,8 @@ void MyClient::setAuthData(QString name, QString pass)
     {
         enteredName = name;
         enteredPass = pass;
-        sslGetter.connectionToSrv("192.168.7.128", 4444);
-       // sslGetter.connectionToSrv("10.4.43.99", 4444);
+       // sslGetter.connectionToSrv("192.168.7.128", 4444);
+        sslGetter.connectionToSrv("10.4.43.99", 4444);
     }
 }
 

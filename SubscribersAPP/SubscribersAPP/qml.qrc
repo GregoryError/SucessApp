@@ -59,5 +59,6 @@
         <file>terminal_desc.qml</file>
         <file>Menu/start_back.png</file>
         <file>Menu/copyimg.png</file>
+        <file>Menu/backGradImg.png</file>
     </qresource>
 </RCC>
