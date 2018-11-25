@@ -105,6 +105,13 @@ ApplicationWindow {
                 duration: 1500
                 running: myClient.isAuth()? false : true
                 easing.type: Easing.InOutExpo
+                onStarted: {
+                    mainStartForm.visible = true
+                    startform.visible = true
+                    nameInput.enabled = true
+                    passwordInput.enabled = true
+
+                }
             }
 
             OpacityAnimator {
@@ -118,6 +125,9 @@ ApplicationWindow {
 
                 onStopped: {
                     mainStartForm.visible = false
+                    startform.visible = false
+                    nameInput.enabled = false
+                    passwordInput.enabled = false
                 }
             }
 
