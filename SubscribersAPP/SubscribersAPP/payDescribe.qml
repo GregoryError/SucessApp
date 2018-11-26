@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: mainwnd
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
     Rectangle{
         id: backRect
@@ -46,7 +46,7 @@ Item {
                 anchors.top: payListFlick.top
                 anchors.topMargin: 30
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 30
                 color: "#f7f7f7"
                 text: "Способы оплаты:"
@@ -210,7 +210,7 @@ Item {
                     Text {
                         id: payDate
                         text: date
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         minimumPointSize: 7
                         font.pointSize: 16
                         fontSizeMode: Text.Fit
@@ -224,7 +224,7 @@ Item {
                     Text {
                         id: payCash
                         text: cash
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         minimumPointSize: 7
                         font.pointSize: 16
                         fontSizeMode: Text.Fit

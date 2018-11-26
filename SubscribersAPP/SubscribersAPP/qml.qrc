@@ -60,5 +60,7 @@
         <file>Menu/start_back.png</file>
         <file>Menu/copyimg.png</file>
         <file>Menu/backGradImg.png</file>
+        <file>fonts/montserrat_Light.ttf</file>
+        <file>fonts/firaSansCondensed_Light.ttf</file>
     </qresource>
 </RCC>

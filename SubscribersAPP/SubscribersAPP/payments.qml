@@ -5,7 +5,7 @@ Item {
     //anchors.fill: parent
     id: mainwnd
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
 
     Rectangle{
@@ -58,7 +58,7 @@ Item {
             maximumFlickVelocity: 1000000
             //headerPositioning: ListView.PullBackHeader
             clip: true
-            spacing: 20
+            spacing: 15
             anchors.topMargin: 20
             anchors.bottomMargin: 20
             delegate: paydelegate
@@ -77,7 +77,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     width: mainwnd.width - 30
-                    height: parent.height - 4
+                    height: parent.height - 2
                     radius: 8
                     Rectangle{
                         id: payUnitLine
@@ -104,7 +104,7 @@ Item {
                     Text {
                         id: payDate
                         text: date
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 22
                         color: "#0074e4"
                         anchors.right: payUnit.right
@@ -115,7 +115,7 @@ Item {
                     Text {
                         id: payCash
                         text: cash
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 20
                         color: "gray"
                         anchors.left: payUnit.left
@@ -138,7 +138,7 @@ Item {
                         Text {
                             id: payComment
                             text: comment
-                            font.family: gotham_XNarrow.name;
+                            font.family: firaSansCondensed_Light.name;
                             //font.pointSize: 8
                             minimumPointSize: 7
                             font.pointSize: 12

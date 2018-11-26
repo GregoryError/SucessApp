@@ -10,7 +10,7 @@ import QtQuick 2.9
 Item {
     id: mainField
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
     Plugin {
         id: mapPlugin
@@ -33,7 +33,7 @@ Item {
                 anchors.top: mapItem.top
                 anchors.topMargin: 10
                 anchors.horizontalCenter: mapItem.horizontalCenter
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 16
                 color: "#0074e4"
                 text: "Сейчас ближайшие точки оплаты: ";
@@ -59,7 +59,7 @@ Item {
                 anchors.top: header.bottom
                 anchors.topMargin: 8
                 anchors.horizontalCenter: mapItem.horizontalCenter
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 14
                 text: BackEnd.showATM();
 

@@ -3,7 +3,7 @@ import QtQuick.Controls 2.2
 
 Item {
     id: mainMsg
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
 
     Connections{
@@ -123,7 +123,7 @@ Item {
                     anchors.bottom: msgUnit.bottom
                     anchors.bottomMargin: 7
                     wrapMode: Text.Wrap
-                    font.family: gotham_XNarrow.name;
+                    font.family: firaSansCondensed_Light.name;
                     font.pointSize: 16
                     fontSizeMode: Text.Fit
                     color: "#606470"
@@ -163,7 +163,7 @@ Item {
             }
             color: "#323643"
             font.pointSize: 18
-            font.family: gotham_XNarrow.name;
+            font.family: firaSansCondensed_Light.name;
             placeholderText: "Сообщение... "
             maximumLength: 300
             wrapMode: Text.Wrap

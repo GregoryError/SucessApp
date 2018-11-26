@@ -15,7 +15,7 @@ Item {
     // anchors.fill: parent
     id: mainwnd
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
 
     Connections{
@@ -37,7 +37,7 @@ Item {
     Item{
         id: infoRect
         width: mainwnd.width
-        height: mainwnd.height * 0.3
+        height: (mainwnd.height * 0.3) + 10
         anchors.top: mainwnd.top
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: 0
@@ -74,10 +74,10 @@ Item {
             anchors.horizontalCenter: infoRect.horizontalCenter
             anchors.top: infoRect.top
             anchors.topMargin: -15           /////// controversal <<<<<<<<<<<<<<<<<<<<
-            font.family: gotham_XNarrow.name;
-            font.pointSize: 50
-            //color: "#f7f7f7"
-            color: "#9ab5d5"
+            font.family: firaSansCondensed_Light.name;
+            font.pointSize: 55
+            color: "#f7f7f7"
+            //color: "#9ab5d5"
             //text: "550 ₽"
             text: myClient.showBill()
             //wrapMode: Text.WordWrap
@@ -86,8 +86,8 @@ Item {
 
         Image {
             id: rubPic
-            width: billVal.height * 0.7
-            height: billVal.height * 0.7
+            width: billVal.height * 0.6
+            height: billVal.height * 0.6
             source: "qrc:/Menu/rub.png"
             anchors.verticalCenter: billVal.verticalCenter
             anchors.left: billVal.right
@@ -100,9 +100,9 @@ Item {
             anchors.top: billVal.bottom
             //anchors.topMargin:
             anchors.horizontalCenter: infoRect.horizontalCenter
-            //color: "#f7f7f7"
-            color: "#9ab5d5"
-            font.family: gotham_XNarrow.name;
+            color: "#f7f7f7"
+            //color: "#9ab5d5"
+            font.family: firaSansCondensed_Light.name;
             font.pointSize: 14
             // text: "Баланс на сегодня " + myClient.serverTime();
         }
@@ -110,9 +110,9 @@ Item {
         Text{
             id: planName
             anchors.top: bill.bottom
-            anchors.topMargin: 4
+            anchors.topMargin: 2
             anchors.horizontalCenter: infoline.horizontalCenter
-            font.family: gotham_XNarrow.name;
+            font.family: firaSansCondensed_Light.name;
             font.pointSize: 24
             color: "#f7f7f7"
             width: infoline.width
@@ -130,7 +130,7 @@ Item {
             height: 1
             anchors.horizontalCenter: infoRect.horizontalCenter
             anchors.top: planName.bottom
-            anchors.topMargin: 4
+            anchors.topMargin: 2
             //y:  bill.y + bill.height + 3
             color: "white"
         }
@@ -162,7 +162,7 @@ Item {
            // anchors.horizontalCenter: infoline.horizontalCenter
             x: dateTxt.x
             anchors.top: infoline.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 5
             height: countTxt.height
             width: infoline.width
             z: 4
@@ -208,10 +208,10 @@ Item {
                // anchors.topMargin: 10
                // anchors.horizontalCenter: countItem.horizontalCenter
                 anchors.left: countItem.left
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 15
-               // color: "#f7f7f7"
-                color: "#70859e"
+                color: "#f7f7f7"
+               // color: "#70859e"
 
                 Rectangle{
                     id: countBack
@@ -221,7 +221,7 @@ Item {
                     Text {
                         id: copyTxt
                         anchors.horizontalCenter: parent.horizontalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 15
                         text: "скопированно"
                         visible: false
@@ -247,10 +247,10 @@ Item {
                 anchors.left: copyImg.right
                 anchors.verticalCenter: copyImg.verticalCenter
                 anchors.leftMargin: 4
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 10
-                //color: "#f7f7f7"
-                color: "#70859e"
+                color: "#f7f7f7"
+               // color: "#70859e"
                 text: "копировать"
             }
 
@@ -269,9 +269,9 @@ Item {
         Text{
             id: dateTxt
             anchors.top: countItem.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 5
             anchors.horizontalCenter: infoRect.horizontalCenter
-            font.family: gotham_XNarrow.name;
+            font.family: firaSansCondensed_Light.name;
             font.pointSize: 15
             color: "#f7f7f7"
 
@@ -394,7 +394,7 @@ Item {
         anchors.horizontalCenter: infoRect.horizontalCenter
         radius: 2
         anchors.top: infoRect.bottom
-        anchors.topMargin: -15         // WTF
+        anchors.topMargin: -20         // WTF
         // smooth: true
 
 
@@ -474,8 +474,8 @@ Item {
                                 //  smooth: true
                                 //anchors.fill: parent
                                 anchors.centerIn: parent
-                                width: 30
-                                height: 28
+                                width: 26
+                                height: 25
 
                                 //sourceSize.height: 32
                                 //sourceSize.width: 32
@@ -491,7 +491,7 @@ Item {
                                 anchors.topMargin: 10
                                 anchors.horizontalCenter: buttImg.horizontalCenter
                                 color: "#606470"
-                                font.family: gotham_XNarrow.name;
+                                font.family: firaSansCondensed_Light.name;
                                 font.pointSize: 16
                                 text: mtext
                                 // smooth: true

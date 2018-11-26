@@ -8,7 +8,7 @@ import QtQuick.Controls 2.2
 Item {
     id: mainTP
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
     Connections{
         target: myClient
@@ -81,7 +81,7 @@ Item {
                 anchors.topMargin: 50
                 anchors.leftMargin: 50
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 15
                 color: "#0074e4"
                 text: "- Обещанный платеж это бесплатная услуга.<br>
@@ -129,7 +129,7 @@ Item {
                 anchors.horizontalCenter: trustedTXT.horizontalCenter
                 anchors.top: trustedTXT.bottom
                 anchors.topMargin: 50
-                font.family: gotham_XNarrow.name;
+                font.family: firaSansCondensed_Light.name;
                 font.pointSize: 17
                 text: " Условия принимаю"
 
@@ -202,7 +202,7 @@ Item {
                     Text {
                         id: trButtTxt
                         anchors.centerIn: parent
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 25
                         color: "white"
                         text: "Подключить"
@@ -304,7 +304,7 @@ Item {
                     anchors.verticalCenter: resultMsg.verticalCenter
                     //anchors.top: resultMsg.top
                     //anchors.topMargin: 15
-                    font.family: gotham_XNarrow.name
+                    font.family: firaSansCondensed_Light.name
                     font.pointSize: 20
                     color: "#0074e4"
 

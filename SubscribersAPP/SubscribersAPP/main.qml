@@ -25,7 +25,7 @@ ApplicationWindow {
     //height: Screen.height
 
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
     Rectangle{
         id: startHead
@@ -73,7 +73,7 @@ ApplicationWindow {
 
         Text {
             id: noticeTxt
-            //font.family: gotham_XNarrow.name;
+            //font.family: firaSansCondensed_Light.name;
             anchors.top: mainStartForm.top
             anchors.topMargin: 20
             anchors.horizontalCenter: mainStartForm.horizontalCenter
@@ -159,7 +159,7 @@ ApplicationWindow {
                         onAccepted: passwordInput.forceActiveFocus()
                         color: "#606470"
                         font.pointSize: nameInput.width  * 0.1
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         placeholderText: "Имя /или л.счет"
                         KeyNavigation.tab: passwordInput
 
@@ -199,7 +199,7 @@ ApplicationWindow {
                         onAccepted: login()
                         color: "#606470"
                         font.pointSize: nameInput.width  * 0.1
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         placeholderText: "Пароль"
                         echoMode: TextInput.PasswordEchoOnEdit
                         KeyNavigation.tab: loginButton
@@ -235,7 +235,7 @@ ApplicationWindow {
                             anchors.centerIn: parent
                             color: "white"
                             font.pointSize: loginButton.width  * 0.1
-                            font.family: gotham_XNarrow.name;
+                            font.family: firaSansCondensed_Light.name;
                             text: "Войти";
                         }
 
@@ -321,7 +321,7 @@ ApplicationWindow {
                             anchors.centerIn: parent
                             color: "white"
                             font.pointSize: order.width  * 0.1
-                            font.family: gotham_XNarrow.name;
+                            font.family: firaSansCondensed_Light.name;
                             text: "Подключиться";
                         }
 
@@ -614,7 +614,7 @@ ApplicationWindow {
 
         Drawer {
             id: drawer
-            width: window.width * 0.8
+            width: window.width * 0.8 + 5
             height: window.height
             dragMargin: 40
             clip: true
@@ -630,7 +630,8 @@ ApplicationWindow {
             Rectangle{
                 id: drawBack
                 anchors.fill: parent
-                color: "#323643"
+                //color: "#323643"
+                color: "#212121"
 
 
                 Image {
@@ -647,7 +648,7 @@ ApplicationWindow {
                         target: drawLogo
                         from: 0
                         to: 1
-                        duration: 1000
+                        duration: 1800
                     }
 
 
@@ -670,7 +671,7 @@ ApplicationWindow {
 
                 Text {
                     id: services
-                    font.family: gotham_XNarrow.name;
+                    font.family: firaSansCondensed_Light.name;
                     font.pointSize: 12
                     text: "Интернет<br>Цифровое ТВ<br>Каналы связи"
                     anchors.right: vLine.right
@@ -683,7 +684,7 @@ ApplicationWindow {
 
                 Text {
                     id: telN
-                    font.family: gotham_XNarrow.name;
+                    font.family: firaSansCondensed_Light.name;
                     font.pointSize: 12
                     text: "tel: +781378 98098<br>Ленинградское шоссе` 33<br>info@comfort-tv.ru<br>info@arriva.net.ru"
 
@@ -755,7 +756,7 @@ ApplicationWindow {
                         anchors.left: paysImg.right
                         anchors.leftMargin: 20
                         anchors.verticalCenter: paysImg.verticalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: window.width / 26
                         text: "Платежи"
                         color: "#f7f7f7"
@@ -805,7 +806,7 @@ ApplicationWindow {
                         anchors.left: pointsImg.right
                         anchors.leftMargin: 20
                         anchors.verticalCenter: pointsImg.verticalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: window.width / 26
                         text: "Терминалы"
                         color: "#f7f7f7"
@@ -854,7 +855,7 @@ ApplicationWindow {
                         anchors.left: trustedImg.right
                         anchors.leftMargin: 20
                         anchors.verticalCenter: trustedImg.verticalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: window.width / 26
                         text: "Обещанный"
                         color: "#f7f7f7"
@@ -905,7 +906,7 @@ ApplicationWindow {
                         anchors.left: msgImg.right
                         anchors.leftMargin: 20
                         anchors.verticalCenter: msgImg.verticalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: window.width / 26
                         text: "Сообщения"
                         color: "#f7f7f7"
@@ -953,7 +954,7 @@ ApplicationWindow {
                         anchors.left: callImg.right
                         anchors.leftMargin: 20
                         anchors.verticalCenter: callImg.verticalCenter
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: window.width / 26
                         text: "Поддержка"
                         color: "#f7f7f7"
@@ -1014,7 +1015,7 @@ ApplicationWindow {
                         anchors.horizontalCenter: leftImg.horizontalCenter
                         anchors.top: leftImg.bottom
                         anchors.topMargin: 10
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
                         text: "Сайт"
@@ -1047,7 +1048,7 @@ ApplicationWindow {
                         anchors.horizontalCenter: middleImg.horizontalCenter
                         anchors.top: middleImg.bottom
                         anchors.topMargin: 10
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
                         text: "Сообщество"
@@ -1083,7 +1084,7 @@ ApplicationWindow {
                         anchors.horizontalCenter: rightImg.horizontalCenter
                         anchors.top: rightImg.bottom
                         anchors.topMargin: 10
-                        font.family: gotham_XNarrow.name;
+                        font.family: firaSansCondensed_Light.name;
                         font.pointSize: 12
                         color: "#f7f7f7"
                         text: "Инфо"
@@ -1112,7 +1113,7 @@ ApplicationWindow {
 
                         Text {
                             id: quitTxt
-                            font.family: gotham_XNarrow.name;
+                            font.family: firaSansCondensed_Light.name;
                             font.pointSize: 25
                             anchors.centerIn: parent
                             text: "выйти"

@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2
 Item {
     id: mainwnd
 
-    FontLoader { id: gotham_XNarrow; source: "/fonts/Gotham_XNarrow.ttf" }
+    FontLoader { id: firaSansCondensed_Light; source: "/fonts/firaSansCondensed_Light.ttf" }
 
 
     Flickable {
