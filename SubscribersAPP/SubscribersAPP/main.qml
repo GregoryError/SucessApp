@@ -15,10 +15,10 @@ import QtQuick.Dialogs 1.1
 ApplicationWindow {
     id: window
     visible: true
-    // width: 540
-    // height: 960
-    width: 430
-    height: 850
+     width: 540
+     height: 960
+   // width: 430
+   // height: 850
     // width: 1080
     // height: 1920
     //width: Screen.width
@@ -71,25 +71,12 @@ ApplicationWindow {
             opacity: 0.4
         }
 
-        Text {
-            id: noticeTxt
-            //font.family: firaSansCondensed_Light.name;
-            anchors.top: mainStartForm.top
-            anchors.topMargin: 20
-            anchors.horizontalCenter: mainStartForm.horizontalCenter
-            font.pointSize: 14
-            text: "Внимание, в целях безопасности,<br>
-               первый вход должен быть выполнен<br>
-               в пределах локальной сети Успех!<br>
-               Например используйте домашний WiFi.";
-        }
-
         Rectangle {
             id: startform
             color: "transparent"
             width: window.width * 0.6
             height: window.height * 0.5
-            anchors.top: noticeTxt.bottom
+            anchors.top: mainStartForm.top
             anchors.horizontalCenter: mainStartForm.horizontalCenter
             anchors.topMargin: -5
             //y:

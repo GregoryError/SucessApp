@@ -2,127 +2,13 @@
 #include <QtGui>
 #include "myclient.h"
 
+#include <QSslKey>
+#include <QCryptographicHash>
+
 // ----------------------------------------------------------------------
 // (len1-29c#h7rJ2Pn4)getAllData!
 // (len1-29c#h7rJ2Pn4)showPlan:59
 // (len1-29c#h7rJ2Pn4)setNextPaket:7
-
-
-
-
-
-
-sslClient::sslClient(QObject* prnt)
-    : QObject(prnt), sslNextBlock(0)
-{
-    pSslSocket = new QTcpSocket(this);
-    //pSslSocket->connectToHost(strHost, nsPort); // ??
-    connect(pSslSocket, SIGNAL(connected()), SLOT(slotConnectedToServ()));
-    connect(pSslSocket, SIGNAL(readyRead()), SLOT(slotReadyToRead()));
-    connect(pSslSocket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(slotErrorSsl(QAbstractSocket::SocketError)));
-
-
-
-}
-
-void sslClient::connectionToSrv(const QString& strHost, quint16 nsPort)
-{
-    pSslSocket->connectToHost(strHost, nsPort);
-    QTimer::singleShot(4000, this, SLOT(timeOut()));
-}
-
-void sslClient::slotReadyToRead()
-{
-    QDataStream in(pSslSocket);
-
-    in.setVersion(QDataStream::Qt_5_9);
-
-    for(;;)
-    {
-        if (!sslNextBlock)
-        {
-            if (pSslSocket->bytesAvailable() < sizeof(quint16))
-            {
-                break;
-            }
-            in >> sslNextBlock;
-        }
-        if (pSslSocket->bytesAvailable() < sslNextBlock)
-        {
-            break;
-        }
-        in >> sslContent;
-        sslNextBlock = 0;
-        emit startReadContent();
-        pSslSocket->close();
-    }
-}
-
-
-void MyClient::slotSetSsl()
-{
-    if (sslGetter.sslContent == "denied")
-    {
-        isAuthOk = false;
-        loginResult = "Неверная авторизация.<br>"
-                      "Проверьте правильность<br>"
-                      "имени и пароля.";
-        quitAndClear();
-        switchToMe();
-    }
-    else
-    {
-        dataSet.setValue("SSL_CONTENT", sslGetter.sslContent);
-        //CertArr.fromStdString(sslGetter.sslContent.toStdString());
-        CertArr = dataSet.value("SSL_CONTENT").toByteArray();
-        Sender("(" + enteredName + "#" + enteredPass + ")getAllData!");
-    }
-}
-
-void sslClient::slotErrorSsl(QAbstractSocket::SocketError err)
-{
-    QString strError=
-            "Error type: " + (err == QAbstractSocket::HostNotFoundError ?
-                                  "The host was not found." :
-                                  err == QAbstractSocket::RemoteHostClosedError ?
-                                      "The remote host is closed." :
-                                      err == QAbstractSocket::ConnectionRefusedError ?
-                                          "The connection was refused." :
-                                          QString(pSslSocket->errorString()));
-    qDebug() << strError;
-    sslContent = strError;
-    emit connectionError();
-}
-
-void sslClient::slotSender(const QString& msg)
-{
-    pSslSocket->write(msg.toUtf8());
-}
-
-void sslClient::slotConnectedToServ()
-{
-    emit connectionEstablished();
-}
-
-void sslClient::timeOut()
-{
-    if (pSslSocket->state() == QAbstractSocket::ConnectingState)
-    {
-        pSslSocket->abort();
-        pSslSocket->close();
-        emit connectionTimeOut();
-        qDebug() << "SIGNAL WOKS";
-    }
-
-
-}
-
-
-
-
-//////////////////////////////////////////////////////////////////////// Secure connection:
-
 
 
 
@@ -132,47 +18,71 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
     //dataSet.setValue("isEntered", false);
 
-
-
     m_pTcpSocket = new QSslSocket(this);
 
+    QSslConfiguration SSL_conf;
 
-    const QString rootCAPath(":/new/prefix1/rootCA.pem");
+    const QString rootCAPath(":/server.crt");
     auto rootCACert = QSslCertificate::fromPath(rootCAPath);
 
-    //Q_ASSERT(!rootCACert.isEmpty());
+    SSL_conf.setCaCertificates(rootCACert);
 
-    if (rootCACert.isEmpty())
-        qDebug() << "rootCACert is empty!";
+    // const QString keyPath(":/client.key");
+
+    //    QFile key_file(":/client.key");
+    //    key_file.open(QFile::ReadOnly);
+    //    QByteArray keyByteArr(key_file.readAll());
+    //    QSslKey SSL_key(keyByteArr, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey, "success");
+
+    //    SSL_conf.setPrivateKey(SSL_key);
 
 
-    if (!rootCACert.isEmpty())
-        m_pTcpSocket->setCaCertificates(rootCACert);   //  was changed with two next lines, coz of named as depricated
+    m_pTcpSocket->setSslConfiguration(SSL_conf);
 
-    //QSslConfiguration config = m_pTcpSocket->sslConfiguration();
-    //config.setCaCertificates(rootCACert);
 
-    // QList<QSslError> errorsToIgnore;
-    //
-    CertArr = dataSet.value("SSL_CONTENT").toByteArray();
-    //
-    // const QString serverCertPath(":/new/prefix1/client1.pem");
-    // //auto serverCert = QSslCertificate::fromPath(serverCertPath);
-    // auto serverCert = QSslCertificate::fromData(CertArr);
-    //
-    // //Q_ASSERT(!serverCert.isEmpty());
-    // if (serverCert.isEmpty())
-    // {
-    //     noCert = true;
-    //     qDebug() << "serverCert is empty!";
-    // }
-    //
-    //
-    // if (!serverCert.isEmpty())
-    //     errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
-    // m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
-    //
+    QList<QSslError> errorsToIgnore;
+    errorsToIgnore << QSslError(QSslError::HostNameMismatch, rootCACert.at(0));
+    m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
 
+
+
+
+
+    //    QCryptographicHash testHash(QCryptographicHash::Keccak_256);
+
+    //    testHash.addData("Test sourse text", 16);
+
+
+    //    QString hashDebug;
+    //    hashDebug = QString::fromStdString(testHash.result().toHex().toStdString());
+
+    //    qDebug() << "The hash result: " + hashDebug;
+
+
+
+
+
+
+    //  CertArr = dataSet.value("SSL_CONTENT").toByteArray();
+    //
+    //  auto serverCert = QSslCertificate::fromData(CertArr);
+    //
+    //
+    //  //Q_ASSERT(!rootCACert.isEmpty());
+    //
+    //  if (serverCert.isEmpty())
+    //      qDebug() << "rootCACert is empty!";
+    //
+    //
+    //  if (!serverCert.isEmpty())
+    //      m_pTcpSocket->setCaCertificates(serverCert);   //  was changed with two next lines, coz of named as depricated
+    //
+    //  QList<QSslError> errorsToIgnore;
+    //
+    //  if (!serverCert.isEmpty())
+    //      errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
+    //  m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
+    //
 
     connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
@@ -182,11 +92,6 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
     connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
             this,         SLOT(slotError(QAbstractSocket::SocketError))
             );
-
-    connect(&sslGetter, SIGNAL(startReadContent()), this, SLOT(slotSetSsl()));   //////// ????????? <<<
-    connect(&sslGetter, SIGNAL(connectionError()), this, SLOT(slotSslErrors()));
-    connect(&sslGetter, SIGNAL(connectionTimeOut()), this, SLOT(slotSslErrors()));
-    connect(&sslGetter, SIGNAL(connectionEstablished()), this, SLOT(slotAskForSsl()));
 
 
     if(dataSet.value("isEntered").toBool()){
@@ -240,12 +145,27 @@ void MyClient::slotReadyRead()
         m_nNextBlockSize = 0;
     }
 
-    //qDebug() << m_ptxtInfo;
+    qDebug() << "FROM SOCKET: " + m_ptxtInfo;
 
-    // m_ptxtInfo = m_pTcpSocket->readAll();
+    if (m_ptxtInfo.mid(0, 7) == "tellme:")
+    {
+        // Генерация ответа для аутентификации
 
-    // m_pTcpSocket->close();
-    //isConnect = true;
+        QCryptographicHash passwHash(QCryptographicHash::Keccak_256);
+        QCryptographicHash commonHash(QCryptographicHash::Keccak_256);
+
+        passwHash.addData(enteredPass.toUtf8());
+
+        commonHash.addData(passwHash.result().toHex() + m_ptxtInfo.mid(7).toUtf8());
+
+        m_pTcpSocket->write(QString::fromStdString(commonHash.result().toHex().toStdString()).toUtf8());
+
+        dataSet.setValue("passHash", QString::fromStdString(passwHash.result().toHex().toStdString()));
+
+    }
+
+
+
 
     if(m_ptxtInfo.length() > 10 && m_ptxtInfo.mid(0, 11) == "getAllData!")
     {
@@ -389,37 +309,15 @@ void MyClient::slotReadyRead()
 // ----------------------------------------------------------------------
 void MyClient::Sender(const QString &msg)
 {
-    msgToSend = msg;
+    msgToSend = "hello" + msg;
 
 
-    QList<QSslError> errorsToIgnore;
-
-    //CertArr = dataSet.value("SSL_CONTENT").toByteArray();
+    qDebug() << "Sended msg: " << msgToSend;
 
 
-
-
-
-
-    //const QString serverCertPath(":/new/prefix1/client1.pem");
-    //auto serverCert = QSslCertificate::fromPath(serverCertPath);
-    auto serverCert = QSslCertificate::fromData(CertArr);
-
-    //Q_ASSERT(!serverCert.isEmpty());
-    if (serverCert.isEmpty())
-    {
-        noCert = true;
-        qDebug() << "serverCert is empty!";
-    }
-
-    if (!serverCert.isEmpty())
-        errorsToIgnore << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
-    m_pTcpSocket->ignoreSslErrors(errorsToIgnore);
-
-
-    if(!m_pTcpSocket->waitForEncrypted()){
-        //qDebug() << m_pTcpSocket->errorString();
-    }
+   // if(!m_pTcpSocket->waitForEncrypted()){
+   //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
+   // }
 
     connectToHost();
 
@@ -429,7 +327,7 @@ void MyClient::Sender(const QString &msg)
 void MyClient::connectToHost()
 {
     m_pTcpSocket->connectToHostEncrypted("10.4.43.99", 4242);
-   // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
+    // m_pTcpSocket->connectToHostEncrypted("192.168.7.128", 4242);
     QTimer::singleShot(6000, this, SLOT(slotLongConnection()));
 
     if (!m_pTcpSocket->waitForConnected(6000))
@@ -468,7 +366,8 @@ bool MyClient::isAuthRight()
 
 void MyClient::setAuthData(QString name, QString pass)
 {
-    if (name.isEmpty() || pass.isEmpty()){
+    if (name.isEmpty() || pass.isEmpty())
+    {
         isAuthOk = false;
         loginResult = "Необходимо ввести\n"
                       "логин и пароль.";
@@ -478,17 +377,10 @@ void MyClient::setAuthData(QString name, QString pass)
     {
         enteredName = name;
         enteredPass = pass;
-       // sslGetter.connectionToSrv("192.168.7.128", 4444);
-        sslGetter.connectionToSrv("10.4.43.99", 4444);
+        Sender("(" + enteredName + ")getAllData!");
     }
 }
 
-
-
-void MyClient::slotAskForSsl()
-{
-    sslGetter.slotSender("(" + enteredName + "#" + enteredPass + ")");
-}
 
 
 void MyClient::slotLongConnection()
@@ -509,21 +401,6 @@ void MyClient::slotLongConnection()
     }
 }
 
-void MyClient::slotSslErrors()
-{
-    isAuthOk = false;
-    loginResult =
-            "В целях безопасности,<br>"
-            "Ваш первый вход в систему<br>"
-            "должен быть произведен<br>"
-            "в пределах сети Успех!<br>"
-            "Например используйте Вашу<br>"
-            "домашнюю WiFi сеть.<br>"
-            "Проверьте подключение,<br>"
-            "или обратитесь в тех. поддержку.<br>"+
-            sslGetter.sslContent;
-    switchToMe();
-}
 
 
 
@@ -537,7 +414,6 @@ void MyClient::quitAndClear()
     dataSet.setValue("isEntered", false);
     dataSet.remove("SSL_CONTENT");
 
-    sslGetter.sslContent.clear();
     idNumber.clear();
     balance.clear();
     state.clear();
@@ -733,10 +609,20 @@ void MyClient::showPayments()
 
 void MyClient::sendMsgs(QString str)
 {
+    /*
     // setMsgs
     Sender("(" + dataSet.value("id").toString()
            + "#" + dataSet.value("pass").toString()
-           + ")setMsgs:" + str);
+           + ")setMsgs:" + str);*/
+
+    msgToSend = str;
+
+   //
+   // if(!m_pTcpSocket->waitForEncrypted()){
+   //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
+   // }
+
+    connectToHost();
 }
 
 

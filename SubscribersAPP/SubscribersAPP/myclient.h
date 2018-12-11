@@ -25,36 +25,7 @@
 
 
 
-class QTextEdit;
-class QLineEdit;
-
 // ======================================================================
-
-
-
-class sslClient : public QObject
-{
-    Q_OBJECT
-private:    
-    QTcpSocket* pSslSocket;
-    quint16 sslNextBlock;
-public:
-    sslClient(QObject* prnt = nullptr);
-    QString sslTxt();
-    QString sslContent;
-    void connectionToSrv(const QString& strHost, quint16 nsPort);
-public slots:
-    void slotReadyToRead();
-    void slotErrorSsl(QAbstractSocket::SocketError);
-    void slotSender(const QString& msg);
-    void slotConnectedToServ();
-    void timeOut();
-signals:
-    void startReadContent();
-    void connectionError();
-    void connectionTimeOut();
-    void connectionEstablished();
-};
 
 
 
@@ -62,11 +33,9 @@ class MyClient : public QObject { //QWidget {
     Q_OBJECT
 
 private:
-    sslClient sslGetter;
-     QByteArray CertArr;
-     QString msgToSend;
-    //QList<QSslCertificate>
-    //QSslCertificate serverCert;
+
+    QString msgToSend;
+
 public:
     // Q_PROPERTY(QString input WRITE setInputValue
     //                          READ inputValue
@@ -128,9 +97,7 @@ public slots:
     bool showDemo();
     int payTableLength();        // Возвращает кол-во строк в списке платежей
 
-    void slotSetSsl();
-    void slotSslErrors();
-    void slotAskForSsl();
+
     void slotLongConnection();
 
     // void fillHomePage();
