@@ -95,9 +95,7 @@ MyClient::MyClient(QWidget* pwgt) : QObject(pwgt) /*QWidget(pwgt)*/, m_nNextBloc
 
 
     if(dataSet.value("isEntered").toBool()){
-        Sender("(" + dataSet.value("name").toString()
-               + "#" + dataSet.value("pass").toString()
-               + ")getAllData!");
+        Sender("(" + dataSet.value("name").toString() + ")getAllData!");
     }
 
     //if(!dataSet.value("isEntered").toBool())
@@ -120,7 +118,6 @@ void MyClient::slotReadyRead()
 {
 
     //m_pTcpSocket->waitForReadyRead();
-
 
     QDataStream in(m_pTcpSocket);
 
@@ -150,17 +147,25 @@ void MyClient::slotReadyRead()
     if (m_ptxtInfo.mid(0, 7) == "tellme:")
     {
         // Генерация ответа для аутентификации
-
         QCryptographicHash passwHash(QCryptographicHash::Keccak_256);
         QCryptographicHash commonHash(QCryptographicHash::Keccak_256);
 
-        passwHash.addData(enteredPass.toUtf8());
+        if (dataSet.value("isEntered").toBool())
+        {
+            commonHash.addData(dataSet.value("passHash").toString().toUtf8() + m_ptxtInfo.mid(7).toUtf8());
 
-        commonHash.addData(passwHash.result().toHex() + m_ptxtInfo.mid(7).toUtf8());
+            qDebug() << "EnteredPassHash: " << dataSet.value("passHash").toString();
+        }
+        else
+        {
+            passwHash.addData(enteredPass.toUtf8());
+            commonHash.addData(passwHash.result().toHex() + m_ptxtInfo.mid(7).toUtf8());
+            dataSet.setValue("passHash", passwHash.result().toHex());
+        }
 
-        m_pTcpSocket->write(QString::fromStdString(commonHash.result().toHex().toStdString()).toUtf8());
 
-        dataSet.setValue("passHash", QString::fromStdString(passwHash.result().toHex().toStdString()));
+
+        m_pTcpSocket->write("answer:" + QString::fromStdString(commonHash.result().toHex().toStdString()).toUtf8());
 
     }
 
@@ -182,7 +187,7 @@ void MyClient::slotReadyRead()
         {
             dataSet.setValue("isEntered", true);
             dataSet.setValue("name", enteredName);
-            dataSet.setValue("pass", enteredPass);
+            //dataSet.setValue("pass", enteredPass);
         }
 
 
@@ -302,7 +307,6 @@ void MyClient::slotReadyRead()
     // qDebug() << paket;
 
 
-
 }
 
 
@@ -315,9 +319,9 @@ void MyClient::Sender(const QString &msg)
     qDebug() << "Sended msg: " << msgToSend;
 
 
-   // if(!m_pTcpSocket->waitForEncrypted()){
-   //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
-   // }
+    // if(!m_pTcpSocket->waitForEncrypted()){
+    //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
+    // }
 
     connectToHost();
 
@@ -453,23 +457,17 @@ bool MyClient::showDemo()
 
 void MyClient::askForPayments()
 {
-    Sender("(" + dataSet.value("id").toString()
-           + "#" + dataSet.value("pass").toString()
-           + ")askPayments!");
+    Sender("(" + dataSet.value("id").toString() + ")askPayments!");
 }
 
 void MyClient::askForTrustedPay()
 {
-    Sender("(" + dataSet.value("id").toString()
-           + "#" + dataSet.value("pass").toString()
-           + ")requestTrustedPay!");
+    Sender("(" + dataSet.value("id").toString() + ")requestTrustedPay!");
 }
 
 void MyClient::askForMsgs()
 {
-    Sender("(" + dataSet.value("id").toString()
-           + "#" + dataSet.value("pass").toString()
-           + ")askForMsgs!");
+    Sender("(" + dataSet.value("id").toString() + ")askForMsgs!");
 }
 
 int MyClient::payTableLength()
@@ -495,8 +493,7 @@ void MyClient::makeBusyOFF()
 
 void MyClient::fillHomePage()
 {
-    Sender("(" + dataSet.value("id").toString() + "#" + dataSet.value("pass").toString()
-           + ")getAllData!");
+    Sender("(" + dataSet.value("id").toString() + ")getAllData!");
     // emit startReadInfo();
 }
 
@@ -617,10 +614,10 @@ void MyClient::sendMsgs(QString str)
 
     msgToSend = str;
 
-   //
-   // if(!m_pTcpSocket->waitForEncrypted()){
-   //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
-   // }
+    //
+    // if(!m_pTcpSocket->waitForEncrypted()){
+    //     qDebug() << "SSL Errors: " + m_pTcpSocket->errorString();
+    // }
 
     connectToHost();
 }
